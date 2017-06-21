@@ -570,17 +570,25 @@ class User_C extends CI_Controller {
 			}
 
 			/*START HITUNG PROSENTASE*/
-			$a = $bulan;
+			$a = $bulan-5; 
 			for ($jump = 5; $jump >=0 ;$jump--) { 
-	    		if ($a == 0) {
-	    			$a = 12;
-	    			$tahun = $tahun -1;
-	    		}
+				if ($a <= 0) {
+					$a = 12 + ($a);
+					$tahun = $tahun -1;
+				}elseif( $a == 13){
+					$a = 1;
+					$tahun = $tahun -1;
+				}
+	    		// if ($a == 0) {
+	    		// 	$a = 12;
+	    		// 	$tahun = $tahun -1;
+	    		// }
 	    		$hari_kerja[$a] = $number[$a] - $total[$a];
 	    		$seratus = 100;
 	    		$key = 'hadir_'.$a;
 	    		$persen[] = array( date('M Y', strtotime($tahun.'-'.$a)) , ($jml_hadir[0]->$key / $hari_kerja[$a]) * 100);
-	    		$a =$a -1;
+	    		$a = $a + 1;
+	    		// $a =$a -1;
 	    	}
 	    		// echo "<pre>";
 	    		// print_r($persen);
@@ -589,6 +597,8 @@ class User_C extends CI_Controller {
 	    		// echo ", HASIL: ".($jml_hadir[0]->$key / $hari_kerja[$a]) * 100;
 	    		// echo "</pre>";
 			/*END HITUNG PROSENTASE*/
+
+
 
 
 

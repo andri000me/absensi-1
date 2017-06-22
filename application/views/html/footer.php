@@ -16,6 +16,8 @@
 </div>
 </div>
 </footer>
+
+
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/chosen.jquery.js" ></script>
 
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/prism.js"></script>

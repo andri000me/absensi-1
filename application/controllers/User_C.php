@@ -282,13 +282,17 @@ class User_C extends CI_Controller {
     {
 		if (isset($this->session->userdata['logged_in'])) {
 			$data['siapa'] = $siapa;
-			$data['absen'] = $this->Absen_M->rawQuery("SELECT data_ra.id_A,data_ra.id_k,data_s.keterangan_s,data_ra.detail,data_ra.tanggal,data_ra.jam,data_ra.acc FROM data_ra INNER JOIN data_s ON data_ra.id_s = data_s.id_s INNER JOIN data_k ON data_ra.id_k = data_k.id_k WHERE data_ra.id_k =".$siapa." AND MONTH (data_ra.tanggal) = '".$bulan."' AND YEAR (data_ra.tanggal) ='".$tahun."' ")->result();
+			$data['absen'] = $this->Absen_M->rawQuery("SELECT data_ra.id_A,data_ra.id_k,data_s.keterangan_s,data_ra.detail,data_ra.tanggal,data_ra.jam,data_ra.acc,data_ra.denda FROM data_ra INNER JOIN data_s ON data_ra.id_s = data_s.id_s INNER JOIN data_k ON data_ra.id_k = data_k.id_k WHERE data_ra.id_k =".$siapa." AND MONTH (data_ra.tanggal) = '".$bulan."' AND YEAR (data_ra.tanggal) ='".$tahun."' ")->result();
 			/*echo "<pre> ABSEN: ";
 			print_r($data['absen']);
 			echo "</pre>";*/
 
 
-		    $data['ijin'] = $this->Absen_M->rawQuery("SELECT data_i.id_i,data_i.id_k,data_i.perihal,data_i.start,data_i.end,data_i.tanggal FROM data_k INNER JOIN data_i ON data_i.id_k = data_k.id_k WHERE data_k.id_k ='".$siapa."' AND MONTH (data_i.tanggal) = '".$bulan."' AND YEAR (data_i.tanggal) ='".$tahun."' ")->result();
+		    $data['ijin'] = $this->Absen_M->rawQuery("SELECT data_i.id_i,data_i.id_k,data_i.perihal,data_i.start,data_i.end,data_i.tanggal,data_i.denda FROM data_k INNER JOIN data_i ON data_i.id_k = data_k.id_k WHERE data_k.id_k ='".$siapa."' AND MONTH (data_i.tanggal) = '".$bulan."' AND YEAR (data_i.tanggal) ='".$tahun."' ")->result();
+
+		    $data['denda_absen'] = $this->Absen_M->rawQuery("SELECT data_ra.denda FROM data_ra WHERE data_ra.id_k = ".$siapa." AND MONTH (data_ra.tanggal) = '".$bulan."' AND YEAR (data_ra.tanggal) ='".$tahun."' ")->result();
+
+		    $data['denda_ijin'] = $this->Absen_M->rawQuery("SELECT data_i.denda FROM data_i WHERE data_i.id_k = ".$siapa." AND MONTH (data_i.tanggal) = '".$bulan."' AND YEAR (data_i.tanggal) ='".$tahun."' ")->result();
 			/*echo "<pre>IJIN: ";
 		    print_r($data['ijin']);
 			echo "</pre>";*/

@@ -11,19 +11,12 @@
 		<script type="text/javascript">
 			$(function () { 
 			    var myChart = Highcharts.chart('5bulan', {
-
-				    title: {
-				        text: 'Grafik Hadir 5 bulan'
-				    },
-				    
-				    xAxis: {
-				    	type: 'category'
-				    },
-
-				    series: [{
-				    	data: <?=$persen?>
-				    }]
-
+			    	title: { text: 'Grafik Hadir 5 bulan' },
+				    exporting: { enabled: true },
+				    yAxis: { title: { text: 'persen(%)' }},
+				    xAxis: {type: 'category',title: { text: 'tanggal'}},
+				    plotOptions: {line: {dataLabels: {enabled: true},enableMouseTracking: true}},
+				    series: [{ data: <?=$persen?>}]
 				});
 			});
 		</script>

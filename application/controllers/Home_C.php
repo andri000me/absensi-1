@@ -126,6 +126,18 @@ class Home_C extends CI_Controller {
 			$data['detail'] = $this->input->post('c_detail');
 		}
 
+		if ($data['id_s'] == 6) {
+			$time1 = strtotime($jam_masuk);
+			$time2 = strtotime($jam_pulang);
+			$difference = round(abs($time2 - $time1) / 3600,2);
+			$difference = $difference * 3000;
+			$data['denda'] = $difference;
+		} else {
+			$data['denda'] = 0;
+		}
+		
+		
+
 		$datas['id_k'] = $data['id_k'];
 		$datalike['tanggal'] = $data['tanggal'];
 		$cari = $this->Absen_M->searchResult('data_ra',$datas,$datalike)->result_array();//apakah sudah absen hari ini
@@ -172,9 +184,12 @@ class Home_C extends CI_Controller {
 				var_dump($data);
 				echo "insert hadir ";
 				var_dump($result);
-				if($result)
+				if($result && $data['id_s'] != 6)
 				{
 					$this->session->set_flashdata("notifikasi", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen berhasil!</strong></div>");
+				}
+				elseif ($result && $data['id_s'] == 6) {
+					$this->session->set_flashdata("notifikasi", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin 1 hari berhasil!</strong> jangan lupa membayar sejumlah $data[denda]</div>");
 				}
 				else
 				{
@@ -216,14 +231,7 @@ class Home_C extends CI_Controller {
 		$datar['end']= "00:00:00";
 		if ($apakah_hadir_dan_acc != array()) {
 			$apakah_ijinku_belum_end =$this->Absen_M->read('data_i',$datar)->result();
-			// print_r($datar);
-			// echo "<br>";
-			// echo "<br>";
-			// var_dump($apakah_ijinku_belum_end);
-			// echo "<br>";
-			// echo "<br>";
 			if ($apakah_ijinku_belum_end == array()) {
-				// echo "sek kenek";
 				if ($data['start'] < $jam_masuk){
 		 			$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>jam start belum masuk jam kerja</strong></div>");	
 		 		}else {
@@ -250,7 +258,19 @@ class Home_C extends CI_Controller {
 		$time1 = strtotime($start);
 		$time2 = strtotime($datau['end']);
 		$difference = round(abs($time2 - $time1) / 3600,2);
+		
+		
 		if ($difference >= 0.5) {
+
+			$where_idm['id_m'] =  6;
+			$datax['denda_ijin'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$denda_ijin = $datax['denda_ijin'][0]->misc;
+			unset($where_idm,$datax);
+
+			$difference = round(ceil($difference), 0, PHP_ROUND_HALF_UP);
+			$datau['denda']= $difference * $denda_ijin;
+			
+
 			$result = $this->Absen_M->update('data_i',$dataCondition,$datau);
 			$results = json_decode($result, true);
 
@@ -262,8 +282,6 @@ class Home_C extends CI_Controller {
 			}
 		} else {
 			$result = $this->Absen_M->delete('data_i',$dataCondition);
-			// echo "string";
-			// print_r($result);
 			if ($result) {
 				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil di stop.</strong> Data ijin anda dihapus karena kurang dari 30 menit</div>");
 			}

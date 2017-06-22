@@ -41,6 +41,10 @@ class Overview_C extends CI_Controller {
                 	WHERE tanggal LIKE '".$yg_dicari."%'")->result();
 
                 $datax['cari_ijin'] = $this->Absen_M->rawQuery("SELECT data_k.nama_k, data_i.perihal, data_i.end, data_i.start, data_i.tanggal, data_i.id_i FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE tanggal LIKE '".$yg_dicari."%'")->result();
+                
+                $data['denda_absen'] = $this->Absen_M->rawQuery("SELECT data_ra.denda FROM data_ra WHERE data_ra.id_k = ".$siapa." AND MONTH (data_ra.tanggal) = '".$bulan."' AND YEAR (data_ra.tanggal) ='".$tahun."' ")->result();
+
+            $data['denda_ijin'] = $this->Absen_M->rawQuery("SELECT data_i.denda FROM data_i WHERE data_i.id_k = ".$siapa." AND MONTH (data_i.tanggal) = '".$bulan."' AND YEAR (data_i.tanggal) ='".$tahun."' ")->result();
 
                 $monthNum  = substr($yg_dicari, -2) ;
                 $dateObj   = DateTime::createFromFormat('!m', $monthNum);

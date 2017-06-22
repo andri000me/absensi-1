@@ -12,14 +12,14 @@
 <link rel="stylesheet" href="<?php echo base_url()?>assets/css/clockpicker.css">
 
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.js"></script>
+
+<script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery-print/lib/jquery.printThis.js"></script>
+
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/clockpicker/highlight.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/clockpicker/bootstrap-clockpicker.min.js"></script>
-<!-- <script type="text/javascript" src="<?php echo base_url()?>assets/js/chosen.jquery.js" ></script>
-<script type="text/javascript" src="<?php echo base_url()?>assets/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url()?>assets/js/prism.js"></script>
-<script type="text/javascript" src="<?php echo base_url()?>assets/js/init.js"></script>-->
-<script src="https://code.highcharts.com/highcharts.src.js"></script>
  
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>

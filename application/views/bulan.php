@@ -1,4 +1,10 @@
 <div class="container">
+	<div class="col-xs-12 col-sm-2">
+		<button type="button" id="print_btn" class="btn btn-success"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> </button>
+		<!-- <a class="btn btn-default" onclick="print()" role="button">cetak pdf js</a> -->
+	</div>
+</div>
+<div class="container" id="absen_print">
 	<div class="col-xs-12 col-sm-12 " >
 		<h3>laporan absen per bulan : <?php echo $yg_dicari ?></h3><br>
 		<div class="table-responsive">
@@ -25,6 +31,7 @@
 		        		echo "<td>".$row->jam."</td>";
 		        		echo "<td>".$row->tanggal."</td>";
 		        		echo "<td>".$row->acc."</td>";
+		        		echo "<td>".$row->denda."</td>";
 		        		echo "</tr>";
 		        	}
 		        	?>
@@ -33,7 +40,7 @@
 		</div>
 	</div>
 </div>
-<div class="container">
+<div class="container" id="ijin_print">
 	<div class="col-xs-12 col-sm-12 " >
 		<h3>laporan ijin </h3><br>
 		<div class="table-responsive">
@@ -66,3 +73,16 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function(e) {
+       $('button#print_btn').on('click', function(e)  {
+            $('#ijin_print,#absen_print').printThis({
+                styles: [
+                		'<?php echo base_url("assets/css/bootstrap.css")?>'
+                		],
+            	exclude : ['.noprint']
+            });
+       }); 
+    });
+</script>

@@ -30,6 +30,8 @@
 	<h6>id 1 = jam masuk; <br>
 		id 2 = tahun sekarang;<br>
 		id 4 = jam akhir kerja;<br>
+		id 5 = denda per jam untuk ijin 1 hari;<br>
+		id 6 = denda per jam untuk ijin per jam saat jam kerja;<br>
 	</h6>
 	<div class="text-right">
 		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addPengaturanModal">Add pengaturan</button>

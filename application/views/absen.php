@@ -89,6 +89,7 @@
 	            	<th>Tanggal</th>
 	            	<th>Jam</th>
 	            	<th>Acc</th>
+	            	<th>denda</th>
             	</tr>
         	</thead>
 	        <tbody>
@@ -102,6 +103,7 @@
 	        		echo "<td>".$row->tanggal."</td>";
 	        		echo "<td>".$row->jam."</td>";
 	        		echo "<td>".$row->acc."</td>";
+	        		echo "<td>".$row->denda."</td>";
 	        		echo "</tr>";
 	        	}
 	        	?>

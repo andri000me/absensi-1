@@ -12,15 +12,20 @@ class Acc_C extends CI_Controller {
     }
     public function index()
     {
-    	$datar['absen']= $this->Absen_M->rawQuery("SELECT data_ra.id_a, data_s.keterangan_s, data_ra.detail, data_ra.tanggal, data_ra.jam, data_ra.acc, data_k.nama_k FROM data_ra
-            INNER JOIN data_k ON data_ra.id_k = data_k.id_k
-            INNER JOIN data_s ON data_ra.id_s = data_s.id_s
-            WHERE tanggal = '".$this->date."' ORDER BY data_ra.id_a DESC");
-        $datar['ijin']= $this->Absen_M->rawQuery("SELECT data_k.nama_k,data_i.perihal, data_i.end, data_i.start, data_i.tanggal, data_i.id_i FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE tanggal = '".$this->date."'");
-    	$this->load->view('html/header');
-		$this->load->view('html/menu');
-		$this->load->view('acc',$datar);
-		$this->load->view('html/footer');
+        if(isset($this->session->userdata['logged_in'])){
+        	$datar['absen']= $this->Absen_M->rawQuery("SELECT data_ra.id_a, data_s.keterangan_s, data_ra.detail, data_ra.tanggal, data_ra.jam, data_ra.acc, data_k.nama_k FROM data_ra
+                INNER JOIN data_k ON data_ra.id_k = data_k.id_k
+                INNER JOIN data_s ON data_ra.id_s = data_s.id_s
+                WHERE tanggal = '".$this->date."' ORDER BY data_ra.id_a DESC");
+            $datar['ijin']= $this->Absen_M->rawQuery("SELECT data_k.nama_k,data_i.perihal, data_i.end, data_i.start, data_i.tanggal, data_i.id_i FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE tanggal = '".$this->date."'");
+        	$this->load->view('html/header');
+    		$this->load->view('html/menu');
+    		$this->load->view('acc',$datar);
+    		$this->load->view('html/footer');
+        }
+        else{
+            redirect();
+        }
     }
     public function acceptAbsen($data)
     {

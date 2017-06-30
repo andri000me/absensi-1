@@ -32,6 +32,7 @@
 		id 4 = jam akhir kerja;<br>
 		id 5 = denda per jam untuk ijin 1 hari;<br>
 		id 6 = denda per jam untuk ijin per jam saat jam kerja;<br>
+		id 7 = denda keterlambatan per 15 menit;<br>
 	</h6>
 	<div class="text-right">
 		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addPengaturanModal">Add pengaturan</button>

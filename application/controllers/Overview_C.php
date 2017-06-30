@@ -33,18 +33,23 @@ class Overview_C extends CI_Controller {
                             data_ra.jam, 
                             data_s.keterangan_s, 
                             data_ra.acc,
+                            data_ra.denda,
                             data_k.nama_k
-                	FROM data_ra 
+                	FROM data_ra
                 	INNER JOIN data_k ON data_ra.id_k = data_k.id_k
                 	INNER JOIN data_s ON data_ra.id_s = data_s.id_s
 
-                	WHERE tanggal LIKE '".$yg_dicari."%'")->result();
+                	WHERE tanggal LIKE '".$yg_dicari."%' ORDER BY data_ra.id_a")->result();
 
                 $datax['cari_ijin'] = $this->Absen_M->rawQuery("SELECT data_k.nama_k, data_i.perihal, data_i.end, data_i.start, data_i.tanggal, data_i.id_i FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE tanggal LIKE '".$yg_dicari."%'")->result();
                 
-                $data['denda_absen'] = $this->Absen_M->rawQuery("SELECT data_ra.denda FROM data_ra WHERE data_ra.id_k = ".$siapa." AND MONTH (data_ra.tanggal) = '".$bulan."' AND YEAR (data_ra.tanggal) ='".$tahun."' ")->result();
+                $datax['denda_absen']=$this->Absen_M->rawQuery("SELECT (SELECT SUM(data_ra.denda) from data_ra WHERE MONTH (data_ra.tanggal) = '".$data['bulan']."' AND YEAR (data_ra.tanggal) ='".$data['tahun']."' ) AS total_denda")->result();
+                
+                $datax['denda_ijin']=$this->Absen_M->rawQuery("SELECT (SELECT SUM(data_i.denda) from data_i WHERE MONTH (data_i.tanggal) = '".$data['bulan']."' AND YEAR (data_i.tanggal) ='".$data['tahun']."' ) AS total_denda")->result();
 
-            $data['denda_ijin'] = $this->Absen_M->rawQuery("SELECT data_i.denda FROM data_i WHERE data_i.id_k = ".$siapa." AND MONTH (data_i.tanggal) = '".$bulan."' AND YEAR (data_i.tanggal) ='".$tahun."' ")->result();
+                // $data['denda_absen'] = $this->Absen_M->rawQuery("SELECT data_ra.denda FROM data_ra WHERE MONTH (data_ra.tanggal) = '".$data['bulan']."' AND YEAR (data_ra.tanggal) ='".$data['tahun']."' ")->result();
+
+                // $data['denda_ijin'] = $this->Absen_M->rawQuery("SELECT data_i.denda FROM data_i WHERE MONTH (data_i.tanggal) = '".$data['bulan']."' AND YEAR (data_i.tanggal) ='".$data['tahun']."' ")->result();
 
                 $monthNum  = substr($yg_dicari, -2) ;
                 $dateObj   = DateTime::createFromFormat('!m', $monthNum);

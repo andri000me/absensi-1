@@ -30,7 +30,8 @@
                 <li><a href="<?php echo site_url('Status_C/view') ?>">Status</a></li>
                 <li><a href="<?php echo site_url('Status_C/view/pengaturan') ?>">Pengaturan</a></li>
                 <li><a href="<?php echo site_url('Overview_C/view') ?>">Overview</a></li>                
-                <li><a href="<?php echo site_url('Acc_C/') ?>">ACC</a></li>                
+                <li><a href="<?php echo site_url('Acc_C/') ?>">Acc</a></li>                
+                <li><a href="<?php echo site_url('Holiday_C/') ?>">Holiday</a></li>                
                 <li><a href="<?php echo site_url("User_C/update_user/".$this->session->userdata('logged_in')['id_k'])?>">myAccounts</a></li>
               <?php } ?>
               <?php if (isset($this->session->userdata['logged_in'])) { ?>

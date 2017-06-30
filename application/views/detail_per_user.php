@@ -108,7 +108,7 @@
 			$denda_ku = $denda_ku + $kay->denda;
 		}
 		?>
-		<h3>Total denda ijin 1 hari anda sejumlah <?=$denda_ku?> di bulan ini</h3>
+		<h3>Total denda anda sejumlah <?=$denda_ku?> di bulan ini</h3>
 	</div>
 	<br>
 
@@ -182,7 +182,7 @@
 
 				    title: { text: 'Grafik Hadir' },
 				    exporting: { enabled: true },
-				    yAxis: { title: { text: 'jam' }},
+				    yAxis: { reversed: true,title: { text: 'jam' }},
 				    xAxis: {type: 'category',title: { text: 'tanggal'}},
 				    plotOptions: {line: {dataLabels: {enabled: true},enableMouseTracking: true}},
 				    series: [{ data: <?=$data_chart?>}]

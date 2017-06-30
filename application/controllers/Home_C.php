@@ -25,7 +25,7 @@ class Home_C extends CI_Controller {
 			$data['status']=$this->Absen_M->readS('data_s')->result();
 			
 			$data['absen']=$this->Absen_M->rawQuery("
-				SELECT data_ra.id_a, data_s.keterangan_s, data_ra.detail, data_ra.tanggal, data_ra.jam, data_ra.acc, data_k.nama_k FROM data_ra
+				SELECT data_ra.id_a, data_s.keterangan_s, data_ra.detail, data_ra.tanggal, data_ra.jam, data_ra.acc, data_k.nama_k, data_ra.denda FROM data_ra
 				INNER JOIN data_k ON data_ra.id_k = data_k.id_k
 				INNER JOIN data_s ON data_ra.id_s = data_s.id_s
 				WHERE tanggal = '".$date."'	ORDER BY data_ra.id_a DESC ")->result();
@@ -110,32 +110,58 @@ class Home_C extends CI_Controller {
 		$data['jam'] = date('H:i:s', time());
 		$data['acc'] ='0';
 		
+		
+
 		if ($data['id_s'] == 1) 
 		{
 			if ($data['jam'] > $jam_masuk) 
 			{
+				$time1 = strtotime($data['jam']);
+				$time2 = strtotime($jam_masuk);
+				// $time1 = strtotime('08:05:00');
+				// $time2 = strtotime('07:00:00');
+
+				$seperempat = round(1/4 ,2);
+				$difference = round(abs($time1 - $time2) / 3600,2)  /*% $seperempat*/;
+				// echo $data['jam']."<br>";
+				// echo $jam_masuk."<br>";
+				// echo $time1."<br>";
+				// echo $time2."<br>";
+				// echo "DIFF :".$difference."<br>";
+				$difference = floor($difference / $seperempat);
+				
+				$where_idm['id_m'] =  7;
+				$datax['denda_terlambat'] = $this->Absen_M->read('data_m',$where_idm)->result();
+				$denda_terlambat = $datax['denda_terlambat'][0]->misc;
+				unset($where_idm,$datax);
+
+				$data['denda'] = $difference * $denda_terlambat;
 				$data['detail'] = "telat";
+				// echo "<pre>";
+				// echo "1/4 :".$seperempat."<br>";
+				// echo "DIFF:".$difference;
+				// echo "</pre>";
 			}
 			else
 			{
 				$data['detail'] = "tepat waktu";	
 			}
-		}
-		else
-		{
-			$data['detail'] = $this->input->post('c_detail');
-		}
-
-		if ($data['id_s'] == 6) {
+		}elseif ($data['id_s'] == 6) {
 			$time1 = strtotime($jam_masuk);
 			$time2 = strtotime($jam_pulang);
 			$difference = round(abs($time2 - $time1) / 3600,2);
 			$difference = $difference * 3000;
 			$data['denda'] = $difference;
-		} else {
+		}
+		else
+		{
+			$data['detail'] = $this->input->post('c_detail');
 			$data['denda'] = 0;
 		}
-		
+
+		// echo "<pre>";
+		// var_dump($data);
+		// echo "</pre>";
 		
 
 		$datas['id_k'] = $data['id_k'];
@@ -169,14 +195,11 @@ class Home_C extends CI_Controller {
 			}
 			elseif ($data['id_s'] == 7) { //ambil hari libur
 				//blok semua absensi dan semua ijin(cuti hadir dkk)
-				if (isset($this->session->userdata['logged_in'])) {
-					unset($data['id_k'],$data['jam'],$data['acc'],$data['id_s']);
+				
+					unset($data['id_k'],$data['jam'],$data['acc'],$data['id_s'],$data['denda']);
 					var_dump($data);
 					$result = $this->Absen_M->create('data_libur',$data);
 					var_dump($result);
-				} else {
-					$this->session->set_flashdata("notifikasi", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>anda tidak punya akses!</strong></div>");
-				}
 			}
 			else
 			{
@@ -193,7 +216,7 @@ class Home_C extends CI_Controller {
 				}
 				else
 				{
-					$this->session->set_flashdata("notifikasi", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal!(databes)</strong></div>");
+					$this->session->set_flashdata("notifikasi", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal!</strong></div>");
 				}
 			}
 		}
@@ -229,26 +252,31 @@ class Home_C extends CI_Controller {
 		unset($datar['id_s'],$datar['acc']);
 
 		$datar['end']= "00:00:00";
-		if ($apakah_hadir_dan_acc != array()) {
-			$apakah_ijinku_belum_end =$this->Absen_M->read('data_i',$datar)->result();
-			if ($apakah_ijinku_belum_end == array()) {
-				if ($data['start'] < $jam_masuk){
-		 			$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>jam start belum masuk jam kerja</strong></div>");	
-		 		}else {
-		 			$insert_data_t = $this->Absen_M->create('data_i',$data);
-		 			if($insert_data_t){
-		 				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil</strong> ijin anda akan distop oleh admin saat anda kembali</div>");
-		 			}else{
-		 				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>gagal memasukkan ke database</strong></div>");	
-		 			}
-		 		}
-			} else {
-				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>anda masih punya tanggungan ijin</strong></div>");	
+		if (date('H:i:s') > $jam_pulang or date('H:i:s') < $jam_masuk) {
+			$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Diluar jam kerja</strong></div>");
+		} else {
+			if ($apakah_hadir_dan_acc != array()) {
+				$apakah_ijinku_belum_end =$this->Absen_M->read('data_i',$datar)->result();
+				if ($apakah_ijinku_belum_end == array()) {
+					if ($data['start'] < $jam_masuk){
+			 			$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>jam start belum masuk jam kerja</strong></div>");	
+			 		}else {
+			 			$insert_data_t = $this->Absen_M->create('data_i',$data);
+			 			if($insert_data_t){
+			 				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil</strong> ijin anda akan distop oleh admin saat anda kembali</div>");
+			 			}else{
+			 				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>gagal memasukkan ke database</strong></div>");	
+			 			}
+			 		}
+				} else {
+					$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>anda masih punya tanggungan ijin</strong></div>");	
+				}
+				
+		 	} else {
+			 	$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Harus hadir dan mendapat acc agar bisa ijin</strong></div>");	
 			}
-			
-	 	} else {
-		 	$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Harus hadir dan mendapat acc agar bisa ijin</strong></div>");	
 		}
+		
 		redirect('Home_C/view/ijin');
 	}
 	public function stop_ijin($data,$start)

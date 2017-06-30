@@ -18,6 +18,7 @@
 		            	<th>Jam</th>
 		            	<th>Tanggal</th>
 		            	<th>acc</th>
+		            	<th>denda</th>
 	            	</tr>
 	        	</thead>
 		        <tbody>
@@ -38,6 +39,7 @@
 		        </tbody>
 	  		</table>
 		</div>
+		<h3>total denda absen bulan ini <?=$denda_absen[0]->total_denda?></h3>
 	</div>
 </div>
 <div class="container" id="ijin_print">
@@ -71,6 +73,7 @@
 		        </tbody>
 	  		</table>
 		</div>
+		<h3>total denda ijin bulan ini <?=$denda_ijin[0]->total_denda?></h3>
 	</div>
 </div>
 

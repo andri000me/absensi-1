@@ -15,8 +15,8 @@
 
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery-print/lib/jquery.printThis.js"></script>
 
-<script src="https://code.highcharts.com/highcharts.src.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script type="text/javascript" src="<?php echo base_url()?>assets/js/highcharts.src.js"></script>
+<script type="text/javascript" src="<?php echo base_url()?>assets/js/exporting.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/clockpicker/highlight.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/clockpicker/bootstrap-clockpicker.min.js"></script>

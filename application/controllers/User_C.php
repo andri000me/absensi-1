@@ -591,15 +591,15 @@ class User_C extends CI_Controller {
 	    		$seratus = 100;
 	    		$key = 'hadir_'.$a;
 	    		$persen[] = array( date('M Y', strtotime($tahun.'-'.$a)) , ($jml_hadir[0]->$key / $hari_kerja[$a]) * 100);
+	    		echo "<pre>";
+	    		//print_r($persen);
+	    		echo "KEY HADIR: ".$jml_hadir[0]->$key;
+	    		echo ", HARI  KERJA: ".$hari_kerja[$a];
+	    		echo ", HASIL: ".($jml_hadir[0]->$key / $hari_kerja[$a]) * 100;
+	    		echo "</pre>";
 	    		$a = $a + 1;
 	    		// $a =$a -1;
 	    	}
-	    		// echo "<pre>";
-	    		// print_r($persen);
-	    		// echo "KEY HADIR: ".$jml_hadir[0]->$key;
-	    		// echo ", HARI  KERJA: ".$hari_kerja[$a];
-	    		// echo ", HASIL: ".($jml_hadir[0]->$key / $hari_kerja[$a]) * 100;
-	    		// echo "</pre>";
 			/*END HITUNG PROSENTASE*/
 
 

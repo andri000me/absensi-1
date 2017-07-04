@@ -147,7 +147,31 @@ class Home_C extends CI_Controller {
 				$data['detail'] = "tepat waktu";
 				$data['denda'] = 0;	
 			}
-		}elseif ($data['id_s'] == 6) {
+		}
+		elseif ($data['id_s'] == 5) {
+			$time1 = strtotime($jam_masuk);
+			$time2 = strtotime($jam_pulang);
+
+			$seperempat = round(1/4 ,2);
+			$difference = round(abs($time2 - $time1) / 3600,2)-1  /*% $seperempat*/;
+			// echo "DIFFERENCE:".$difference;
+			// die(); 
+			// echo $data['jam']."<br>";
+			// echo $jam_masuk."<br>";
+			// echo $time1."<br>";
+			// echo $time2."<br>";
+			// echo "DIFF :".$difference."<br>";
+			$difference = floor($difference / $seperempat);
+			
+			$where_idm['id_m'] =  8;
+			$datax['denda_alpha'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$denda_alpha = $datax['denda_alpha'][0]->misc;
+			unset($where_idm,$datax);
+
+			$data['denda'] = $difference * $denda_alpha;
+			$data['detail'] = $this->input->post('c_detail');
+		}
+		elseif ($data['id_s'] == 6) {
 			$where_idm['id_m'] =  5;
 			$datax['denda_ijin_1_hari'] = $this->Absen_M->read('data_m',$where_idm)->result();
 			$denda_ijin_1_hari = $datax['denda_ijin_1_hari'][0]->misc;
@@ -155,6 +179,7 @@ class Home_C extends CI_Controller {
 			$time1 = strtotime($jam_masuk);
 			$time2 = strtotime($jam_pulang);
 			$difference = round(abs($time2 - $time1) / 3600,2);
+			echo "{$difference}";
 			$difference = $difference * $denda_ijin_1_hari;
 			$data['denda'] = $difference;
 			$data['detail'] = $this->input->post('c_detail');
@@ -199,14 +224,14 @@ class Home_C extends CI_Controller {
 					}
 				}
 			}
-			elseif ($data['id_s'] == 7) { //ambil hari libur
-				//blok semua absensi dan semua ijin(cuti hadir dkk)
+			// elseif ($data['id_s'] == 7) { //ambil hari libur
+			// 	//blok semua absensi dan semua ijin(cuti hadir dkk)
 				
-					unset($data['id_k'],$data['jam'],$data['acc'],$data['id_s'],$data['denda']);
-					var_dump($data);
-					$result = $this->Absen_M->create('data_libur',$data);
-					var_dump($result);
-			}
+			// 		unset($data['id_k'],$data['jam'],$data['acc'],$data['id_s'],$data['denda']);
+			// 		var_dump($data);
+			// 		$result = $this->Absen_M->create('data_libur',$data);
+			// 		// var_dump($result);
+			// }
 			else
 			{
 				$result = $this->Absen_M->create('data_ra',$data);

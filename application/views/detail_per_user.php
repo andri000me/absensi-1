@@ -18,8 +18,8 @@
 		<?=$this->session->flashdata("alert_update_ijin_ku");?>
 		<?=$this->session->flashdata("alert_delete_ijin_ku");?>
 		<div class="col-xs-12 col-sm-6" id="cuti_print">
-			<h3>Anda memiliki sisa cuti <?= $date - ($cuti[0]->cuti_berapakali);?></h3>
-			<h5>Anda telah cuti sebanyak <?= $cuti[0]->cuti_berapakali;?></h5>
+			<h3>User <?=$nama_k[0]->nama_k?> memiliki sisa cuti <?= $date - ($cuti[0]->cuti_berapakali);?></h3>
+			<h5> telah cuti sebanyak <?= $cuti[0]->cuti_berapakali;?></h5>
 			<br>
 		</div>
 	
@@ -114,7 +114,7 @@
 			$denda_ku = $denda_ku + $kay->denda;
 		}
 		?>
-		<h3>Total denda anda sejumlah <?=$denda_ku?> di bulan ini</h3>
+		<h3>Total denda sejumlah <?=$denda_ku?> di bulan ini</h3>
 	</div>
 	<br>
 
@@ -173,7 +173,7 @@
 			$denda_ku = $denda_ku + $kay->denda;
 		}
 		?>
-		<h3>Total denda ijin jam kerja anda sejumlah <?=$denda_ku?> di bulan ini</h3>
+		<h3>Total denda ijin jam kerja sejumlah <?=$denda_ku?> di bulan ini</h3>
 	</div>
 	<div>
 		<a class="btn btn-default noprint" href="<?php echo base_url('User_C/lihat5bulan/'.$siapa."/".date('n')."/".$tahun)?>" role="button">grafik 5 bulan terakhir</a>
@@ -191,7 +191,7 @@
 				    yAxis: { reversed: true,title: { text: 'jam' }},
 				    xAxis: {type: 'category',title: { text: 'tanggal'}},
 				    plotOptions: {line: {dataLabels: {enabled: true},enableMouseTracking: true}},
-				    series: [{ data: <?=$data_chart?>}]
+				    series: [{name: 'Jam', data: <?=$data_chart?>}]
 				});
 			});
 		</script>

@@ -47,9 +47,10 @@ class Absen_M extends CI_Model {
         $query = $this->db->get('data_ra');
         return $query;
     }
-    public function searchResult($table,$dataCondition,$like){
+    public function searchResult($table,$dataCondition){
         $this->db->where($dataCondition);
-        $this->db->like($like);
+        //$this->db->like($like);
+        // $query = $this->db->get_compiled_select($table);
         $query = $this->db->get($table);
         return $query;
     }

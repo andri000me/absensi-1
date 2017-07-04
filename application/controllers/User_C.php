@@ -283,7 +283,10 @@ class User_C extends CI_Controller {
     {
 		if (isset($this->session->userdata['logged_in'])) {
 			$data['siapa'] = $siapa;
-			$data['absen'] = $this->Absen_M->rawQuery("SELECT data_ra.id_A,data_ra.id_k,data_s.keterangan_s,data_ra.detail,data_ra.tanggal,data_ra.jam,data_ra.acc,data_ra.denda FROM data_ra INNER JOIN data_s ON data_ra.id_s = data_s.id_s INNER JOIN data_k ON data_ra.id_k = data_k.id_k WHERE data_ra.id_k =".$siapa." AND MONTH (data_ra.tanggal) = '".$bulan."' AND YEAR (data_ra.tanggal) ='".$tahun."' ")->result();
+			$dataCondition['id_k'] =$siapa;
+			$data['nama_k'] = $this->Absen_M->read('data_k',$dataCondition)->result();
+			unset($dataCondition);
+			$data['absen'] = $this->Absen_M->rawQuery("SELECT data_k.nama_k,data_ra.id_A,data_ra.id_k,data_s.keterangan_s,data_ra.detail,data_ra.tanggal,data_ra.jam,data_ra.acc,data_ra.denda FROM data_ra INNER JOIN data_s ON data_ra.id_s = data_s.id_s INNER JOIN data_k ON data_ra.id_k = data_k.id_k WHERE data_ra.id_k =".$siapa." AND MONTH (data_ra.tanggal) = '".$bulan."' AND YEAR (data_ra.tanggal) ='".$tahun."' ")->result();
 			/*echo "<pre> ABSEN: ";
 			print_r($data['absen']);
 			echo "</pre>";*/
@@ -411,6 +414,29 @@ class User_C extends CI_Controller {
                 $data['denda'] = 0;   
             }
         }
+        elseif ($data['id_s'] == 5) {
+			$time1 = strtotime($jam_masuk);
+			$time2 = strtotime($jam_pulang);
+
+			$seperempat = round(1/4 ,2);
+			$difference = round(abs($time2 - $time1) / 3600,2)-1  /*% $seperempat*/;
+			// echo "DIFFERENCE:".$difference;
+			// die(); 
+			// echo $data['jam']."<br>";
+			// echo $jam_masuk."<br>";
+			// echo $time1."<br>";
+			// echo $time2."<br>";
+			// echo "DIFF :".$difference."<br>";
+			$difference = floor($difference / $seperempat);
+			
+			$where_idm['id_m'] =  8;
+			$datax['denda_alpha'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$denda_alpha = $datax['denda_alpha'][0]->misc;
+			unset($where_idm,$datax);
+
+			$data['denda'] = $difference * $denda_alpha;
+			$data['detail'] = $this->input->post('c_detail');
+		}
         elseif ($data['id_s'] == 6) {
 
 			$where_idm['id_m'] =  5;
@@ -628,13 +654,17 @@ class User_C extends CI_Controller {
 	    		$hari_kerja[$a] = $number[$a] - $total[$a];
 	    		$seratus = 100;
 	    		$key = 'hadir_'.$a;
-	    		$persen[] = array( date('M Y', strtotime($tahun.'-'.$a)) , ($jml_hadir[0]->$key / $hari_kerja[$a]) * 100);
-	    		echo "<pre>";
-	    		//print_r($persen);
-	    		echo "HADIR: ".$jml_hadir[0]->$key;
-	    		echo ", HARI KERJA: ".$hari_kerja[$a];
-	    		echo ", HASIL: ".($jml_hadir[0]->$key / $hari_kerja[$a]) * 100;
-	    		echo "</pre>";
+	    		$persen[] = array(date('M Y', strtotime($tahun.'-'.$a)) , ($jml_hadir[0]->$key / $hari_kerja[$a]) * 100);
+	    		$kehadiran[date('M Y', strtotime($tahun.'-'.$a))] = array((int)$jml_hadir[0]->$key);
+	    		$workday[date('M Y', strtotime($tahun.'-'.$a))] = array((int)$hari_kerja[$a]);
+	    		// echo "<pre>";
+	    		// // print_r($kehadiran);
+	    		// // print_r($workday);
+	    		// echo "Bulan: ".$a;
+	    		// echo ", HADIR: ".$jml_hadir[0]->$key;
+	    		// echo ", HARI KERJA: ".$hari_kerja[$a];
+	    		// echo ", HASIL: ".($jml_hadir[0]->$key / $hari_kerja[$a]) * 100 ." %";
+	    		// echo "</pre>";
 	    		$a = $a + 1;
 	    		// $a =$a -1;
 	    	}
@@ -658,7 +688,14 @@ class User_C extends CI_Controller {
 			// echo "</pre>";
 			// print_r($persen);
 			$data['persen'] = json_encode($persen);
+			$data['kehadiran'] = json_encode($kehadiran);
+			$data['workday'] = json_encode($workday);
 			$data['id_k'] =$id_k;
+
+			$dataCondition['id_k'] =$id_k;
+			$data['nama_k'] = $this->Absen_M->read('data_k',$dataCondition)->result();
+			unset($dataCondition);
+
 			$data['bulan'] =$bulan;
 			$data['tahun'] =$tahun;
 			//$data['persen'] =$persen;

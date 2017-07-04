@@ -64,12 +64,12 @@ class User_C extends CI_Controller {
 
                 $datax = $this->upload->data();
                 $data['foto_k'] = "assets/img/".$datax['file_name'];
-                $alert_foto = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Upload foto profil berhasil!</strong> Username : $datal[username_k]</div>";
+                $alert_foto = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Upload foto profil berhasil!</strong></div>";
 				$this->session->set_flashdata('alert_foto', $alert_foto);
             }
             else{
             	/*echo $this->upload->display_errors('<p>', '</p>');*/
-            	$alert_foto = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Upload foto profil gagal!</strong>ekstensi tidak didukung, coba gambar lain</div>";
+            	$alert_foto = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Upload foto profil gagal!</strong></div>";
 				$this->session->set_flashdata('alert_foto', $alert_foto);
             }
 
@@ -82,7 +82,7 @@ class User_C extends CI_Controller {
 					$cuti['cuti_berapakali'] = 0;
 					$resultc = $this->Absen_M->create('data_c',$cuti);
 					if ($resultc) {
-						$alert_create_user = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Create User Berhasil!</strong> Username : $datal[username_k]</div>";
+						$alert_create_user = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Create User Berhasil!</strong></div>";
 						$this->session->set_flashdata('alert_create_user', $alert_create_user);
 						//redirect(base_url('User_C'));
 					}
@@ -109,7 +109,8 @@ class User_C extends CI_Controller {
             $alert_create_user = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",'</div>');
             $this->session->set_flashdata('alert_create_user', $alert_create_user);
 		}
-			redirect(base_url('User_C'));
+			// redirect(base_url('User_C'));
+		$this->index();
 	}
 	public function delete_user($data)
 	{
@@ -335,6 +336,7 @@ class User_C extends CI_Controller {
 
 	        $datar['id_k'] = $datab;
 	        $datax['who'] = $this->Absen_M->read('data_k',$datar)->result();
+	        unset($datar);
 	        
 	        
 	        $datax['status'] = $this->Absen_M->readS('data_s');
@@ -375,21 +377,57 @@ class User_C extends CI_Controller {
         $where_idm['id_m'] =  1;
 		$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
 		$jam_masuk = $datax['jam_masuk'][0]->misc;
+		$where_idm['id_m'] =  4;
+		$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
+		$jam_pulang = $datax['jam_pulang'][0]->misc;
 		unset($where_idm);
 
         if ($data['id_s'] == 1) {
             if ($data['jam'] > $jam_masuk) {
+            	$time1 = strtotime($data['jam']);
+				$time2 = strtotime($jam_masuk);
+				// $time1 = strtotime('08:05:00');
+				// $time2 = strtotime('07:00:00');
+
+				$seperempat = round(1/4 ,2);
+				$difference = round(abs($time1 - $time2) / 3600,2)  /*% $seperempat*/;
+				// echo $data['jam']."<br>";
+				// echo $jam_masuk."<br>";
+				// echo $time1."<br>";
+				// echo $time2."<br>";
+				// echo "DIFF :".$difference."<br>";
+				$difference = floor($difference / $seperempat);
+				
+				$where_idm['id_m'] =  7;
+				$datax['denda_terlambat'] = $this->Absen_M->read('data_m',$where_idm)->result();
+				$denda_terlambat = $datax['denda_terlambat'][0]->misc;
+				unset($where_idm,$datax);
+
+				$data['denda'] = $difference * $denda_terlambat;
                 $data['detail'] = "telat";
             }
             else{
-                $data['detail'] = "tepat waktu";    
+                $data['detail'] = "tepat waktu";
+                $data['denda'] = 0;   
             }
         }
-        elseif ($data['id_s']==2) {
-            $data['detail'] = "tepat waktu";
-        }
+        elseif ($data['id_s'] == 6) {
+
+			$where_idm['id_m'] =  5;
+			$datax['denda_ijin_1_hari'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$denda_ijin_1_hari = $datax['denda_ijin_1_hari'][0]->misc;
+			unset($where_idm,$datax);				
+
+			$time1 = strtotime($jam_masuk);
+			$time2 = strtotime($jam_pulang);
+			$difference = round(abs($time2 - $time1) / 3600,2);
+			$difference = $difference * $denda_ijin_1_hari;
+			$data['denda'] = $difference;
+			$data['detail'] = $this->input->post('c_detail');
+		}
         else{
             $data['detail'] = $this->input->post('u_detil_keterangan');
+			$data['denda'] = 0;
         }
         $datas['id_k'] = $dataCondition['id_k'];
 		$datalike['tanggal'] = $data['tanggal'];
@@ -408,7 +446,7 @@ class User_C extends CI_Controller {
 					$alert_update_absensi_ku = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Update Absensi Berhasil! </strong> </div>";
 	            $this->session->set_flashdata('alert_update_absensi_ku', $alert_update_absensi_ku);
 				}else{
-					$alert_update_absensi_ku = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Update Absensi Berhasil! </strong> </div>";
+					$alert_update_absensi_ku = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Update Absensi eror! </strong> </div>";
 	            	$this->session->set_flashdata('alert_update_absensi_ku', $alert_update_absensi_ku);
 				}
 			}
@@ -593,8 +631,8 @@ class User_C extends CI_Controller {
 	    		$persen[] = array( date('M Y', strtotime($tahun.'-'.$a)) , ($jml_hadir[0]->$key / $hari_kerja[$a]) * 100);
 	    		echo "<pre>";
 	    		//print_r($persen);
-	    		echo "KEY HADIR: ".$jml_hadir[0]->$key;
-	    		echo ", HARI  KERJA: ".$hari_kerja[$a];
+	    		echo "HADIR: ".$jml_hadir[0]->$key;
+	    		echo ", HARI KERJA: ".$hari_kerja[$a];
 	    		echo ", HASIL: ".($jml_hadir[0]->$key / $hari_kerja[$a]) * 100;
 	    		echo "</pre>";
 	    		$a = $a + 1;

@@ -2,13 +2,12 @@
 <div class="container">
 	
 	<ol class="breadcrumb">
-	  <li><a href="<?php echo base_url('User_C')?>"  >User</a></li>
-	  <li><a href="<?php echo base_url('User_C/detail_per_user/'.$key->id_k)?>" class='active'>overview</a></li>
+	  <li><a href="<?php echo base_url('Acc_C')?>"  >Acc</a></li>
 	  <li  class='active'>edit absensi</li>
 	</ol>
 
 	<br>
-	<form class="form-horizontal" action="<?php echo base_url('User_C/update_absensi_ku')?>" method="POST">
+	<form class="form-horizontal" action="<?php echo base_url('Acc_C/update_absensi_ku')?>" method="POST">
 	  	<div class="form-group">
 		    <label class="col-sm-2 control-label">Id Absen</label>
 		    <div class="col-sm-10 input-group">
@@ -66,6 +65,7 @@
 				donetext: 'Done'
 			});
 		</script>
+
 		<div class="form-group">
 		    <label class="col-sm-2 control-label">tanggal</label>
 		    <div class="col-sm-10 input-group">

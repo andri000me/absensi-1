@@ -144,14 +144,20 @@ class Home_C extends CI_Controller {
 			}
 			else
 			{
-				$data['detail'] = "tepat waktu";	
+				$data['detail'] = "tepat waktu";
+				$data['denda'] = 0;	
 			}
 		}elseif ($data['id_s'] == 6) {
+			$where_idm['id_m'] =  5;
+			$datax['denda_ijin_1_hari'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$denda_ijin_1_hari = $datax['denda_ijin_1_hari'][0]->misc;
+			unset($where_idm,$datax);				
 			$time1 = strtotime($jam_masuk);
 			$time2 = strtotime($jam_pulang);
 			$difference = round(abs($time2 - $time1) / 3600,2);
-			$difference = $difference * 3000;
+			$difference = $difference * $denda_ijin_1_hari;
 			$data['denda'] = $difference;
+			$data['detail'] = $this->input->post('c_detail');
 		}
 		else
 		{

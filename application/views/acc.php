@@ -1,7 +1,11 @@
 <div class="container">
+	<ol class="breadcrumb">
+	  <li  class='active'>Acc</li>
+	</ol>
 <h3><?=date('Y-m-d')?></h3><br>
 <h3>Absen</h3><br>
 	<?=$this->session->flashdata("alert_update_absen_acc")?>
+	<?=$this->session->flashdata("alert_update_absensi_ku")?>
 	<div class="table-responsive">
   		<table class="table  table-condensed">
   			<thead>
@@ -9,9 +13,11 @@
 	            	<th>id</th>
 	            	<th>nama</th>
 	            	<th>keterangan</th>
+	            	<th>detail</th>
 	            	<th>tanggal</th>
 	            	<th>jam</th>
 	            	<th>acc</th>
+	            	<th>denda</th>
 	            	<th>Action</th>
             	</tr>
         	</thead>
@@ -21,11 +27,14 @@
 	        		<td><?= $key->id_a ?></td>
 	        		<td><?= $key->nama_k ?></td>
 	        		<td><?= $key->keterangan_s ?></td>
+	        		<td><?= $key->detail ?></td>
 	        		<td><?= $key->tanggal ?></td>
 	        		<td><?= $key->jam ?></td>
         			<td><?= $key->acc ?></td>
+        			<td><?= $key->denda ?></td>
         			<td>
         			<a href="<?php echo base_url('Acc_C/acceptAbsen/'.$key->id_a)?>" style='margin-right: 20px;'><span class='glyphicon glyphicon-ok'></span></a>
+        			<a href="<?php echo base_url('Acc_C/edit_absensi_ku_dari_acc/'.$key->id_a."/".$key->id_k)?>" style='margin-right: 20px;'><span class='glyphicon glyphicon-edit'></span></a>
         			<a href="<?php echo base_url('Acc_C/deleteAbsen/'.$key->id_a)?>" style='margin-right: 20px;'><span class='glyphicon glyphicon-trash'></span></a>
         			<a href="<?php echo base_url('Acc_C/rejectAbsen/'.$key->id_a)?>"><span class='glyphicon glyphicon-remove'></span></a>
         			</td>

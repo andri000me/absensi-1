@@ -8,7 +8,11 @@
 	</ol>
 	
 	<div class="row" >
-		<?php 		$date = date('m');	?><br>
+		<?php 		
+			$date = date('m');
+			$monthNum  = substr($bulan,0) ;
+	        $dateObj   = DateTime::createFromFormat('!m', $monthNum);	
+	    ?><br>
 		<?=$this->session->flashdata("alert_delete_absensi_ku");?>
 		<?=$this->session->flashdata("alert_update_absensi_ku");?>
 		<?=$this->session->flashdata("alert_update_ijin_ku");?>
@@ -22,19 +26,19 @@
 		<div class="col-xs-6 col-sm-2">
 			<div class="dropdown">
 				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-				    Dropdown
+				    Pilih bulan
 				    <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/01/'.date('Y'))?>">Januari</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/02/'.date('Y'))?>">Februari</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/03/'.date('Y'))?>">Maret</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/04/'.date('Y'))?>">April</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/05/'.date('Y'))?>">Mei</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/06/'.date('Y'))?>">juni</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/07/'.date('Y'))?>">juli</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/08/'.date('Y'))?>">agustus</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/09/'.date('Y'))?>">september</a></li>
+					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/1/'.date('Y'))?>">Januari</a></li>
+					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/2/'.date('Y'))?>">Februari</a></li>
+					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/3/'.date('Y'))?>">Maret</a></li>
+					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/4/'.date('Y'))?>">April</a></li>
+					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/5/'.date('Y'))?>">Mei</a></li>
+					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/6/'.date('Y'))?>">juni</a></li>
+					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/7/'.date('Y'))?>">juli</a></li>
+					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/8/'.date('Y'))?>">agustus</a></li>
+					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/9/'.date('Y'))?>">september</a></li>
 					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/10/'.date('Y'))?>">oktober</a></li>
 					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/11/'.date('Y'))?>">november</a></li>
 					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/12/'.date('Y'))?>">desember</a></li>
@@ -50,7 +54,9 @@
 
 
 <div class="container" id="absen_print">
-	<h3>Absensi</h3>
+	<h3>Absensi bulan 
+	<?=$dateObj->format('F')?>	
+	</h3>
 	<div class="table-responsive">
   		<table class="table  table-condensed">
   			<thead>
@@ -116,7 +122,7 @@
 	
 	
 	<br>
-	<h3>Ijin</h3>
+	<h3>Ijin bulan <?=$dateObj->format('F')?></h3>
 	<div class="table-responsive">
   		<table class="table  table-condensed">
   			<thead>

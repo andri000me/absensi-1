@@ -8,9 +8,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12" id="alert">
-			<?=$this->session->flashdata("notifikasi")?>
-			<?=$this->session->flashdata("alert_login_validate")?>
-			<?=$this->session->flashdata("alert_login")?>
+
 		</div>
 	</div>
 	<div class="panel panel-default" style="margin-top: 20px;">
@@ -146,15 +144,39 @@ function myFunction() {
     }
 
 </script>
-
+<?php
+  //   		echo "<tr>";
+  //   		echo "<td>".$row->id_a."</td>";
+  //   		echo "<td>".$row->nama_k."</td>";
+  //   		echo "<td>".$row->keterangan_s."</td>";
+  //   		echo "<td>".$row->detail."</td>";
+  //   		echo "<td>".$row->tanggal."</td>";
+  //   		echo "<td>".$row->jam."</td>";
+  //   		echo ($row->acc ==1)?"<td class='btn btn-sm btn-success'>Sudah di acc</td>":"<td class='btn btn-xs btn-danger'>belum di acc</td>";
+  //   		// echo "<td>".$row->denda."</td>";
+  //   		echo "<td> Rp " . number_format($row->denda,2,',','.')."</td>";
+  //   		echo "</tr>";
+?>
 <script type="text/javascript">
 	window.onload=show();
 	function show(){
-		
 	    $.get('<?php echo base_url('Home_C/show_absen/')?>', function(html){
 	    	// console.log(html);
-	    	$('#show-absen').html(html);
-
+	    	var data = JSON.parse(html);
+	    	// console.log(data);
+	    	var output = document.getElementById('show-absen');
+	    	var element = '';
+	    	for(var x in data){
+	    		if (+data[x].acc == 1) {
+	    			element += "<tr><td>"+data[x].id_a+"</td><td>"+data[x].nama_k+"</td><td>"+data[x].keterangan_s+"</td><td>"+data[x].detail+"</td><td>"+data[x].tanggal+"</td><td>"+data[x].jam+"</td><td class='btn btn-xs btn-success'>Sudah di acc</td><td>Rp."+data[x].denda+"</td></tr>";
+	    		} else {
+	    			element += "<tr><td>"+data[x].id_a+"</td><td>"+data[x].nama_k+"</td><td>"+data[x].keterangan_s+"</td><td>"+data[x].detail+"</td><td>"+data[x].tanggal+"</td><td>"+data[x].jam+"</td><td class='btn btn-xs btn-danger'>Belum</td><td> Rp."+data[x].denda+"</td></tr>";
+	    		}
+	    		
+	    	}
+	    	console.log(element);
+	    	output.innerHTML = element;
+	    	// $('#show-absen').html(html);
 	    });
 	}
 	
@@ -183,6 +205,7 @@ function myFunction() {
 	            console.log(data);
 	            $('#submit-absen').text('Submits'); //change button text
 	            $('#submit-absen').attr('disabled',false); //set button enable 
+	            show();
 
 	        },
 	        error: function (jqXHR, textStatus, errorThrown)
@@ -193,5 +216,6 @@ function myFunction() {
 
 	        }
 	    });
+	    show();
 	}
 </script>

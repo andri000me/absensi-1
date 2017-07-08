@@ -7,8 +7,8 @@
 		</div>
 	</div><br>
 	<div class="row">
-		<div class="col-xs-12">
-			<?=$this->session->flashdata("notifikasi_ijin")?>
+		<div class="col-xs-12" id="alert">
+
 		</div>
 	</div><br>
 	<div class="panel panel-default" style="margin-top: 20px;">
@@ -37,13 +37,13 @@
 		</div>
 	</div>
 </div>
-  <script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function() {
         $('#tabel-ijin').DataTable({
         	paging:false
         });
     });
-  </script>
+</script>
 <div class="container">
 	<div class="table-responsive">
   		<table class="table  table-condensed">

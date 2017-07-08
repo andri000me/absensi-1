@@ -6,26 +6,18 @@ class Jabatan_C extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         $this->load->model('Absen_M');
+        date_default_timezone_set("Asia/Jakarta");
         if (!$this->session->userdata('logged_in')){
             redirect();
         }
     }
     public function index()
     {
-		if (isset($this->session->userdata['logged_in'])) {
-			if ($this->session->userdata('logged_in')['hak_akses'] != 3){
 		    $data['jabatans'] = $this->Absen_M->reads('data_j')->result();
 			$this->load->view('html/header');
 			$this->load->view('html/menu');
 			$this->load->view('jabatan',$data);
 			$this->load->view('html/footer');
-			}
-			else{
-				redirect();
-			}
-		}else{
-			redirect();
-		}
 	}
 	
 	public function create_jabatan()

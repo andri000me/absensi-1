@@ -3,13 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Acc_C extends CI_Controller {
 
-    private $date;
+    // private $date;
 
     public function __construct(){
         parent::__construct();
         $this->load->model('Absen_M');
         date_default_timezone_set("Asia/Jakarta");
-        $this->date = date('Y-m-d');
+        // $this->date = date('Y-m-d');
         if (!$this->session->userdata('logged_in')){
             redirect();
         }

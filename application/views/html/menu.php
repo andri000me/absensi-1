@@ -11,7 +11,11 @@
             $date = date('Y-m-d');
             $dataCondition['tanggal'] = $date;
             $apakah_hari_libur = $this->Absen_M->read('data_libur',$dataCondition)->result();
-            if ($apakah_hari_libur == array()) {?>
+            unset($date,$dataCondition);
+            // echo "<pre>";
+            // var_dump($apakah_hari_libur);
+            // echo "</pre>";
+            if ($apakah_hari_libur == array()) { ?>
               <a class="navbar-brand" disabled href="/absensi">Absensi</a>
             <?php
             }
@@ -20,9 +24,10 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <?php 
-            if ($apakah_hari_libur == array()) {?>
+            if ($apakah_hari_libur == array()) { ?>
               <li><a href="<?php echo site_url('Home_C/view/ijin')?>">ijin</a></li>
               <?php }
+              unset($apakah_hari_libur);
             ?>
               <?php if ($this->session->userdata('logged_in')['hak_akses'] == 1 or $this->session->userdata('logged_in')['hak_akses'] == 2){ ?>
 

@@ -6,21 +6,18 @@ class Status_C extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         $this->load->model('Absen_M');
+        date_default_timezone_set("Asia/Jakarta");
         if (!$this->session->userdata('logged_in')){
             redirect();
         }
     }
     public function view($page = 'status'){
-		if (isset($this->session->userdata['logged_in'])) {
 	        $data['statuss'] = $this->Absen_M->readS('data_s');
 	        $data['pengaturans'] = $this->Absen_M->readS('data_m');
 			$this->load->view('html/header');
 			$this->load->view('html/menu');
 			$this->load->view($page,$data);
 			$this->load->view('html/footer');
-		}else{
-			redirect();
-		}
 	}
 	public function create_status(){
 		if ($this->input->post() != null) {

@@ -5,21 +5,18 @@ class Overview_C extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         $this->load->model('Absen_M');
+        date_default_timezone_set("Asia/Jakarta");
         if (!$this->session->userdata('logged_in')){
             redirect();
         }
     }
     public function view($page = 'bulanan')
     {
-        if (isset($this->session->userdata['logged_in'])) {
             $this->load->view('html/header');
             $this->load->view('html/menu');
             $this->load->view('html/side_menu');
             $this->load->view($page);
             $this->load->view('html/footer');
-        }else{
-            redirect();
-        }
     }
     public function lihat($bulan_or_hari){
         if ($this->input->post() != null) {

@@ -6,19 +6,15 @@ class Holiday_C extends CI_Controller {
     public function __construct(){
         parent::__construct();
         $this->load->model('Absen_M');
+        date_default_timezone_set("Asia/Jakarta");
     }
     public function index()
     {
-        if(isset($this->session->userdata['logged_in'])){
             $datar['liburan'] = $this->Absen_M->readS('data_libur')->result();
         	$this->load->view('html/header');
     		$this->load->view('html/menu');
     		$this->load->view('holiday',$datar);
     		$this->load->view('html/footer');
-        }
-        else{
-            redirect();
-        }
     }
     public function create_liburan()
     {

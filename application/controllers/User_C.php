@@ -2,11 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User_C extends CI_Controller {
-	private $date;
+	//private $date;
 	public function __construct(){
         parent::__construct();
+        date_default_timezone_set("Asia/Jakarta");
         $this->load->model('Absen_M');
-		$this->date = date('Y-m');
+		//$this->date = date('Y-m');
     }
     public function index()
     {

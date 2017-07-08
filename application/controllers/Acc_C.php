@@ -54,7 +54,7 @@ class Acc_C extends CI_Controller {
                     <td>".$absen->detail."</td>
                     <td>".$absen->tanggal."</td>
                     <td>".$absen->jam."</td>
-                    <td>".$absen->acc."</td>
+                    <td ><button ".(($absen->acc == 0) ? 'class="btn btn-xs btn-danger"':'class="btn btn-xs btn-success"').">".(($absen->acc == 1) ? 'sudah di acc':'belum')."</button></td>
                     <td>Rp. ".number_format($absen->denda,2,',','.')."</td>
                     <td class='text-center'>
                         <div class='btn-group'>
@@ -360,20 +360,20 @@ class Acc_C extends CI_Controller {
             
             $dataCondition['id_a'] = $this->input->post('u_id_a');
             $dataCondition['id_k'] = $this->input->post('u_id_k');
+            
             $data['id_s'] = $this->input->post('u_keterangan');
             $data['tanggal'] = $this->input->post('u_tanggal');
-            echo $data['tanggal']."<br>";
-            //$tanggal = substr($data['tanggal'],-5,2);
-            //$tahun = substr($data['tanggal'],-10,4);
             $data['jam'] = $this->input->post('u_jam');
             $data['acc'] = $this->input->post('u_acc');
+
             $where_idm['id_m'] =  1;
             $datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
             $jam_masuk = $datax['jam_masuk'][0]->misc;
+
             $where_idm['id_m'] =  4;
             $datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
             $jam_pulang = $datax['jam_pulang'][0]->misc;
-            unset($where_idm);
+            unset($where_idm,$datax);
             if ($data['id_s'] == 1) {
                 if ($data['jam'] > $jam_masuk) {
                     $data['detail'] = "telat";
@@ -454,7 +454,7 @@ class Acc_C extends CI_Controller {
                 }
             }
             // redirect('Acc_C/lihat/'.$tanggal."/".$tahun);
-            echo $alert_update_absen_ku;
+            echo $alert_update_absensi_ku;
         }
     }
     public function update_ijin_ku(){

@@ -81,7 +81,7 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
 
 <div class="modal fade" id="updateAbsenModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form id="formaccept">      
+        <form id="formupdate" method="POST">      
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -98,6 +98,10 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
                                 <span class='glyphicon glyphicon-time'></span>
                             </span>
                         </div>
+                    </div>
+                    <div class='form-group'>
+                        <label>tanggal</label>
+                        <input type='date' class='form-control' name='u_tanggal' id='tglUp'>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Keterangan</label>
@@ -118,7 +122,7 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
                     <div class="form-group">
                         <label class="control-label">Acc</label>
                         <div >
-                            <select class="form-control" name="u_acc" id='accU'>
+                            <select class="form-control" name="u_acc" id='accUp'>
                                 <?php
                                     for ($i=0; $i <=1 ; $i++) {
                                         echo ($i == 1)?"<option value='".$i."'>sudah di acc </option>": "<option value='".$i."'>belum di acc </option>" ;
@@ -130,7 +134,7 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-primary" id="btn-acc" >Acc</a>
+                    <a class="btn btn-primary" id="btn-update">Update</a>
                 </div>
             </div>
         </form>

@@ -61,6 +61,42 @@ function update()
         }
     });
 }
+$('#btn-update').click(function() {
+    $('#btn-update').text('updating...'); //change button text
+    $('#btn-update').attr('disabled',true); //set button disable 
+    var url;
+
+    url = "<?php echo base_url('Acc_C/update_absensi_ku/')?>";
+    var formData = new FormData($('#formupdate')[0]);
+    $.ajax({
+        url : url,
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(data)
+        {
+            // var response = JSON.parse(data);
+            // $.each(response , function(index,item){
+            //  console.log(item.tanggal);
+            // });
+            $("#notif").html(data);
+            // console.log(response);
+            $('#btn-update').text('updated'); //change button text
+            $('#btn-update').attr('disabled',false); //set button enable 
+            $('#updateAbsenModal').modal('hide');
+            // $('#main').load('seminar-overview.php #main > *');
+            update();
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            console.log(jqXHR, textStatus, errorThrown);
+            $('#btn-update').text('eror'); //change button text
+            $('#btn-update').attr('disabled',false); //set button enable 
+
+        }
+    });
+});
 
 $("#btn-delete" ).click(function() {
   //alert( "woy" );
@@ -183,14 +219,15 @@ function edit(elem)
     var uidk = $(elem).data('idkaryawan');
     $.get('<?php echo base_url(); ?>Acc_C/edit_absensi_ku_dariacc/' + uida+'/'+uidk, function(html){
         var object = JSON.parse(html);
-        console.log(object[0]);
+        console.log(object);
         $("#ketUp").val(object[0].id_s);
         $("#idkU").val(object[0].id_k);
         $("#idU").val(object[0].id_a);
 
         $("#jamUp").val(object[0].jam);
         $("#detUp").val(object[0].detail);
-        $("#accU").val(object[0].acc);
+        $("#accUp").val(object[0].acc);
+        $("#tglUp").val(object[0].tanggal);
     });
 }
 

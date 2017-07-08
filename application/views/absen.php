@@ -7,7 +7,7 @@
 <br>
 <div class="container">
 	<div class="row">
-		<div class="col-xs-12">
+		<div class="col-xs-12" id="alert">
 			<?=$this->session->flashdata("notifikasi")?>
 			<?=$this->session->flashdata("alert_login_validate")?>
 			<?=$this->session->flashdata("alert_login")?>
@@ -16,30 +16,14 @@
 	<div class="panel panel-default" style="margin-top: 20px;">
 	  	<div class="panel-body">
 		  	<div class="row">
-		  		<form action="<?php echo base_url();?>Home_C/create_absen" method="POST" enctype="multipart/form-data">
+		  		<form  id="form-absen" method="POST">
 					<div class="form-group col-xs-12" >
 				        <select class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%" name="c_id_k">
 				        <option></option>
 					        <?php 
-					            if(isset($this->session->userdata['logged_in'])) {
-					            	if ($this->session->userdata('logged_in')['hak_akses'] == 3) {
-						            	$aku = $this->session->userdata('logged_in')['id_k'];
-							            foreach($nama_karyawan as $row)							            {
-							            	if ($row->id_K == $aku) {
-							              		echo '<option value="'.$row->id_k.'">'.$row->nama_k.'</option>';
-							            	}
-							            }
-					            	}else{
-					            		foreach($nama_karyawan as $row)							            {
-							              	echo '<option value="'.$row->id_k.'">'.$row->nama_k.'</option>';
-							            }
-					            	}
-						        }
-						        else{
-				            		foreach($nama_karyawan as $row)						            {
-						              	echo '<option value="'.$row->id_k.'">'.$row->nama_k.'</option>';
-						            }
-				            	}
+			            		foreach($nama_karyawan as $row)						            {
+					              	echo '<option value="'.$row->id_k.'">'.$row->nama_k.'</option>';
+					            }
 					        ?>
 				        </select>
 					</div>
@@ -65,27 +49,28 @@
 				        </select>
 					</div>
 					<div class="form-group col-xs-12" id="myDIV">
-						<textarea class="form-control" placeholder="ketikkan alasan disini." name="c_detail" value="<?php echo set_value('c_detail'); ?>" style="min-height: 100px;"></textarea>
+						<textarea class="form-control" placeholder="ketikkan alasan disini." name="c_detail" style="min-height: 100px;"></textarea>
 					</div>
 					<div class="col-xs-12">
-						<button type="submit" class="btn btn-primary">Submit</button>
+						<a class="btn btn-primary" id="submit-absen" onclick="kirim()">Submit</a>
 					</div>
 				</form>
 		  	</div>
 		</div>
 	</div>
 </div>
-  <script type="text/javascript">
+<!--   <script type="text/javascript">
     $(document).ready(function() {
         $('#examplb').DataTable({
         	paging:false
         });
     });
-  </script>
-
+  </script> -->
+<br>
+<br>
 <div class="container">
 	<div class="table-responsive">
-  		<table class="table  table-condensed" id="examplb">
+  		<table class="table  table-condensed" ><!-- id="examplb" -->
   			<thead>
         		<tr>
 	            	<th>id_A</th>
@@ -98,22 +83,8 @@
 	            	<th>denda</th>
             	</tr>
         	</thead>
-	        <tbody>
-	        	<?php 
-	        	foreach ($absen as $row) {
-	        		echo "<tr>";
-	        		echo "<td>".$row->id_a."</td>";
-	        		echo "<td>".$row->nama_k."</td>";
-	        		echo "<td>".$row->keterangan_s."</td>";
-	        		echo "<td>".$row->detail."</td>";
-	        		echo "<td>".$row->tanggal."</td>";
-	        		echo "<td>".$row->jam."</td>";
-	        		echo "<td>".$row->acc."</td>";
-	        		// echo "<td>".$row->denda."</td>";
-	        		echo "<td> Rp " . number_format($row->denda,2,',','.')."</td>";
-	        		echo "</tr>";
-	        	}
-	        	?>
+	        <tbody id="show-absen">
+	        	
 	        </tbody>
   		</table>
 	</div>
@@ -174,4 +145,53 @@ function myFunction() {
         timer = timer + 1000;
     }
 
+</script>
+
+<script type="text/javascript">
+	window.onload=show();
+	function show(){
+		
+	    $.get('<?php echo base_url('Home_C/show_absen/')?>', function(html){
+	    	// console.log(html);
+	    	$('#show-absen').html(html);
+
+	    });
+	}
+	
+</script>
+<script type="text/javascript">
+	function kirim(){
+		$('#submit-absen').text('submiting...'); //change button text
+	    $('#submit-absen').attr('disabled',true); //set button disable 
+	    var url;
+
+	   	url = "<?php echo base_url('Home_C/create_absen/')?>";
+	    var formData = new FormData($('#form-absen')[0]);
+	    $.ajax({
+	        url : url,
+	        type: "POST",
+	        data: formData,
+	        contentType: false,
+	        processData: false,
+	        success: function(data)
+	        {
+	            // var response = JSON.parse(data);
+	            // $.each(response , function(index,item){
+	            //  console.log(item.tanggal);
+	            // });
+	            $("#alert").html(data);
+	            console.log(data);
+	            $('#submit-absen').text('Submits'); //change button text
+	            $('#submit-absen').attr('disabled',false); //set button enable 
+
+	        },
+	        error: function (jqXHR, textStatus, errorThrown)
+	        {
+	            console.log(jqXHR, textStatus, errorThrown);
+	            $('#submit-absen').text('eror'); //change button text
+	            $('#submit-absen').attr('disabled',false); //set button enable 
+
+	        }
+	    });
+	}
 </script>

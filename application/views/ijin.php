@@ -37,7 +37,13 @@
 		</div>
 	</div>
 </div>
-
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('#tabel-ijin').DataTable({
+        	paging:false
+        });
+    });
+  </script>
 <div class="container">
 	<div class="table-responsive">
   		<table class="table  table-condensed">
@@ -69,6 +75,40 @@
 						}
 						
 						/*echo "<a class='btn btn-primary btn-sm' href='".base_url('Home_C/edit_ijin/'.$key->id_i)."/".$key->start."'>edit</a></td>";*/
+						echo "</tr>";
+					} 
+					?>
+				</tbody>
+			</table>
+		</div>
+		<hr>
+		<br>
+		<h3 class="text-center">List ijin hari ini</h3>
+		<div class="table-responsive">
+  			<table class="table  table-condensed" id="tabel-ijin">
+				<thead>
+					<tr>
+						<th>id</th>
+						<th>nama</th>
+						<th>tanggal</th>
+						<th>urusan</th>
+						<th>start</th>
+						<th>end</th>
+						<th>kompensasi</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php 
+					foreach ($list_ijin as $key) {
+						echo "<tr>";
+						echo "<td>".$key->id_i."</td>";
+						echo "<td>".$key->nama_k."</td>";
+						echo "<td>".$key->tanggal."</td>";
+						echo "<td>".$key->perihal."</td>";
+						echo "<td>".$key->start."</td>";
+						echo "<td>".$key->end."</td>";
+						echo "<td>Rp. ".number_format($key->denda,2,',','.')."</td>";
+						
 						echo "</tr>";
 					} 
 					?>

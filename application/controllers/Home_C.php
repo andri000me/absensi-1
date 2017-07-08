@@ -33,6 +33,8 @@ class Home_C extends CI_Controller {
 			$dataCondition['end']= '00:00:00';
 			$data['ijin']=$this->Absen_M->rawQuery("
 				SELECT data_k.nama_k, data_i.perihal, data_i.start, data_i.end, data_i.tanggal, data_i.id_i FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE end = '".$dataCondition['end']."'")->result();
+			$data['list_ijin']=$this->Absen_M->rawQuery("
+				SELECT data_k.nama_k, data_i.perihal, data_i.start, data_i.end, data_i.tanggal, data_i.id_i,data_i.denda FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE tanggal = '".$date."'")->result();
 			unset($dataCondition);
 			$this->load->view('html/header');
 			$this->load->view('html/menu');
@@ -90,39 +92,78 @@ class Home_C extends CI_Controller {
 	}
 	public function create_absen()
 	{
-		$data['id_k'] = $this->input->post('c_id_k');
-		$data['id_s'] = $this->input->post('c_status');
+		if ($this->input->post() != null) {
+			$data['id_k'] = $this->input->post('c_id_k');
+			$data['id_s'] = $this->input->post('c_status');
 
-		$date = date('m');
-		
-		$where_idm['id_m'] =  1;
-		$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
-		$jam_masuk = $datax['jam_masuk'][0]->misc;
+			$date = date('m');
+			
+			$where_idm['id_m'] =  1;
+			$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$jam_masuk = $datax['jam_masuk'][0]->misc;
 
-		$where_idm['id_m'] =  4;
-		$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
-		$jam_pulang = $datax['jam_pulang'][0]->misc;
-		unset($where_idm);
+			$where_idm['id_m'] =  4;
+			$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$jam_pulang = $datax['jam_pulang'][0]->misc;
+			unset($where_idm);
 
 
-		$data['tanggal'] = date("Y-m-d");
-		//$data['tanggal'] = "2017-06-09";
-		$data['jam'] = date('H:i:s', time());
-		$data['acc'] ='0';
-		
-		
+			$data['tanggal'] = date("Y-m-d");
+			//$data['tanggal'] = "2017-06-09";
+			$data['jam'] = date('H:i:s', time());
+			$data['acc'] ='0';
+			
+			
 
-		if ($data['id_s'] == 1) 
-		{
-			if ($data['jam'] > $jam_masuk) 
+			if ($data['id_s'] == 1) 
 			{
-				$time1 = strtotime($data['jam']);
-				$time2 = strtotime($jam_masuk);
-				// $time1 = strtotime('08:05:00');
-				// $time2 = strtotime('07:00:00');
+				if ($data['jam'] > $jam_masuk and $data['jam'] < $jam_pulang)
+				{
+					$time1 = strtotime($data['jam']);
+					$time2 = strtotime($jam_masuk);
+					// $time1 = strtotime('08:05:00');
+					// $time2 = strtotime('07:00:00');
+
+					$seperempat = round(1/4 ,2);
+					$difference = round(abs($time1 - $time2) / 3600,2)  /*% $seperempat*/;
+					// echo $data['jam']."<br>";
+					// echo $jam_masuk."<br>";
+					// echo $time1."<br>";
+					// echo $time2."<br>";
+					// echo "DIFF :".$difference."<br>";
+					$difference = floor($difference / $seperempat);
+					
+					$where_idm['id_m'] =  7;
+					$datax['denda_terlambat'] = $this->Absen_M->read('data_m',$where_idm)->result();
+					$denda_terlambat = $datax['denda_terlambat'][0]->misc;
+					unset($where_idm,$datax);
+
+					$data['denda'] = $difference * $denda_terlambat;
+					$data['detail'] = "telat";
+					// echo "<pre>";
+					// echo "1/4 :".$seperempat."<br>";
+					// echo "DIFF:".$difference;
+					// echo "</pre>";
+				}
+				elseif ($data['jam']>$jam_pulang) {
+					$this->session->set_flashdata("notifikasi", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Eror!</strong></div>");
+					redirect();
+					die();
+				}
+				else
+				{
+					$data['detail'] = "tepat waktu";
+					$data['denda'] = 0;	
+				}
+			}
+			elseif ($data['id_s'] == 5) {
+				$time1 = strtotime($jam_masuk);
+				$time2 = strtotime($jam_pulang);
 
 				$seperempat = round(1/4 ,2);
-				$difference = round(abs($time1 - $time2) / 3600,2)  /*% $seperempat*/;
+				$difference = round(abs($time2 - $time1) / 3600,2)-1  /*% $seperempat*/;
+				// echo "DIFFERENCE:".$difference;
+				// die(); 
 				// echo $data['jam']."<br>";
 				// echo $jam_masuk."<br>";
 				// echo $time1."<br>";
@@ -130,190 +171,173 @@ class Home_C extends CI_Controller {
 				// echo "DIFF :".$difference."<br>";
 				$difference = floor($difference / $seperempat);
 				
-				$where_idm['id_m'] =  7;
-				$datax['denda_terlambat'] = $this->Absen_M->read('data_m',$where_idm)->result();
-				$denda_terlambat = $datax['denda_terlambat'][0]->misc;
+				$where_idm['id_m'] =  8;
+				$datax['denda_alpha'] = $this->Absen_M->read('data_m',$where_idm)->result();
+				$denda_alpha = $datax['denda_alpha'][0]->misc;
 				unset($where_idm,$datax);
 
-				$data['denda'] = $difference * $denda_terlambat;
-				$data['detail'] = "telat";
-				// echo "<pre>";
-				// echo "1/4 :".$seperempat."<br>";
-				// echo "DIFF:".$difference;
-				// echo "</pre>";
+				$data['denda'] = $difference * $denda_alpha;
+				$data['detail'] = $this->input->post('c_detail');
+			}
+			elseif ($data['id_s'] == 6) {
+				$where_idm['id_m'] =  5;
+				$datax['denda_ijin_1_hari'] = $this->Absen_M->read('data_m',$where_idm)->result();
+				$denda_ijin_1_hari = $datax['denda_ijin_1_hari'][0]->misc;
+				unset($where_idm,$datax);				
+				$time1 = strtotime($jam_masuk);
+				$time2 = strtotime($jam_pulang);
+				$difference = round(abs($time2 - $time1) / 3600,2);
+				echo "{$difference}";
+				$difference = $difference * $denda_ijin_1_hari;
+				$data['denda'] = $difference;
+				$data['detail'] = $this->input->post('c_detail');
 			}
 			else
 			{
-				$data['detail'] = "tepat waktu";
-				$data['denda'] = 0;	
+				$data['detail'] = $this->input->post('c_detail');
+				$data['denda'] = 0;
 			}
-		}
-		elseif ($data['id_s'] == 5) {
-			$time1 = strtotime($jam_masuk);
-			$time2 = strtotime($jam_pulang);
 
-			$seperempat = round(1/4 ,2);
-			$difference = round(abs($time2 - $time1) / 3600,2)-1  /*% $seperempat*/;
-			// echo "DIFFERENCE:".$difference;
-			// die(); 
-			// echo $data['jam']."<br>";
-			// echo $jam_masuk."<br>";
-			// echo $time1."<br>";
-			// echo $time2."<br>";
-			// echo "DIFF :".$difference."<br>";
-			$difference = floor($difference / $seperempat);
+			// echo "<pre>";
+			// var_dump($data);
+			// echo "</pre>";
 			
-			$where_idm['id_m'] =  8;
-			$datax['denda_alpha'] = $this->Absen_M->read('data_m',$where_idm)->result();
-			$denda_alpha = $datax['denda_alpha'][0]->misc;
-			unset($where_idm,$datax);
 
-			$data['denda'] = $difference * $denda_alpha;
-			$data['detail'] = $this->input->post('c_detail');
-		}
-		elseif ($data['id_s'] == 6) {
-			$where_idm['id_m'] =  5;
-			$datax['denda_ijin_1_hari'] = $this->Absen_M->read('data_m',$where_idm)->result();
-			$denda_ijin_1_hari = $datax['denda_ijin_1_hari'][0]->misc;
-			unset($where_idm,$datax);				
-			$time1 = strtotime($jam_masuk);
-			$time2 = strtotime($jam_pulang);
-			$difference = round(abs($time2 - $time1) / 3600,2);
-			echo "{$difference}";
-			$difference = $difference * $denda_ijin_1_hari;
-			$data['denda'] = $difference;
-			$data['detail'] = $this->input->post('c_detail');
-		}
-		else
-		{
-			$data['detail'] = $this->input->post('c_detail');
-			$data['denda'] = 0;
-		}
-
-		// echo "<pre>";
-		// var_dump($data);
-		// echo "</pre>";
-		
-
-		$datas['id_k'] = $data['id_k'];
-		$datalike['tanggal'] = $data['tanggal'];
-		$cari = $this->Absen_M->searchResult('data_ra',$datas,$datalike)->result_array();//apakah sudah absen hari ini
-		if ($cari === array()) 
-		{
-			$datas['start'] = $jam_masuk;
-			$datas['end'] = $jam_pulang;
-			if ($data['id_s'] == 3) 
+			$datas['id_k'] = $data['id_k'];
+			$datas['tanggal'] = $data['tanggal'];
+			$cari = $this->Absen_M->searchResult('data_ra',$datas)->result_array();//apakah sudah absen hari ini
+			// echo "<pre>";
+			// var_dump($cari);
+			// echo "</pre>";
+			// die();
+			if ($cari === array()) 
 			{
-				$where_idk['id_k'] = $data['id_k'];
-				$cuti_ku = $this->Absen_M->read('data_c',$where_idk)->result();
-				$wes_cuti = $cuti_ku[0]->cuti_berapakali;
-				
-				if ($wes_cuti == $date) 
+				$datas['start'] = $jam_masuk;
+				$datas['end'] = $jam_pulang;
+				if ($data['id_s'] == 3) 
 				{
-					$this->session->set_flashdata("notifikasi", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal!</strong> Batas cuti anda habis</div>");
-				}
-				else
-				{
-					$result = $this->Absen_M->create('data_ra',$data);
-					if($result){
-						$this->session->set_flashdata("notifikasi", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti berhasil!</strong></div>");
+					$where_idk['id_k'] = $data['id_k'];
+					$cuti_ku = $this->Absen_M->read('data_c',$where_idk)->result();
+					$wes_cuti = $cuti_ku[0]->cuti_berapakali;
+					
+					if ($wes_cuti == $date) 
+					{
+						$this->session->set_flashdata("notifikasi", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal!</strong> Batas cuti anda habis</div>");
 					}
 					else
 					{
-						$this->session->set_flashdata("notifikasi", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal!</strong></div>");
+						$result = $this->Absen_M->create('data_ra',$data);
+						if($result){
+							$this->session->set_flashdata("notifikasi", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti berhasil!</strong></div>");
+						}
+						else
+						{
+							$this->session->set_flashdata("notifikasi", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal!</strong></div>");
+						}
+					}
+				}
+				// elseif ($data['id_s'] == 7) { //ambil hari libur
+				// 	//blok semua absensi dan semua ijin(cuti hadir dkk)
+					
+				// 		unset($data['id_k'],$data['jam'],$data['acc'],$data['id_s'],$data['denda']);
+				// 		var_dump($data);
+				// 		$result = $this->Absen_M->create('data_libur',$data);
+				// 		// var_dump($result);
+				// }
+				else
+				{
+					$result = $this->Absen_M->create('data_ra',$data);
+					var_dump($data);
+					echo "insert hadir ";
+					var_dump($result);
+					if($result && $data['id_s'] != 6)
+					{
+						$this->session->set_flashdata("notifikasi", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen berhasil!</strong></div>");
+					}
+					elseif ($result && $data['id_s'] == 6) {
+						$this->session->set_flashdata("notifikasi", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin 1 hari berhasil!</strong> jangan lupa membayar sejumlah $data[denda]</div>");
+					}
+					else
+					{
+						$this->session->set_flashdata("notifikasi", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal!</strong></div>");
 					}
 				}
 			}
-			// elseif ($data['id_s'] == 7) { //ambil hari libur
-			// 	//blok semua absensi dan semua ijin(cuti hadir dkk)
-				
-			// 		unset($data['id_k'],$data['jam'],$data['acc'],$data['id_s'],$data['denda']);
-			// 		var_dump($data);
-			// 		$result = $this->Absen_M->create('data_libur',$data);
-			// 		// var_dump($result);
-			// }
 			else
 			{
-				$result = $this->Absen_M->create('data_ra',$data);
-				var_dump($data);
-				echo "insert hadir ";
-				var_dump($result);
-				if($result && $data['id_s'] != 6)
-				{
-					$this->session->set_flashdata("notifikasi", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen berhasil!</strong></div>");
-				}
-				elseif ($result && $data['id_s'] == 6) {
-					$this->session->set_flashdata("notifikasi", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin 1 hari berhasil!</strong> jangan lupa membayar sejumlah $data[denda]</div>");
-				}
-				else
-				{
-					$this->session->set_flashdata("notifikasi", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal!</strong></div>");
-				}
+				$this->session->set_flashdata("notifikasi", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>anda sudah absen hari ini!</strong></div>");
 			}
-		}
-		else
-		{
-			$this->session->set_flashdata("notifikasi", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>anda sudah absen hari ini!</strong></div>");
-		}
+		}		
 		redirect();
 	}
 	public function create_ijin()
 	{
-		$data['id_k'] = $this->input->post('c_id_k');
-		$data['perihal'] = $this->input->post('c_perihal');
-		$data['start'] = date('H:i:s', time());
-		$data['tanggal'] = date('Y-m-d');
-		
-		$where_idm['id_m'] =  1;
-		$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
-		$jam_masuk = $datax['jam_masuk'][0]->misc;
+		if ($this->input->post() != null) {
+			$data['id_k'] = $this->input->post('c_id_k');
+			$data['perihal'] = $this->input->post('c_perihal');
+			$data['start'] = date('H:i:s', time());
+			$data['tanggal'] = date('Y-m-d');
+			
+			$where_idm['id_m'] =  1;
+			$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$jam_masuk = $datax['jam_masuk'][0]->misc;
 
-		$where_idm['id_m'] =  4;
-		$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
-		$jam_pulang = $datax['jam_pulang'][0]->misc;
+			$where_idm['id_m'] =  4;
+			$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$jam_pulang = $datax['jam_pulang'][0]->misc;
 
-		unset($datax,$where_idm);
+			unset($datax,$where_idm);
 
-		$datar['id_k']  = $data['id_k'];
-		$datar['tanggal'] = $data['tanggal'];
-		$datar['id_s'] = '1';
-		$datar['acc'] = '1';
+			$datar['id_k']  = $data['id_k'];
+			$datar['tanggal'] = $data['tanggal'];
+			$datar['id_s'] = '1';
+			$datar['acc'] = '1';
 
-		$apakah_hadir_dan_acc = $this->Absen_M->read('data_ra',$datar)->result();
-		unset($datar['id_s'],$datar['acc']);
+			$apakah_hadir_dan_acc = $this->Absen_M->read('data_ra',$datar)->result();
+			unset($datar['id_s'],$datar['acc']);
 
-		$datar['end']= "00:00:00";
-		if (date('H:i:s') > $jam_pulang or date('H:i:s') < $jam_masuk) {
-			$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Diluar jam kerja</strong></div>");
-		} else {
-			if ($apakah_hadir_dan_acc != array()) {
-				$apakah_ijinku_belum_end =$this->Absen_M->read('data_i',$datar)->result();
-				if ($apakah_ijinku_belum_end == array()) {
-					if ($data['start'] < $jam_masuk){
-			 			$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>jam start belum masuk jam kerja</strong></div>");	
-			 		}else {
-			 			$insert_data_t = $this->Absen_M->create('data_i',$data);
-			 			if($insert_data_t){
-			 				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil</strong> ijin anda akan distop oleh admin saat anda kembali</div>");
-			 			}else{
-			 				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>gagal memasukkan ke database</strong></div>");	
-			 			}
-			 		}
-				} else {
-					$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>anda masih punya tanggungan ijin</strong></div>");	
+			$datar['end']= "00:00:00";
+			if (date('H:i:s') > $jam_pulang or date('H:i:s') < $jam_masuk) {
+				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Diluar jam kerja</strong></div>");
+			} else {
+				if ($apakah_hadir_dan_acc != array()) {
+					$apakah_ijinku_belum_end =$this->Absen_M->read('data_i',$datar)->result();
+					if ($apakah_ijinku_belum_end == array()) {
+						if ($data['start'] < $jam_masuk){
+				 			$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>jam start belum masuk jam kerja</strong></div>");	
+				 		}else {
+				 			$insert_data_t = $this->Absen_M->create('data_i',$data);
+				 			if($insert_data_t){
+				 				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil</strong> ijin anda akan distop oleh admin saat anda kembali</div>");
+				 			}else{
+				 				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>gagal memasukkan ke database</strong></div>");	
+				 			}
+				 		}
+					} else {
+						$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>anda masih punya tanggungan ijin</strong></div>");	
+					}
+					
+			 	} else {
+				 	$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Harus hadir dan mendapat acc agar bisa ijin</strong></div>");	
 				}
-				
-		 	} else {
-			 	$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Harus hadir dan mendapat acc agar bisa ijin</strong></div>");	
 			}
+			redirect('Home_C/view/ijin');
 		}
-		
-		redirect('Home_C/view/ijin');
 	}
 	public function stop_ijin($data,$start)
 	{
+		$where_idm['id_m'] =  4;
+		$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
+		$jam_pulang = $datax['jam_pulang'][0]->misc;
+		unset($datax,$where_idm);
+
 		$dataCondition['id_i'] = $data;
 		$datau['end'] = date('H:i:s', time());
+
+		if ($datau['end'] > $jam_pulang) {
+			$datau['end'] = $jam_pulang;
+		}
+		
 		$time1 = strtotime($start);
 		$time2 = strtotime($datau['end']);
 		$difference = round(abs($time2 - $time1) / 3600,2);

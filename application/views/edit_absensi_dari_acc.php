@@ -1,13 +1,16 @@
 <?php	foreach ($absen->result() as $key) {?>
 <div class="container">
-	
+	<?php 
+		$tanggal = substr($key->tanggal,-5,2);
+        $tahun = substr($key->tanggal,-10,4);
+	?>
 	<ol class="breadcrumb">
-	  <li><a href="<?php echo base_url('Acc_C')?>"  >Acc</a></li>
+	  <li><a href="<?php echo base_url('Acc_C/lihat')?>"  >Acc</a></li>
 	  <li  class='active'>edit absensi</li>
 	</ol>
 
 	<br>
-	<form class="form-horizontal" action="<?php echo base_url('Acc_C/update_absensi_ku')?>" method="POST">
+	<form class="form-horizontal" action="<?php echo base_url('Acc_C/update_absensi_kux')?>" method="POST">
 	  	<div class="form-group">
 		    <label class="col-sm-2 control-label">Id Absen</label>
 		    <div class="col-sm-10 input-group">
@@ -89,7 +92,7 @@
 		</div>
 		<div class="form-group">
 		    <div class="col-sm-offset-2 col-sm-10">
-		      <button type="submit" class="btn btn-default btn-primary">Update</button>
+		      <button type="submit" class="btn btn-default btn-primary" name="update">Update</button>
 		    </div>
 		</div>
 	</form>

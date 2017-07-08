@@ -81,9 +81,46 @@
 	</div>
 </div>
 <br>
+
+
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Delete Jabatan</h4>
+            </div>
+              <div class="modal-body ">
+                  Are you sure?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <a class="btn btn-primary" id="delete_user">OK</a>
+              </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$('#deleteUserModal').on('show.bs.modal', function(e) {
+    $(this).find('#delete_user').attr('href', $(e.relatedTarget).data('href'));
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#examplu').DataTable({
+      paging: false,
+    });
+
+} );
+</script>
+
+
 <div class="container">
 	<div class="table-responsive">
-  		<table class="table  table-condensed">
+  		<table class="table  table-striped" id="examplu">
   			<thead>
         		<tr>
 	            	<th>id</th>
@@ -93,7 +130,7 @@
 	            	<th>No Hp</th>
 	            	<th>Jabatan</th>
 	            	<th>Foto</th>
-	            	<th>Action</th>
+	            	<th class="a text-center">Action</th>
             	</tr>
         	</thead>
 	        <tbody>
@@ -115,13 +152,22 @@
                     $bulan = date('n');
                     $tahun = date('Y');
                     echo "<td>
-                        <a href='".base_url()."User_C/delete_user/".$row->id_k."'><span class='glyphicon glyphicon-trash'></span></a>
-                        <a href='".base_url()."User_C/update_user/".$row->id_k."'><span class='glyphicon glyphicon-edit'></span></a>
-                        <a href='".base_url()."User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun."'><span class='glyphicon glyphicon-th'></span></a></td>";
+                        <div class='text-center'>
+                        <a data-href='".base_url()."User_C/delete_user/".$row->id_k."' data-toggle='modal' data-target='#deleteUserModal' class='margin-20'><span class='glyphicon glyphicon-trash'></span></a>
+                        <a href='".base_url()."User_C/update_user/".$row->id_k."' class='margin-20'><span class='glyphicon glyphicon-edit'></span></a>
+                        <a href='".base_url()."User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun."' class='margin-20'><span class='glyphicon glyphicon-th'></span></a>
+                        </div>
+                        </td>";
                     echo "</tr>";
               }
 	        	?>
 	        </tbody>
   		</table>
 	</div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    
+  </div>
 </div>

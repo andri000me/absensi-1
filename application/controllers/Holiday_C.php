@@ -22,29 +22,31 @@ class Holiday_C extends CI_Controller {
     }
     public function create_liburan()
     {
-        $data['tanggal'] = $this->input->post('c_tanggal');
-        $dataCondition['tanggal'] = $data['tanggal'];
-        $data['detail'] = $this->input->post('c_detail');
-        $result = $this->Absen_M->searchResult('data_libur',$dataCondition)->result();
-        // var_dump($result);
-        // die();
-        if ($result) {
-            $notifikasi_libur = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Create libur Gagal! </strong>sudah ada di database</div>";
-            $this->session->set_flashdata('notifikasi_libur', $notifikasi_libur);
-        } else {
-            $result = $this->Absen_M->create('data_libur',$data);
-            if($result){
-                $notifikasi_libur = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Create libur Berhasil! </strong> </div>";
+        if ($this->input->post() != null) {
+            $data['tanggal'] = $this->input->post('c_tanggal');
+            $dataCondition['tanggal'] = $data['tanggal'];
+            $data['detail'] = $this->input->post('c_detail');
+            $result = $this->Absen_M->searchResult('data_libur',$dataCondition)->result();
+            // var_dump($result);
+            // die();
+            if ($result) {
+                $notifikasi_libur = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Create libur Gagal! </strong>sudah ada di database</div>";
                 $this->session->set_flashdata('notifikasi_libur', $notifikasi_libur);
+            } else {
+                $result = $this->Absen_M->create('data_libur',$data);
+                if($result){
+                    $notifikasi_libur = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Create libur Berhasil! </strong> </div>";
+                    $this->session->set_flashdata('notifikasi_libur', $notifikasi_libur);
+                }
+                else{
+                    $notifikasi_libur = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Create libur Gagal! </strong></div>";
+                    $this->session->set_flashdata('notifikasi_libur', $notifikasi_libur);
+                }
+                unset($result,$data);
             }
-            else{
-                $notifikasi_libur = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Create libur Gagal! </strong></div>";
-                $this->session->set_flashdata('notifikasi_libur', $notifikasi_libur);
-            }
-            unset($result,$data);
+            
+            redirect('Holiday_C');
         }
-        
-        redirect('Holiday_C');
     }
     public function delete_liburan($data)
     {
@@ -76,16 +78,13 @@ class Holiday_C extends CI_Controller {
     }
     public function update_info()
     {
-        $data['tanggal'] = $this->input->post('u_tanggal');
-        $data['detail'] = $this->input->post('u_detail');
-        $dataCondition['tanggal'] = $data['tanggal'];
-        $result = $this->Absen_M->searchResult('data_libur',$dataCondition);
-        unset($dataCondition);
-        if ($result) {
-            $this->session->set_flashdata("notifikasi_libur", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>update gagal</strong> duplikasi tanggal </div>");
-        } else {
+        if ($this->input->post() != null) {
+            $data['tanggal'] = $this->input->post('u_tanggal');
+            $data['detail'] = $this->input->post('u_detail');
+                // $this->session->set_flashdata("notifikasi_libur", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>update gagal</strong> duplikasi tanggal </div>");
+            $data['id_libur'] = $this->input->post('u_id_libur');
+            $dataCondition['id_libur'] = $data['id_libur'];
             
-            $dataCondition['id_libur'] = $this->input->post('u_id_libur');
             $result = $this->Absen_M->update('data_libur',$dataCondition,$data);
             $results = json_decode($result, true);
 
@@ -93,10 +92,14 @@ class Holiday_C extends CI_Controller {
                 $this->session->set_flashdata("notifikasi_libur", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Update berhasil</strong></div>");
             }
             else{
-                $this->session->set_flashdata("notifikasi_libur", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>update gagal(database)</strong> </div>");
+                if ($results['error_message']['code'] == 1062) {
+                    $this->session->set_flashdata("notifikasi_libur", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>update gagal</strong> </div>");
+                }else{
+                    $this->session->set_flashdata("notifikasi_libur", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>update gagal</strong> </div>");
+                }
             }
             unset($data);
+            redirect('Holiday_C');
         }
-        redirect('Holiday_C');
     }
 }

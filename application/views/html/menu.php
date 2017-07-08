@@ -25,14 +25,44 @@
               <?php }
             ?>
               <?php if ($this->session->userdata('logged_in')['hak_akses'] == 1 or $this->session->userdata('logged_in')['hak_akses'] == 2){ ?>
-                <li><a href="<?php echo site_url('Jabatan_C')?>">Jabatan</a></li>
-                <li><a href="<?php echo site_url('User_C') ?>">User / Data Karyawan</a></li>
-                <li><a href="<?php echo site_url('Status_C/view') ?>">Status</a></li>
-                <li><a href="<?php echo site_url('Status_C/view/pengaturan') ?>">Pengaturan</a></li>
+
+                <li>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span>User</span>
+                    <b class="arrow fa fa-caret-down"></b>
+                  </a>
+                  <ul class="dropdown-menu dropdown-navbar">
+                    <li><a href="<?php echo site_url('User_C') ?>">Data Karyawan</a></li>
+                    <li><a href="<?php echo site_url("User_C/update_user/".$this->session->userdata('logged_in')['id_k'])?>">myAccounts</a></li>
+                  </ul>
+                </li>
+
+                <li>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span>Value</span>
+                    <b class="arrow fa fa-caret-down"></b>
+                  </a>
+                  <ul class="dropdown-menu dropdown-navbar">
+                    <li><a href="<?php echo site_url('Status_C/view') ?>">Status</a></li>
+                    <li><a href="<?php echo site_url('Status_C/view/pengaturan') ?>">Pengaturan</a></li>
+                    <li><a href="<?php echo site_url('Jabatan_C')?>">Jabatan</a></li>
+                    <li><a href="<?php echo site_url('Holiday_C/') ?>">Holiday</a></li>                
+                  </ul>
+                </li>
+                
                 <li><a href="<?php echo site_url('Overview_C/view') ?>">Overview</a></li>                
-                <li><a href="<?php echo site_url('Acc_C/') ?>">Acc</a></li>                
-                <li><a href="<?php echo site_url('Holiday_C/') ?>">Holiday</a></li>                
-                <li><a href="<?php echo site_url("User_C/update_user/".$this->session->userdata('logged_in')['id_k'])?>">myAccounts</a></li>
+
+                <li>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span>Acc</span>
+                    <b class="arrow fa fa-caret-down"></b>
+                  </a>
+                  <ul class="dropdown-menu dropdown-navbar">
+                    <li><a href="<?php echo site_url('Acc_C/lihat/'.date('m')."/".date('Y')) ?>">Perbulan</a></li>
+                    <li><a href="<?php echo site_url('Acc_C/lihat_pertanggal') ?>">Pertanggal</a></li>
+                  </ul>
+                </li>
+
               <?php } ?>
               <?php if (isset($this->session->userdata['logged_in'])) { ?>
                 <li><a href="<?php echo site_url('Home_C/logout/') ?>" >Logout <?php echo $this->session->userdata('logged_in')['username']; ?></a></li>

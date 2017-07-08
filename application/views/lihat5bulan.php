@@ -8,7 +8,7 @@
 	<h3 class="text-center">User <?=$nama_k[0]->nama_k?></h3>
 	<?php
 	if ($persen != array()) {?>
-		<div class="5bulan" id="5bulan" style="min-width: 310px;max-width: 100%;height: 400px;margin: 0 auto;"></div>
+		<div class="5bulan" id="5bulan" style="min-width: 100%;height: 400px;margin: 0 auto;"></div>
 		<script type="text/javascript">
 			$(function () { 
 				var workdays = <?=$workday;?>;

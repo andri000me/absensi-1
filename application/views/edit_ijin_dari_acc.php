@@ -13,7 +13,7 @@
 	<div  style="margin-top: 20px;">
 	  	<div>
 		  	<div>
-		  		<form action="<?php echo base_url();?>User_C/update_ijin_ku" method="POST" enctype="multipart/form-data" class="form-horizontal" >
+		  		<form action="<?php echo base_url();?>Acc_C/update_ijin_ku" method="POST" enctype="multipart/form-data" class="form-horizontal" >
 		  			<div class="form-group">
 					    <label class="col-sm-2 control-label">Id_i</label>
 					    <div class="col-sm-10 input-group">
@@ -60,7 +60,7 @@
 						</div>
 					</div>
 					<div class="col-xs-12 text-right">
-						<button type="submit" class="btn btn-default">Submit</button>
+						<button type="submit" class="btn btn-default" name="update" >Submit</button>
 					</div>
 				</form>
 		  	</div>

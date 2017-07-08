@@ -15,6 +15,30 @@
 	  	</div>
 	</div>
 </div>
+<div class="modal fade" id="deleteJabatanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Delete Jabatan</h4>
+            </div>
+              <div class="modal-body ">
+                  Are you sure?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <a class="btn btn-primary" id="delete_jabatan">OK</a>
+              </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$('#deleteJabatanModal').on('show.bs.modal', function(e) {
+    $(this).find('#delete_jabatan').attr('href', $(e.relatedTarget).data('href'));
+});
+</script>
+
 
 <div class="modal fade" id="addJabatanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -40,15 +64,23 @@
     </div>
 </div>
 <br>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#examplj').DataTable({
+      paging: false,
+    });
+
+} );
+</script>
+
 <div class="container">
-		
-<div class="table-responsive">
-  	<table class="table  table-condensed">
+  <div class="table-responsive">
+  	<table class="table  table-striped" id="examplj">
   		<thead>
         	<tr>
             	<th>id</th>
             	<th>Nama</th>
-            	<th>Action</th>
+            	<th class="text-center">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -56,9 +88,9 @@
         		echo "<tr>";
         		echo "<td>".$row->id_j."</td>";
         		echo "<td>".$row->jabatan."</td>";
-        		echo "<td> 
-        				<a href='".base_url()."Jabatan_C/delete_jabatan/".$row->id_j."'><span class='glyphicon glyphicon-trash'></span></a>
-                        <a href='".base_url()."Jabatan_C/update_jabatan/".$row->id_j."'><span class='glyphicon glyphicon-edit'></span></a> </td>";
+        		echo "<td> <div class='text-center'>
+        				<a data-href='".base_url()."Jabatan_C/delete_jabatan/".$row->id_j."'  data-toggle='modal' data-target='#deleteJabatanModal' class='margin-20'><span class='glyphicon glyphicon-trash'></span></a>
+                <a href='".base_url()."Jabatan_C/update_jabatan/".$row->id_j."' class='margin-20'><span class='glyphicon glyphicon-edit'></span></a></div> </td>";
         		echo "</tr>";
         	}
         	?>

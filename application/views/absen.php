@@ -75,11 +75,17 @@
 		</div>
 	</div>
 </div>
-
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('#examplb').DataTable({
+        	paging:false
+        });
+    });
+  </script>
 
 <div class="container">
 	<div class="table-responsive">
-  		<table class="table  table-condensed">
+  		<table class="table  table-condensed" id="examplb">
   			<thead>
         		<tr>
 	            	<th>id_A</th>
@@ -103,7 +109,8 @@
 	        		echo "<td>".$row->tanggal."</td>";
 	        		echo "<td>".$row->jam."</td>";
 	        		echo "<td>".$row->acc."</td>";
-	        		echo "<td>".$row->denda."</td>";
+	        		// echo "<td>".$row->denda."</td>";
+	        		echo "<td> Rp " . number_format($row->denda,2,',','.')."</td>";
 	        		echo "</tr>";
 	        	}
 	        	?>

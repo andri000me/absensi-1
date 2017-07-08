@@ -36,16 +36,44 @@
         </div>
     </div>
 </div>
-
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#exampls').DataTable({paging: false});
+} );
+</script>
 <br>
+
+<div class="modal fade" id="deleteStatusModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Delete Jabatan</h4>
+            </div>
+              <div class="modal-body ">
+                  Are you sure?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <a class="btn btn-primary" id="delete_status">OK</a>
+              </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$('#deleteStatusModal').on('show.bs.modal', function(e) {
+    $(this).find('#delete_status').attr('href', $(e.relatedTarget).data('href'));
+});
+</script>
 <div class="container">
 	<div class="table-responsive">
-  		<table class="table  table-condensed">
+  		<table class="table  table-striped" id="exampls">
   			<thead>
         		<tr>
 	            	<th>id</th>
 	            	<th>Nama</th>
-	            	<th>Action</th>
+	            	<th class="text-center">Action</th>
             	</tr>
         	</thead>
 	        <tbody>
@@ -54,10 +82,11 @@
 	        		echo "<td>".$row->id_s."</td>";
 	        		echo "<td>".$row->keterangan_s."</td>";
 	        		echo "<td> 
-
-	        				<a href='".base_url()."Status_C/delete_status/".$row->id_s."'><span class='glyphicon glyphicon-trash'></span></a>
-	                        <a href='".base_url()."Status_C/update_status/".$row->id_s."'><span class='glyphicon glyphicon-edit'></span></a>
-	                        <a href='".base_url()."Overview_C/detail_per_status/".$row->id_s."'><span class='glyphicon glyphicon-th'></span></a>
+	        				<div class='text-center'>
+		        				<a data-href='".base_url()."Status_C/delete_status/".$row->id_s."' data-toggle='modal' data-target='#deleteStatusModal' class='margin-20'><span class='glyphicon glyphicon-trash'></span></a>
+		                        <a href='".base_url()."Status_C/update_status/".$row->id_s."' class='margin-20'><span class='glyphicon glyphicon-edit'></span></a>
+		                        <a href='".base_url()."Overview_C/detail_per_status/".$row->id_s."' class='margin-20'><span class='glyphicon glyphicon-th'></span></a>
+	                        </div>
 	                         </td>";
 	        		echo "</tr>";
 	        	}

@@ -1,18 +1,20 @@
 <?php
 foreach ($user->result() as $row) {
+    $bulan = date('n');$tahun = date('Y');
 ?>
 <div class="container">
     <ol class="breadcrumb">
       <li><a href="<?php echo base_url('User_C')?>">User</a></li>
-      <li class="active" >update user</li>
+      <li ><a>update user</a></li>
+      <li class="active" ><?=$row->nama_k?></li>
     </ol>
 	<div class="row">
     <h4 class="text-center">DATA SAYA</h4><br>
+    <div class="col-sm-12">
         <div class="text-right">
-            <a href="<?php
-                            $bulan = date('n');$tahun = date('Y');
-                            echo base_url("User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun)?>" class="btn btn-default">Lihat Absensi saya</a>
+            <a href="<?=base_url("User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun)?>" class="btn btn-default">Lihat Absensi saya</a>
         </div>
+    </div>
         <br>
         <?=$this->session->flashdata("alert_update_info");?>
         <?=$this->session->flashdata("alert_update_login");?>

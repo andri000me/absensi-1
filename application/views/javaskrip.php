@@ -28,7 +28,10 @@ function update()
                     { "data": "detail" },
                     { "data": "tanggal" },
                     { "data": "jam" },
-                    { "data": "acc" },
+                    { "data": "acc",
+                    "render": function ( data, type, full, meta ) {
+                          return data === '0' ?'<a class="btn btn-xs btn-danger">belum di acc</a>' : '<a class="btn btn-xs btn-success">sudah di acc</a>';
+                    } },
                     { "data": "denda",
                         "render": $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' ) },
                     { "data": "id_a",
@@ -41,6 +44,9 @@ function update()
                             '</div>';
                         }
                     }
+                ],
+                "columnDefs": [
+                    { "width": "74px", "targets": 8 }
                 ]
             });
             $('#ijinpertanggal').DataTable(
@@ -59,6 +65,9 @@ function update()
                             return'<div class="btn-group"><a class="btn btn-xs btn-primary" data-idi="'+data+'" onclick="editIjin(this)" data-toggle="modal" data-target="#updateIjinModal"><span class="glyphicon glyphicon-edit"></span></a><a class="btn btn-xs btn-primary" data-idi="'+data+'" data-toggle="modal" data-target="#deleteIjinModal"><span class="glyphicon glyphicon-trash"></span></a></div>';
                         }
                     }
+                ],
+                "columnDefs": [
+                    { "width": "10px", "targets": 7 }
                 ]
             });
 

@@ -100,7 +100,14 @@
 							return '<a  class="btn btn-xs btn-danger" data-idi="'+data+'" onclick="stop(this)">Stop</a>';
 						}
 					}
-				],"paging" : false
+				],
+				"paging" : false,
+				"columnDefs": [
+                    { "width": "10px", "targets": 6 }
+                ],
+                "aoColumnDefs": [
+					{ "bSortable": false, "aTargets": [6] }
+				]
 			});
 			$('#tabel-ijin').DataTable({
 				"data" :(data.list_ijin),

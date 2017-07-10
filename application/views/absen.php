@@ -142,11 +142,24 @@ function myFunction() {
 	function show(){
 	    $.get('<?php echo base_url('Home_C/show_absen/')?>', function(html){
 	    	var data = JSON.parse(html);
-	    	// console.log(data);
+	    	console.log(data[1]);
 	    	$('#show-absenx').DataTable().destroy();
+
 	    	$('#show-absenx').DataTable({
 	    		data : (data),
-	    		columns: [{ "data": "id_a" },{ "data": "nama_k" },{ "data": "keterangan_s" },{ "data": "detail" },{ "data": "tanggal" },{ "data": "jam" },{"data":"acc"},{ "data": "denda" , render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}],
+	    		columns: [
+	    		{ "data": "id_a" },
+	    		{ "data": "nama_k" },
+	    		{ "data": "keterangan_s" },
+	    		{ "data": "detail" },
+	    		{ "data": "tanggal" },
+	    		{ "data": "jam" },
+	    		{ "data": "acc" ,
+	    			"render": function ( data, type, full, meta ) {
+					      return data === '0' ?'<a class="btn btn-xs btn-danger">belum di acc</a>' : '<a class="btn btn-xs btn-success">sudah di acc</a>';
+					}
+				},
+	    		{ "data": "denda" , render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}],
 			 	paging : false
 			 	// render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}],
 	    	});

@@ -46,22 +46,22 @@ class User_C extends CI_Controller {
 			    $datal['username_k'] = $this->input->post('c_username');
 			    $datal['password_k'] = md5($this->input->post('c_password'));
 				$datal['hak_akses'] = 3;
+				
 				$config['upload_path']          = FCPATH."assets/img/";
 	            $config['allowed_types']        = 'gif|jpg|png|jpeg';
 
 	            $this->load->library('upload',$config);
 
 	            if($this->upload->do_upload('c_foto')){
-
 	                $datax = $this->upload->data();
 	                $data['foto_k'] = "assets/img/".$datax['file_name'];
 	                $alert_foto = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Upload foto profil berhasil!</strong></div>";
 					$this->session->set_flashdata('alert_foto', $alert_foto);
 	            }
 	            else{
-	            	/*echo $this->upload->display_errors('<p>', '</p>');*/
 	            	$alert_foto = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Upload foto profil gagal!</strong>mohon lakukan update foto</div>";
 					$this->session->set_flashdata('alert_foto', $alert_foto);
+					die();
 	            }
 
 		        $result = $this->Absen_M->createId('data_k',$data);

@@ -63,7 +63,7 @@
                     <b class="arrow fa fa-caret-down"></b>
                   </a>
                   <ul class="dropdown-menu dropdown-navbar">
-                    <li><a href="<?php echo site_url('Acc_C/lihat/'.date('m')."/".date('Y')) ?>">Perbulan</a></li>
+                    <li><a href="<?php echo site_url('Acc_C/lihat_perbulan') ?>">Perbulan</a></li>
                     <li><a href="<?php echo site_url('Acc_C/lihat_pertanggal') ?>">Pertanggal</a></li>
                   </ul>
                 </li>

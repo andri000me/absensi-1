@@ -1,18 +1,19 @@
+<!-- modal delete absen  -->
 <div class="modal fade" id="deleteAbsenModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form id="formdelete">      
+        <form id="formdeleteAbsen">      
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Delete Absen</h4>
                 </div>
-                    <input type="hidden" name="id_del" id="idDelete">
+                    <input type="hidden" name="id_del" id="idDeleteAbsen">
                     <div class="modal-body ">
                         Are you sure?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <a class="btn btn-primary" id="btn-delete" >delete</a>
+                        <a class="btn btn-primary" id="btn-delete-absen" >delete</a>
                     </div>
             </div>
         </form>
@@ -21,10 +22,43 @@
 
 <script type="text/javascript">
 $('#deleteAbsenModal').on('show.bs.modal', function(e) {
-    $("#idDelete").attr('value', $(e.relatedTarget).data('idhapus'));
+    $("#idDeleteAbsen").attr('value', $(e.relatedTarget).data('idhapus'));
 });
 </script>
+<!-- /modal delete absen  -->
 
+
+<!-- modal delete ijin -->
+<div class="modal fade" id="deleteIjinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form id="formdeleteIjin">      
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Delete Ijin</h4>
+                </div>
+                    <input type="hidden" name="id_del" id="idDeleteIjin">
+                    <div class="modal-body ">
+                        Are you sure?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                        <a class="btn btn-primary" id="btn-delete-ijin" >delete</a>
+                    </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+$('#deleteIjinModal').on('show.bs.modal', function(e) {
+    $("#idDeleteIjin").attr('value', $(e.relatedTarget).data('idi'));
+});
+</script>
+<!-- /modal delete ijin -->
+
+
+<!-- modal reject absen -->
 <div class="modal fade" id="rejectAbsenModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <form id="formreject">      
@@ -51,7 +85,10 @@ $('#rejectAbsenModal').on('show.bs.modal', function(e) {
     $("#idReject").attr('value', $(e.relatedTarget).data('idreject'));
 });
 </script>
+<!-- /modal reject absen -->
 
+
+<!-- modal accept absen -->
 <div class="modal fade" id="acceptAbsenModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <form id="formaccept">      
@@ -78,10 +115,11 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
     $("#idAccept").attr('value', $(e.relatedTarget).data('idaccept'));
 });
 </script>
+<!-- /modal accept absen -->
 
 <div class="modal fade" id="updateAbsenModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form id="formupdate" method="POST">      
+        <form id="formupdateAbsen" method="POST">      
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -91,8 +129,8 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
                     <input type='hidden' name='u_id_a' id='idU'>
                     <input type='hidden' name='u_id_k' id='idkU'>
                     <div class='form-group'>
-                        <label class=' control-label'>Jam</label>
-                        <div class='input-group clockpicker' data-align='top' data-autoclose='true' data-placement='top'>
+                        <label class='control-label'>Jam</label>
+                        <div class='input-group clockpicker' data-align='top' data-autoclose='true' data-placement='bottom' id="clockabsen">
                             <input type='text' class='form-control' name='u_jam' id='jamUp'>
                             <span class='input-group-addon'>
                                 <span class='glyphicon glyphicon-time'></span>
@@ -140,8 +178,61 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
         </form>
     </div>
 </div>
+
+
+<div class="modal fade" id="updateIjinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form id="formupdateIjin" method="POST">      
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Update
+                </div>
+                <div class="modal-body ">
+                    <input type="hidden" name="u_id_i" id="idiUpdate">
+                    <div class="form-group">
+                        <label class="control-label">Nama</label>
+                        <input type="text" class="form-control" id="namaiUpdate" name="u_nama" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">tanggal</label>
+                        <input type="date" class="form-control" name="u_tanggal" id="tanggaliUpdate" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">perihal</label>
+                        <textarea class="form-control" name="u_perihal" style="min-height: 100px;" id="perihaliUpdate"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">start</label>
+                        <div class="input-group clockpicker" data-align="top" data-autoclose="true" data-placement='top' id="clockstart">
+                            <input type="text" class="form-control" name="u_start" id="startiUpdate">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label">end</label>
+                        <div class="input-group clockpicker" data-align="top" data-autoclose="true" data-placement='top' id="clockend">
+                            <input type="text" class="form-control" name="u_end" id="endiUpdate">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <a class="btn btn-primary" id="btn-update-ijin">Update</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script type="text/javascript">
-    $('.clockpicker').clockpicker({
-        placement: 'bottom',
-    });
+    $('#clockstart').clockpicker();
+    $('#clockabsen').clockpicker();
+    //$('.clockpicker').clockpicker({placement: 'bottom'});
+    $('#clockend').clockpicker();
 </script>

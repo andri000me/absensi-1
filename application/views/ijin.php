@@ -14,7 +14,7 @@
 	<div class="panel panel-default" style="margin-top: 20px;">
 	  	<div class="panel-body">
 		  	<div class="row">
-		  		<form action="<?php echo base_url();?>Home_C/create_ijin" method="POST" enctype="multipart/form-data">
+		  		<form  method="POST" id="form-ijin"><!-- action="<?php echo base_url();?>Home_C/create_ijinx" -->
 					<div class="form-group col-xs-12" >
 				        <select class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%" name="c_id_k" required >
 					    <?php 
@@ -28,25 +28,18 @@
 					<div class="form-group col-xs-12">
 						<textarea class="form-control" name="c_perihal" value="<?php echo set_value('c_perihal'); ?>" style="min-height: 100px;" required></textarea>
 					</div>
-
 					<div class="col-xs-12">
-						<button type="submit" class="btn btn-primary">Start ijin</button>
+						<a class="btn btn-primary" onclick="submit()" id="start-ijin">Start ijin</a>
 					</div>
 				</form>
 		  	</div>
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#tabel-ijin').DataTable({
-        	paging:false
-        });
-    });
-</script>
+
 <div class="container">
 	<div class="table-responsive">
-  		<table class="table  table-condensed">
+  		<table class="table  table-condensed" id="tabel">
 				<thead>
 					<tr>
 						<th>id</th>
@@ -59,25 +52,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php 
-					foreach ($ijin as $key) {
-						echo "<tr>";
-						echo "<td>".$key->id_i."</td>";
-						echo "<td>".$key->nama_k."</td>";
-						echo "<td>".$key->tanggal."</td>";
-						echo "<td>".$key->perihal."</td>";
-						echo "<td>".$key->start."</td>";
-						echo "<td>".$key->end."</td>";
-						if (isset($this->session->userdata['logged_in'])){
-							echo "<td class='text-center'><a class='btn btn-danger btn-sm' href='".base_url('Home_C/stop_ijin/'.$key->id_i)."/".$key->start."'>Stop</a> </td>";
-						} else {
-							echo "<td class='text-center'><a class='btn btn-danger btn-sm disabled' disabled href='".base_url('Home_C/stop_ijin/'.$key->id_i)."/".$key->start."'>Stop</a> </td>";
-						}
-						
-						/*echo "<a class='btn btn-primary btn-sm' href='".base_url('Home_C/edit_ijin/'.$key->id_i)."/".$key->start."'>edit</a></td>";*/
-						echo "</tr>";
-					} 
-					?>
+					
 				</tbody>
 			</table>
 		</div>
@@ -98,21 +73,95 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php 
-					foreach ($list_ijin as $key) {
-						echo "<tr>";
-						echo "<td>".$key->id_i."</td>";
-						echo "<td>".$key->nama_k."</td>";
-						echo "<td>".$key->tanggal."</td>";
-						echo "<td>".$key->perihal."</td>";
-						echo "<td>".$key->start."</td>";
-						echo "<td>".$key->end."</td>";
-						echo "<td>Rp. ".number_format($key->denda,2,',','.')."</td>";
-						
-						echo "</tr>";
-					} 
-					?>
+					
 				</tbody>
 			</table>
 		</div>
 	</div>
+
+<script type="text/javascript">
+	window.onload = show();
+	function show() {
+		$.get('<?php echo base_url('Home_C/show_ijin/')?>', function(html){
+	    	var data = JSON.parse(html);
+	    	$('#tabel').DataTable().destroy();
+	    	$('#tabel-ijin').DataTable().destroy();
+			$('#tabel').DataTable(
+				{"data" :(data.ijin),
+				"columns": [
+					{ "data": "id_i" },
+					{ "data": "nama_k" },
+					{ "data": "tanggal" },
+					{ "data": "perihal" },
+					{ "data": "start" },
+					{ "data": "end" },
+					{ "data": "id_i",
+						"render": function ( data, type, full, meta ) {
+							return '<a  class="btn btn-xs btn-danger" data-idi="'+data+'" onclick="stop(this)">Stop</a>';
+						}
+					}
+				],"paging" : false
+			});
+			$('#tabel-ijin').DataTable({
+				"data" :(data.list_ijin),
+				"columns": [
+					{ "data": "id_i" },
+					{ "data": "nama_k" },
+					{ "data": "tanggal" },
+					{ "data": "perihal" },
+					{ "data": "start" },
+					{ "data": "end" },
+					{ 	"data": "denda",
+						"render": $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}
+				],
+				"paging" : false
+			});
+	    });
+	}
+</script>
+
+
+<script type="text/javascript">
+	function submit() {
+		// console.log('aaaa');
+		var url = "<?=base_url('Home_C/create_ijin')?>";
+		$('#start-ijin').text('starting...'); //change button text
+	    $('#start-ijin').attr('disabled',true); //set button disable 
+
+	    var formData = new FormData($('#form-ijin')[0]);
+	    $.ajax({
+	        url : url,
+	        type: "POST",
+	        data: formData,
+	        contentType: false,
+	        processData: false,
+	        success: function(data)
+	        {
+	        	var object = JSON.parse(data);
+	            $("#alert").html(object);
+	            // console.log(data);
+	            $('#start-ijin').text('Starts'); //change button text
+	            $('#start-ijin').attr('disabled',false); //set button enable 
+	            show();
+
+	        },
+	        error: function (jqXHR, textStatus, errorThrown)
+	        {
+	            console.log(jqXHR, textStatus, errorThrown);
+	            $('#start-ijin').text('eror'); //change button text
+	            $('#start-ijin').attr('disabled',false); //set button enable 
+	        }
+	    });
+	    show();
+	}
+	function stop(elem){
+		var uidi = $(elem).data('idi');
+		var url = "<?=base_url('Home_C/stop_ijin/')?>";
+		var alert = document.getElementById('alert');
+	    $.get(url + uidi, function(html){
+	        var object = JSON.parse(html);
+	        alert.innerHTML = object;
+	    });
+	    show();
+	}
+</script>

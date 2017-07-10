@@ -57,18 +57,11 @@
 		</div>
 	</div>
 </div>
-<!--   <script type="text/javascript">
-    $(document).ready(function() {
-        $('#examplb').DataTable({
-        	paging:false
-        });
-    });
-  </script> -->
 <br>
 <br>
 <div class="container">
-	<div class="table-responsive">
-  		<table class="table  table-condensed" ><!-- id="examplb" -->
+	<div class="table-responsive"><!--  -->
+  		<table class="table  table-condensed" id="show-absenx"><!-- id="examplb" -->
   			<thead>
         		<tr>
 	            	<th>id_A</th>
@@ -81,7 +74,7 @@
 	            	<th>denda</th>
             	</tr>
         	</thead>
-	        <tbody id="show-absen">
+	        <tbody>
 	        	
 	        </tbody>
   		</table>
@@ -144,39 +137,19 @@ function myFunction() {
     }
 
 </script>
-<?php
-  //   		echo "<tr>";
-  //   		echo "<td>".$row->id_a."</td>";
-  //   		echo "<td>".$row->nama_k."</td>";
-  //   		echo "<td>".$row->keterangan_s."</td>";
-  //   		echo "<td>".$row->detail."</td>";
-  //   		echo "<td>".$row->tanggal."</td>";
-  //   		echo "<td>".$row->jam."</td>";
-  //   		echo ($row->acc ==1)?"<td class='btn btn-sm btn-success'>Sudah di acc</td>":"<td class='btn btn-xs btn-danger'>belum di acc</td>";
-  //   		// echo "<td>".$row->denda."</td>";
-  //   		echo "<td> Rp " . number_format($row->denda,2,',','.')."</td>";
-  //   		echo "</tr>";
-?>
 <script type="text/javascript">
 	window.onload=show();
 	function show(){
 	    $.get('<?php echo base_url('Home_C/show_absen/')?>', function(html){
-	    	// console.log(html);
 	    	var data = JSON.parse(html);
 	    	// console.log(data);
-	    	var output = document.getElementById('show-absen');
-	    	var element = '';
-	    	for(var x in data){
-	    		if (+data[x].acc == 1) {
-	    			element += "<tr><td>"+data[x].id_a+"</td><td>"+data[x].nama_k+"</td><td>"+data[x].keterangan_s+"</td><td>"+data[x].detail+"</td><td>"+data[x].tanggal+"</td><td>"+data[x].jam+"</td><td class='btn btn-xs btn-success'>Sudah di acc</td><td>Rp."+data[x].denda+"</td></tr>";
-	    		} else {
-	    			element += "<tr><td>"+data[x].id_a+"</td><td>"+data[x].nama_k+"</td><td>"+data[x].keterangan_s+"</td><td>"+data[x].detail+"</td><td>"+data[x].tanggal+"</td><td>"+data[x].jam+"</td><td class='btn btn-xs btn-danger'>Belum</td><td> Rp."+data[x].denda+"</td></tr>";
-	    		}
-	    		
-	    	}
-	    	console.log(element);
-	    	output.innerHTML = element;
-	    	// $('#show-absen').html(html);
+	    	$('#show-absenx').DataTable().destroy();
+	    	$('#show-absenx').DataTable({
+	    		data : (data),
+	    		columns: [{ "data": "id_a" },{ "data": "nama_k" },{ "data": "keterangan_s" },{ "data": "detail" },{ "data": "tanggal" },{ "data": "jam" },{"data":"acc"},{ "data": "denda" , render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}],
+			 	paging : false
+			 	// render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}],
+	    	});
 	    });
 	}
 	
@@ -197,12 +170,9 @@ function myFunction() {
 	        processData: false,
 	        success: function(data)
 	        {
-	            // var response = JSON.parse(data);
-	            // $.each(response , function(index,item){
-	            //  console.log(item.tanggal);
-	            // });
+
 	            $("#alert").html(data);
-	            console.log(data);
+	            // console.log(data);
 	            $('#submit-absen').text('Submits'); //change button text
 	            $('#submit-absen').attr('disabled',false); //set button enable 
 	            show();

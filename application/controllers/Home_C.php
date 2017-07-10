@@ -24,12 +24,6 @@ class Home_C extends CI_Controller {
 			$data['nama_karyawan']=$this->Absen_M->readS('data_k')->result();
 			$data['status']=$this->Absen_M->readS('data_s')->result();
 			
-			$data['absen']=$this->Absen_M->rawQuery("
-				SELECT data_ra.id_a, data_s.keterangan_s, data_ra.detail, data_ra.tanggal, data_ra.jam, data_ra.acc, data_k.nama_k, data_ra.denda FROM data_ra
-				INNER JOIN data_k ON data_ra.id_k = data_k.id_k
-				INNER JOIN data_s ON data_ra.id_s = data_s.id_s
-				WHERE tanggal = '".$date."'	ORDER BY data_ra.id_a DESC ")->result();
-			
 			$dataCondition['end']= '00:00:00';
 			$data['ijin']=$this->Absen_M->rawQuery("
 				SELECT data_k.nama_k, data_i.perihal, data_i.start, data_i.end, data_i.tanggal, data_i.id_i FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE end = '".$dataCondition['end']."'")->result();
@@ -51,6 +45,18 @@ class Home_C extends CI_Controller {
 				INNER JOIN data_s ON data_ra.id_s = data_s.id_s
 				WHERE tanggal = '".$date."'	ORDER BY data_ra.id_a DESC ")->result();
 		echo json_encode($data['absen']);
+	}
+	public function show_ijin()
+	{
+		$date= date('Y-m-d');
+		$dataCondition['end']= '00:00:00';
+		$data['ijin']=$this->Absen_M->rawQuery("
+			SELECT data_k.nama_k, data_i.perihal, data_i.start, data_i.end, data_i.tanggal, data_i.id_i FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE end = '".$dataCondition['end']."'")->result();
+		$data['list_ijin']=$this->Absen_M->rawQuery("
+			SELECT data_k.nama_k, data_i.perihal, data_i.start, data_i.end, data_i.tanggal, data_i.id_i,data_i.denda FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE tanggal = '".$date."'")->result();
+		unset($dataCondition);
+		echo json_encode($data);
+
 	}
 
 	public function login()
@@ -241,7 +247,8 @@ class Home_C extends CI_Controller {
 			}
 		}		
 	}
-	public function create_ijinx()
+
+	public function create_ijin()
 	{
 		if ($this->input->post() != null) {
 			$data['id_k'] = $this->input->post('c_id_k');
@@ -269,83 +276,85 @@ class Home_C extends CI_Controller {
 
 			$datar['end']= "00:00:00";
 			if (date('H:i:s') > $jam_pulang or date('H:i:s') < $jam_masuk) {
-				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Diluar jam kerja</strong></div>");
+				$alert_create_ijin =  "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Diluar jam kerja</strong></div>";
 			} else {
 				if ($apakah_hadir_dan_acc != array()) {
 					$apakah_ijinku_belum_end =$this->Absen_M->read('data_i',$datar)->result();
 					if ($apakah_ijinku_belum_end == array()) {
 						if ($data['start'] < $jam_masuk){
-				 			$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>jam start belum masuk jam kerja</strong></div>");	
+				 			$alert_create_ijin =  "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>jam start belum masuk jam kerja</strong></div>";	
 				 		}else {
 				 			$insert_data_t = $this->Absen_M->create('data_i',$data);
 				 			if($insert_data_t){
-				 				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil</strong> ijin anda akan distop oleh admin saat anda kembali</div>");
+				 				$alert_create_ijin =  "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil</strong> ijin anda akan distop oleh admin saat anda kembali</div>";
 				 			}else{
-				 				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>gagal memasukkan ke database</strong></div>");	
+				 				$alert_create_ijin =  "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>gagal memasukkan ke database</strong></div>";	
 				 			}
 				 		}
 					} else {
-						$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>anda masih punya tanggungan ijin</strong></div>");	
+						$alert_create_ijin =  "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>anda masih punya tanggungan ijin</strong></div>";	
 					}
 					
 			 	} else {
-				 	$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Harus hadir dan mendapat acc agar bisa ijin</strong></div>");	
+				 	$alert_create_ijin =  "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Harus hadir dan mendapat acc agar bisa ijin</strong></div>";	
 				}
 			}
-			redirect('Home_C/view/ijin');
+			echo json_encode($alert_create_ijin);
+			//redirect('Home_C/view/ijin');
 		}
 	}
-	public function stop_ijin($data,$start)
+	public function stop_ijin($data)
 	{
-		$where_idm['id_m'] =  4;
-		$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
-		$jam_pulang = $datax['jam_pulang'][0]->misc;
-		unset($datax,$where_idm);
 
-		$dataCondition['id_i'] = $data;
-		$datau['end'] = date('H:i:s', time());
+			$where_idm['id_m'] =  4;
+			$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$jam_pulang = $datax['jam_pulang'][0]->misc;
+			unset($datax,$where_idm);
 
-		if ($datau['end'] > $jam_pulang) {
-			$datau['end'] = $jam_pulang;
-		}
-		
-		$time1 = strtotime($start);
-		$time2 = strtotime($datau['end']);
-		$difference = round(abs($time2 - $time1) / 3600,2);
-		
-		
-		if ($difference >= 0.5) {
+			$where_idi['id_i'] =  $data;
+			$datax['start'] = $this->Absen_M->read('data_i',$where_idi)->result();
+			$start = $datax['start'][0]->start;
+			unset($datax,$where_idi);
 
-			$where_idm['id_m'] =  6;
-			$datax['denda_ijin'] = $this->Absen_M->read('data_m',$where_idm)->result();
-			$denda_ijin = $datax['denda_ijin'][0]->misc;
-			unset($where_idm,$datax);
+			$dataCondition['id_i'] = $data;
+			$datau['end'] = date('H:i:s', time());
 
-			$difference = round(ceil($difference), 0, PHP_ROUND_HALF_UP);
-			$datau['denda']= $difference * $denda_ijin;
+			if ($datau['end'] > $jam_pulang) {
+				$datau['end'] = $jam_pulang;
+			}
 			
+			$time1 = strtotime($start);
+			$time2 = strtotime($datau['end']);
+			$difference = round(abs($time2 - $time1) / 3600,2);
+			
+			if ($difference >= 0.5) {
 
-			$result = $this->Absen_M->update('data_i',$dataCondition,$datau);
-			$results = json_decode($result, true);
+				$where_idm['id_m'] =  6;
+				$datax['denda_ijin'] = $this->Absen_M->read('data_m',$where_idm)->result();
+				$denda_ijin = $datax['denda_ijin'][0]->misc;
+				unset($where_idm,$datax);
 
-			if ($results['status']) {
-				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil di stop.</strong> Data ijin anda telah masuk ke laporan</div>");
-			}
-			else{
-				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin gagal di stop(database) </strong> </div>");
-			}
-		} else {
-			$result = $this->Absen_M->delete('data_i',$dataCondition);
-			if ($result) {
-				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil di stop.</strong> Data ijin anda dihapus karena kurang dari 30 menit</div>");
-			}
-			else{
-				$this->session->set_flashdata("notifikasi_ijin", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin gagal di stop. </strong> ijin gagal di hapus(database) </div>");
-			}
-		}
-		
+				$difference = round(ceil($difference), 0, PHP_ROUND_HALF_UP);
+				$datau['denda']= $difference * $denda_ijin;
 
-		redirect('Home_C/view/ijin');
+				$result = $this->Absen_M->update('data_i',$dataCondition,$datau);
+				$results = json_decode($result, true);
+
+				if ($results['status']) {
+					$alert_stop_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil di stop.</strong> Data ijin anda telah masuk ke laporan</div>";
+				}
+				else{
+					$alert_stop_ijin = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin gagal di stop(database) </strong> </div>";
+				}
+			} else {
+				$result = $this->Absen_M->delete('data_i',$dataCondition);
+				if ($result) {
+					$alert_stop_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil di stop.</strong> Data ijin anda dihapus karena kurang dari 30 menit</div>";
+				}
+				else{
+					$alert_stop_ijin = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin gagal di stop. </strong> ijin gagal di hapus(database) </div>";
+				}
+			}
+			echo json_encode($alert_stop_ijin);
 	}
-	
 }

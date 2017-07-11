@@ -37,10 +37,10 @@ function update()
                     { "data": "id_a",
                         "render": function ( data, type, full, meta ) {
                             return '<div class="btn-group">'+
-                            '<a class="btn btn-xs btn-primary" data-toggle="modal" data-target="#acceptAbsenModal" data-idaccept="'+data+'"><span class="glyphicon glyphicon-ok"></span></a>'+
-                            '<a class="btn btn-xs btn-primary" onclick="edit(this)" data-toggle="modal" data-target="#updateAbsenModal" data-idupdate="'+data+'"><span class="glyphicon glyphicon-edit"></span></a>'+
-                            '<a class="btn btn-xs btn-primary" data-toggle="modal" data-target="#deleteAbsenModal" data-idhapus="'+data+'"><span class="glyphicon glyphicon-trash"></span></a>'+
-                            '<a class="btn btn-xs btn-primary" data-toggle="modal" data-target="#rejectAbsenModal" data-idreject="'+data+'"><span class="glyphicon glyphicon-remove"></span></a>'+
+                            '<a class="btn btn-xs btn-primary" data-toggle="modal" data-target="#acceptAbsenModal" title="ok" data-idaccept="'+data+'"><span class="glyphicon glyphicon-ok"></span></a>'+
+                            '<a class="btn btn-xs btn-primary" onclick="edit(this)" data-toggle="modal" title="edit" data-target="#updateAbsenModal" data-idupdate="'+data+'"><span class="glyphicon glyphicon-edit"></span></a>'+
+                            '<a class="btn btn-xs btn-primary" data-toggle="modal" data-target="#deleteAbsenModal" title="hapus" data-idhapus="'+data+'"><span class="glyphicon glyphicon-trash"></span></a>'+
+                            '<a class="btn btn-xs btn-primary" data-toggle="modal" data-target="#rejectAbsenModal" title="tolak" data-idreject="'+data+'"><span class="glyphicon glyphicon-remove"></span></a>'+
                             '</div>';
                         }
                     }

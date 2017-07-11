@@ -11,13 +11,13 @@
 		<?=$this->session->flashdata("alert_update_absensi_ku");?>
 		<?=$this->session->flashdata("alert_update_ijin_ku");?>
 		<?=$this->session->flashdata("alert_delete_ijin_ku");?>
-		<div class="col-xs-12 col-sm-6" >
+		<div class="col-xs-12 col-sm-10" >
 			<h3>Absensi bulan <?=$dateObj->format('F')?>	</h3>
 			<h3>User <?=$nama_k[0]->nama_k?> memiliki sisa cuti <?= $date - ($cuti[0]->cuti_berapakali);?></h3>
 			<h5> telah cuti sebanyak <?= $cuti[0]->cuti_berapakali;?></h5>
 			<br>
 		</div>
-		<div class="col-xs-6 col-sm-2  no-print">
+		<div class="col-xs-6 col-sm-1  no-print">
 			<div class="dropdown">
 				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 				    Pilih bulan
@@ -39,7 +39,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="col-xs-6 col-sm-4 text-right  no-print">
+		<div class="col-xs-6 col-sm-1 text-right  no-print">
 			<button type="button" id="print_btn" class="btn btn-success"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> </button>
 		</div>
 	</div>
@@ -173,7 +173,7 @@ $(document).ready(function() {
 		<h3>Total kompensasi ijin jam kerja sejumlah Rp. <?php echo number_format($denda_ku,2,',','.')?> di bulan ini</h3>
 	</div>
 	<div class="text-right">
-		<a class="btn btn-default no-print" href="<?php echo base_url('User_C/lihat5bulan/'.$siapa."/".date('n')."/".$tahun)?>" role="button">grafik 5 bulan terakhir</a>
+		<a class="btn btn-primary no-print" href="<?php echo base_url('User_C/lihat5bulan/'.$siapa."/".date('n')."/".$tahun)?>" role="button"><span class="glyphicon glyphicon-list"></span> Lihat grafik 5 bulan terakhir</a>
 	</div>
 
 	<br><?php

@@ -13,7 +13,7 @@ class Jabatan_C extends CI_Controller {
     }
     public function index()
     {
-		    $data['jabatans'] = $this->Absen_M->reads('data_j')->result();
+		    $data['jabatans'] = $this->Absen_M->rawQuery("SELECT * FROM data_j where id_j != 9")->result();
 			$this->load->view('html/header');
 			$this->load->view('html/menu');
 			$this->load->view('jabatan',$data);
@@ -51,13 +51,13 @@ class Jabatan_C extends CI_Controller {
 		if($result){
 			$alert_delete_jabatan = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Delete Jabatan Berhasil!  </strong></div>";
 			$this->session->set_flashdata('alert_delete_jabatan', $alert_delete_jabatan);
-			redirect('Jabatan_C');
 		}
 		else{
-			$alert_delete_jabatan = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>  <strong>Delete Jabatan Gagal!  </strong>jabatan :$data[jabatan]</div>";
+			$alert_delete_jabatan = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>  <strong>Delete Jabatan Gagal!  </strong>jabatan :".$data."</div>";
 			$this->session->set_flashdata('alert_delete_jabatan', $alert_delete_jabatan);
-			redirect('Jabatan_C');
 		}
+		var_dump($result);
+		//redirect('Jabatan_C');
 	}
 	public function update_jabatan($data)
 	{

@@ -1,3 +1,4 @@
+    
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -22,6 +23,7 @@
           ?>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
+
           <ul class="nav navbar-nav navbar-right">
             <?php 
             if ($apakah_hari_libur == array()) { ?>
@@ -55,7 +57,7 @@
                   </ul>
                 </li>
                 
-                <li><a href="<?php echo site_url('Overview_C/view') ?>">Overview</a></li>                
+                <li><a href="<?php echo site_url('Overview_C/view') ?>">Laporan</a></li>                
 
                 <li>
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -70,7 +72,8 @@
 
               <?php } ?>
               <?php if (isset($this->session->userdata['logged_in'])) { ?>
-                <li><a href="<?php echo site_url('Home_C/logout/') ?>" >Logout <?php echo $this->session->userdata('logged_in')['username']; ?></a></li>
+                <li>
+                <a id='hak-akses' href="<?php echo site_url('Home_C/logout/')?>" data-my="<?php echo $this->session->userdata('logged_in')['username']?>">Logout <?php echo $this->session->userdata('logged_in')['username']?> </a></li>
               <?php } else { ?>
                 <li><a href="" data-toggle="modal" data-target="#loginModal">Logins</a></li>
               <?php } ?>
@@ -78,3 +81,14 @@
         </div>
       </div>
     </nav>
+    
+
+    <script>
+      var div = document.getElementById("hak-akses");
+      if ($(div).data('my')) {
+        var myData = $(div).data('my');
+      } else {
+        var myData = '';
+      }
+      console.log(myData);
+  </script>

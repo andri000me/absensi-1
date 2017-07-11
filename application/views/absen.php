@@ -8,7 +8,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12" id="alert">
-
+		<?=$this->session->flashdata("alert_login");?>
 		</div>
 	</div>
 	<div class="panel panel-default" style="margin-top: 20px;">

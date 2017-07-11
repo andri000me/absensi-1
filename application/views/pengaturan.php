@@ -3,7 +3,7 @@ $(document).ready(function() {
     $('#examplp').DataTable({
     	paging: false,
     	"columnDefs": [
-	        { "width": "50px", "targets": 2 },
+	        { "width": "5px", "targets": 3 },
 	        { "width": "5px", "targets": 0 }
 	    ]
     });
@@ -64,17 +64,18 @@ $('#deletePengaturanModal').on('show.bs.modal', function(e) {
 	</ol>
 
 	<h3>Pengaturan</h3>
-	<h6>id 1 = jam masuk; <br>
+	<h6>ini adalah kontanta, hanya untuk di edit</h6>
+<!-- 	<h6>id 1 = jam masuk; <br>
 		id 2 = tahun sekarang;<br>
 		id 4 = jam akhir kerja;<br>
 		id 5 = denda per jam untuk ijin 1 hari;<br>
 		id 6 = denda per jam untuk ijin per jam saat jam kerja;<br>
 		id 7 = denda keterlambatan per 15 menit;<br>
 		id 8 = denda alpha;<br>
-	</h6>
-	<div class="text-right">
+	</h6> -->
+<!-- 	<div class="text-right">
 		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addPengaturanModal">Add pengaturan</button>
-	</div>
+	</div> -->
 	<br>
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -89,6 +90,7 @@ $('#deletePengaturanModal').on('show.bs.modal', function(e) {
         		<tr>
 	            	<th>id</th>
 	            	<th>pengaturan</th>
+	            	<th>konteks</th>
 	            	<th class="text-center">action</th>
             	</tr>
         	</thead>
@@ -97,10 +99,10 @@ $('#deletePengaturanModal').on('show.bs.modal', function(e) {
 	        		echo "<tr>";
 	        		echo "<td>".$row->id_m."</td>";
 	        		echo "<td>".$row->misc."</td>";
+	        		echo "<td>".$row->detail."</td>";
 	        		echo "<td>
-	        				<div class='btn-group'>
-		        				<a data-href='".base_url('Status_C/delete_misc').'/'.$row->id_m."' data-toggle='modal' data-target='#deletePengaturanModal' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-trash'></span></a>
-		                        <a href='".base_url('Status_C/update_misc').'/'.$row->id_m."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-edit'></span></a>
+	        				<div>
+		                        <a href='".base_url('Status_C/update_misc').'/'.$row->id_m."' class='btn btn-sm btn-primary'><span class='glyphicon glyphicon-edit'></span></a>
 	                        </div>
 	                      </td>";
 	        		echo "</tr>";
@@ -110,3 +112,4 @@ $('#deletePengaturanModal').on('show.bs.modal', function(e) {
   		</table>
 	</div>
 </div>
+<!-- <a data-href='".base_url('Status_C/delete_misc').'/'.$row->id_m."' data-toggle='modal' data-target='#deletePengaturanModal' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-trash'></span></a> -->

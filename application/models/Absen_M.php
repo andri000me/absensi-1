@@ -28,7 +28,7 @@ class Absen_M extends CI_Model {
     public function delete($table,$dataCondition){
         $this->db->where($dataCondition);
         $result = $this->db->delete($table);        
-        // return $this->db->get_compiled_delete($table);
+        //return $this->db->get_compiled_delete($table);
         return $result;
     }
     public function update($table,$dataCondition,$dataUpdate){

@@ -59,7 +59,7 @@ class User_C extends CI_Controller {
 					$this->session->set_flashdata('alert_foto', $alert_foto);
 	            }
 	            else{
-	            	$alert_foto = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Upload foto profil gagal!</strong>mohon lakukan update foto</div>";
+	            	$alert_foto = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Upload foto profil gagal!</strong></div>";
 					$this->session->set_flashdata('alert_foto', $alert_foto);
 					die();
 	            }

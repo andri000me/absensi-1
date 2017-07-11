@@ -100,7 +100,8 @@ class User_C extends CI_Controller {
 			}
 			else
 			{
-	            $alert_create_user = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",'</div>');
+	            $alert_create_user = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
+	            	'</div>');
 	            $this->session->set_flashdata('alert_create_user', $alert_create_user);
 	            $this->index();
 			}

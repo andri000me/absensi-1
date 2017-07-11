@@ -152,10 +152,10 @@ $(document).ready(function() {
                     $bulan = date('n');
                     $tahun = date('Y');
                     echo "<td>
-                        <div class='text-center'>
-                        <a data-href='".base_url()."User_C/delete_user/".$row->id_k."' data-toggle='modal' data-target='#deleteUserModal' class='margin-20'><span class='glyphicon glyphicon-trash'></span></a>
-                        <a href='".base_url()."User_C/update_user/".$row->id_k."' class='margin-20'><span class='glyphicon glyphicon-edit'></span></a>
-                        <a href='".base_url()."User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun."' class='margin-20'><span class='glyphicon glyphicon-th'></span></a>
+                        <div class='btn-group'>
+                        <a data-href='".base_url()."User_C/delete_user/".$row->id_k."' data-toggle='modal' data-target='#deleteUserModal' class='btn btn-xs btn-danger'><span class='glyphicon glyphicon-trash'></span></a>
+                        <a href='".base_url()."User_C/update_user/".$row->id_k."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-edit'></span></a>
+                        <a href='".base_url()."User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun."' class='btn btn-xs btn-warning'><span class='glyphicon glyphicon-th'></span></a>
                         </div>
                         </td>";
                     echo "</tr>";

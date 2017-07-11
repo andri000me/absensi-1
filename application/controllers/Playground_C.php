@@ -17,7 +17,7 @@ class Playground_C extends CI_Controller {
     }
     public function upload()
     {
-            echo realpath(APPPATH);//D:\xampp\htdocs\absensi\application
+            //realpath(APPPATH);//D:\xampp\htdocs\absensi\application
 
             $this->load->library('upload');
         
@@ -32,23 +32,23 @@ class Playground_C extends CI_Controller {
 
 
             $this->upload->initialize($configfoto);
-            if($this->upload->do_upload('foto')){
+
+
+            if($this->upload->initialize($configfoto)->do_upload('foto')){
                 echo "step 1<br>";
                 $datafoto = $this->upload->data();
                 $data['foto'] = "playground/foto/".$datafoto['file_name'];
                 
-                $this->upload->initialize($configkk);
-                if ($this->upload->do_upload('kk')) {
+                if ($this->upload->initialize($configkk)->do_upload('kk')) {
                     echo "step 11<br>";
                     $datakk = $this->upload->data();
                     $data['kk'] = "playground/kk/".$datakk['file_name'];
 
-                    $this->upload->initialize($configktp);
-                    if ($this->upload->do_upload('ktp')) {
+
+                    if ($this->upload->initialize($configktp)->do_upload('ktp')) {
                         echo "step 111<br>";
                         $dataktp = $this->upload->data();
                         $data['ktp'] = "playground/ktp/".$dataktp['file_name'];
-                        echo "good<br>";
                         echo "<pre>";
                         var_dump($datafoto);
                         var_dump($datakk);
@@ -57,9 +57,15 @@ class Playground_C extends CI_Controller {
                     }
                     else{
                         echo "bad 3 <br>";
+                        $delete = realpath(APPPATH.'../'.$data['foto']);
+                        $dilete = realpath(APPPATH.'../'.$data['kk']);
+                        unlink($dilete,$delete);
                     }
                 }else{
-                        echo "bad 2 <br>";
+                    echo "bad 2 <br>";
+                    $delete = realpath(APPPATH.'../'.$data['foto']);
+                    echo $delete;
+                    unlink($delete);
                 }
             }
             else{

@@ -56,6 +56,10 @@ $('#deleteLiburModal').on('show.bs.modal', function(e) {
 $(document).ready(function() {
     $('#examplh').DataTable({
     	paging: false,
+    	"columnDefs": [
+	        { "width": "50px", "targets": 3 },
+	        { "width": "5px", "targets": 0 }
+	    ],
     });
 
 } );
@@ -94,8 +98,8 @@ $(document).ready(function() {
 							<td><?=$key->detail?></td>
 							<td>
 							<?php
-								echo "<div class='text-center'><a data-href='".base_url()."Holiday_C/delete_liburan/".$key->id_libur."' data-toggle='modal' data-target='#deleteLiburModal' class='margin-20'><span class='glyphicon glyphicon-trash'></span></a>
-                        		<a href='".base_url()."Holiday_C/update_liburan/".$key->id_libur."'  class='margin-20'><span class='glyphicon glyphicon-edit'></span></a></div>";
+								echo "<div class='text-center'><a data-href='".base_url()."Holiday_C/delete_liburan/".$key->id_libur."' data-toggle='modal' data-target='#deleteLiburModal' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-trash'></span></a>
+                        		<a href='".base_url()."Holiday_C/update_liburan/".$key->id_libur."'  class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-edit'></span></a></div>";
                         	?>
                         </td>
 						</tr>

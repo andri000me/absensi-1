@@ -1,6 +1,12 @@
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#examplp').DataTable({paging: false});
+    $('#examplp').DataTable({
+    	paging: false,
+    	"columnDefs": [
+	        { "width": "50px", "targets": 2 },
+	        { "width": "5px", "targets": 0 }
+	    ]
+    });
 } );
 </script>
 <div class="modal fade" id="addPengaturanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -92,9 +98,9 @@ $('#deletePengaturanModal').on('show.bs.modal', function(e) {
 	        		echo "<td>".$row->id_m."</td>";
 	        		echo "<td>".$row->misc."</td>";
 	        		echo "<td>
-	        				<div class='text-center'>
-		        				<a data-href='".base_url('Status_C/delete_misc').'/'.$row->id_m."' data-toggle='modal' data-target='#deletePengaturanModal' class='margin-20'><span class='glyphicon glyphicon-trash'></span></a>
-		                        <a href='".base_url('Status_C/update_misc').'/'.$row->id_m."' class='margin-20'><span class='glyphicon glyphicon-edit'></span></a>
+	        				<div class='btn-group'>
+		        				<a data-href='".base_url('Status_C/delete_misc').'/'.$row->id_m."' data-toggle='modal' data-target='#deletePengaturanModal' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-trash'></span></a>
+		                        <a href='".base_url('Status_C/update_misc').'/'.$row->id_m."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-edit'></span></a>
 	                        </div>
 	                      </td>";
 	        		echo "</tr>";

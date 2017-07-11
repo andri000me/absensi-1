@@ -38,7 +38,13 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#exampls').DataTable({paging: false});
+    $('#exampls').DataTable({
+      paging: false,
+      "columnDefs": [
+        { "width": "50px", "targets": 2 },
+        { "width": "5px", "targets": 0 }
+      ]
+    });
 } );
 </script>
 <br>
@@ -82,10 +88,10 @@ $('#deleteStatusModal').on('show.bs.modal', function(e) {
 	        		echo "<td>".$row->id_s."</td>";
 	        		echo "<td>".$row->keterangan_s."</td>";
 	        		echo "<td> 
-	        				<div class='text-center'>
-		        				<a data-href='".base_url()."Status_C/delete_status/".$row->id_s."' data-toggle='modal' data-target='#deleteStatusModal' class='margin-20'><span class='glyphicon glyphicon-trash'></span></a>
-		                        <a href='".base_url()."Status_C/update_status/".$row->id_s."' class='margin-20'><span class='glyphicon glyphicon-edit'></span></a>
-		                        <a href='".base_url()."Overview_C/detail_per_status/".$row->id_s."' class='margin-20'><span class='glyphicon glyphicon-th'></span></a>
+	        				<div class='btn-group'>
+		        				<a data-href='".base_url()."Status_C/delete_status/".$row->id_s."' data-toggle='modal' data-target='#deleteStatusModal' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-trash'></span></a>
+		                        <a href='".base_url()."Status_C/update_status/".$row->id_s."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-edit'></span></a>
+		                        <a href='".base_url()."Overview_C/detail_per_status/".$row->id_s."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-th'></span></a>
 	                        </div>
 	                         </td>";
 	        		echo "</tr>";

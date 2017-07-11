@@ -68,6 +68,10 @@ $('#deleteJabatanModal').on('show.bs.modal', function(e) {
 $(document).ready(function() {
     $('#examplj').DataTable({
       paging: false,
+      "columnDefs": [
+        { "width": "50px", "targets": 2 },
+        { "width": "5px", "targets": 0 }
+      ]
     });
 
 } );
@@ -88,9 +92,9 @@ $(document).ready(function() {
         		echo "<tr>";
         		echo "<td>".$row->id_j."</td>";
         		echo "<td>".$row->jabatan."</td>";
-        		echo "<td> <div class='text-center'>
-        				<a data-href='".base_url()."Jabatan_C/delete_jabatan/".$row->id_j."'  data-toggle='modal' data-target='#deleteJabatanModal' class='margin-20'><span class='glyphicon glyphicon-trash'></span></a>
-                <a href='".base_url()."Jabatan_C/update_jabatan/".$row->id_j."' class='margin-20'><span class='glyphicon glyphicon-edit'></span></a></div> </td>";
+        		echo "<td> <div class='btn-group'>
+        				<a data-href='".base_url()."Jabatan_C/delete_jabatan/".$row->id_j."'  data-toggle='modal' data-target='#deleteJabatanModal' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-trash'></span></a>
+                <a href='".base_url()."Jabatan_C/update_jabatan/".$row->id_j."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-edit'></span></a></div> </td>";
         		echo "</tr>";
         	}
         	?>

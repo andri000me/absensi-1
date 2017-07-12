@@ -13,6 +13,8 @@
 			$(function () { 
 				var workdays = <?=$workday;?>;
 				var kehadiran = <?=$kehadiran;?>;
+				var ontime = <?=$ontime;?>;
+				var late = <?=$late;?>;
 			    var myChart = Highcharts.chart('5bulan', {
 			    	title: { text: 'Grafik Hadir 5 bulan' },
 				    exporting: { enabled: true },
@@ -20,18 +22,25 @@
 				    xAxis: {type: 'category',title: { text: 'tanggal'}},
 				    tooltip: {
 				        formatter: function () {
-				            var content = 'prosentase '+ this.y.toFixed(2) +'%'
-				            + '<br> Wordays <b>' + workdays[this.key]+'</b>'+ '<br> kehadiran <b>'+kehadiran[this.key] +'</b>';
+				            var content = 'Wordays :<b>' + workdays[this.key]+' Hari</b><br> Kehadiran :<b>'+kehadiran[this.key] +' Kali</b><br> Ontime :<b>'+ontime[this.key] +' Kali</b><br> Terlambat :<b>'+late[this.key] +' Kali</b>';
 				            return content;
 				            // return 'The value for <b>' + this.x +
 				                // '</b> is <b>' + this.y + '</b>';
 				        }
 				    },
-				    // plotOptions: {line: {dataLabels: {enabled: true},enableMouseTracking: true}},*/
+				    plotOptions: {line: {dataLabels: {enabled: true},enableMouseTracking: true}},
 				    series: [
 				    	{ 
-				    		name: "good", 
+				    		name: "Persentase Kehadiran",
 				    		data: <?=$persen?>
+					    },
+					    { 
+				    		name: "Persentase Ontime",
+				    		data: <?=$persenon?>
+					    },
+					    { 
+				    		name: "Persentase Terlambat",
+				    		data: <?=$persenla?>
 					    }
 
 				    ]

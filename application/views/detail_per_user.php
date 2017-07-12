@@ -173,7 +173,7 @@ $(document).ready(function() {
 		<h3>Total kompensasi ijin jam kerja sejumlah Rp. <?php echo number_format($denda_ku,2,',','.')?> di bulan ini</h3>
 	</div>
 	<div class="text-right">
-		<a class="btn btn-primary no-print" href="<?php echo base_url('User_C/lihat5bulan/'.$siapa."/".date('n')."/".$tahun)?>" role="button"><span class="glyphicon glyphicon-list"></span> Lihat grafik 5 bulan terakhir</a>
+		<a class="btn btn-primary no-print" href="<?php echo base_url('User_C/lihat5bulan/'.$siapa."/".$bulan."/".$tahun)?>" role="button"><span class="glyphicon glyphicon-list"></span> Lihat grafik 5 bulan terakhir</a>
 	</div>
 
 	<br><?php

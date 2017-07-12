@@ -7,11 +7,9 @@ class User_C extends CI_Controller {
         parent::__construct();
         date_default_timezone_set("Asia/Jakarta");
         $this->load->model('Absen_M');
-		//$this->date = date('Y-m');
     }
     public function index()
     {
-        //$data['users'] = $this->Absen_M->readS('data_k')->result();
         $data['jabatans'] = $this->Absen_M->readS('data_j');
         $datar['hak_akses'] = 1;
         $data['id_admin'] = $this->Absen_M->read('data_l',$datar)->result();
@@ -593,13 +591,13 @@ class User_C extends CI_Controller {
     		
 	        $this->load->view('html/header');
 	        $this->load->view('html/menu');
-	        
-		
 
 	    	//$bulan = 3;
 	    	$a = $bulan;
 	    	$query  = "SELECT";
 	    	$kueri  = "SELECT";
+	    	$queri  = "SELECT";
+	    	$kuery  = "SELECT";
 
 	    	for ($jump = 5; $jump >=0 ;$jump--) { 
 	    		if ($a == 0) {
@@ -607,13 +605,13 @@ class User_C extends CI_Controller {
 	    			$tahun = $tahun -1;
 	    		}
 
-	    		/*START BIKIN QUERY HITUNG TANGGAL MERAH*/
+	    		/*START BIKIN QUERY HITUNG TANGGAL MERAH di data_libur*/
 				if ($jump == 0) {
 					$query = $query." ( SELECT COUNT(data_libur.id_libur) FROM data_libur WHERE MONTH (data_libur.tanggal) = '".$a."' AND YEAR (data_libur.tanggal) = '".$tahun."') AS ke".$a;
 				} else {
 					$query = $query." ( SELECT COUNT(data_libur.id_libur) FROM data_libur WHERE MONTH (data_libur.tanggal) = '".$a."' AND YEAR (data_libur.tanggal) = '".$tahun."') AS ke".$a.",";
 				}
-				/*END BIKIN QUERY HITUNG TANGGAL MERAH*/
+				/*END BIKIN QUERY HITUNG TANGGAL MERAH di data_libur*/
 				
 				$number[$a] = cal_days_in_month(CAL_GREGORIAN,date($a), date($tahun));
 
@@ -631,18 +629,36 @@ class User_C extends CI_Controller {
 				}
 				/*END HITUNG SABTU MINGGU*/
 
-				/*START HITUNG KEHADIRAN KU*/
+				/*START HITUNG KEHADIRAN KU di data_ra*/
 				if ($jump == 0) {
-					$kueri = $kueri." (SELECT COUNT(data_ra.id_s) FROM data_ra WHERE data_ra.id_k = '".$id_k."' and data_ra.acc ='1' and MONTH (data_ra.tanggal) = '".$a."' AND YEAR (data_ra.tanggal) = '".$tahun."') AS hadir_".$a;
+					$kueri = $kueri." (SELECT COUNT(data_ra.id_s) FROM data_ra WHERE data_ra.id_k = '".$id_k."' and data_ra.id_s = '1' and data_ra.acc ='1' and MONTH (data_ra.tanggal) = '".$a."' AND YEAR (data_ra.tanggal) = '".$tahun."') AS hadir_".$a;
 				} else {
-					$kueri = $kueri." (SELECT COUNT(data_ra.id_s) FROM data_ra WHERE data_ra.id_k = '".$id_k."' and data_ra.acc ='1' and MONTH (data_ra.tanggal) = '".$a."' AND YEAR (data_ra.tanggal) = '".$tahun."') AS hadir_".$a.",";
+					$kueri = $kueri." (SELECT COUNT(data_ra.id_s) FROM data_ra WHERE data_ra.id_k = '".$id_k."' and data_ra.id_s = '1' and data_ra.acc ='1' and MONTH (data_ra.tanggal) = '".$a."' AND YEAR (data_ra.tanggal) = '".$tahun."') AS hadir_".$a.",";
 				}
-				/*END HITUNG KEHADIRAN KU*/
+				/*END HITUNG KEHADIRAN KU di data_ra*/
+
+				/*START HITUNG ONTIME KU di data_ra*/
+				if ($jump == 0) {
+					$queri = $queri." (SELECT COUNT(data_ra.id_s) FROM data_ra WHERE data_ra.id_k = '".$id_k."' and data_ra.id_s = '1' and data_ra.detail='tepat waktu' and data_ra.acc ='1'  and MONTH (data_ra.tanggal) = '".$a."' AND YEAR (data_ra.tanggal) = '".$tahun."') AS ontime_".$a;
+				} else {
+					$queri = $queri." (SELECT COUNT(data_ra.id_s) FROM data_ra WHERE data_ra.id_k = '".$id_k."' and data_ra.id_s = '1' and data_ra.detail='tepat waktu' and data_ra.acc ='1' and MONTH (data_ra.tanggal) = '".$a."' AND YEAR (data_ra.tanggal) = '".$tahun."') AS ontime_".$a.",";
+				}
+				/*END HITUNG ONTIME KU di data_ra*/
+
+				/*START HITUNG TELAT KU di data_ra*/
+				if ($jump == 0) {
+					$kuery = $kuery." (SELECT COUNT(data_ra.id_s) FROM data_ra WHERE data_ra.id_k = '".$id_k."' and data_ra.id_s = '1' and data_ra.detail='telat' and data_ra.acc ='1'  and MONTH (data_ra.tanggal) = '".$a."' AND YEAR (data_ra.tanggal) = '".$tahun."') AS late_".$a;
+				} else {
+					$kuery = $kuery." (SELECT COUNT(data_ra.id_s) FROM data_ra WHERE data_ra.id_k = '".$id_k."' and data_ra.id_s = '1' and data_ra.detail='telat' and data_ra.acc ='1' and MONTH (data_ra.tanggal) = '".$a."' AND YEAR (data_ra.tanggal) = '".$tahun."') AS late_".$a.",";
+				}
+				/*END HITUNG TELAT KU di data_ra*/
 
 	    		$a =$a -1;
 	    	}
 			$jml_libur = $this->Absen_M->rawQuery($query)->result();
 			$jml_hadir = $this->Absen_M->rawQuery($kueri)->result();
+			$jml_ontime = $this->Absen_M->rawQuery($queri)->result();
+			$jml_late = $this->Absen_M->rawQuery($kuery)->result();
 
 			foreach ($libur as $key => $value) {
 				$nama = 'ke'.$key;
@@ -652,8 +668,8 @@ class User_C extends CI_Controller {
 			}
 
 			/*START HITUNG PROSENTASE*/
-			$a = $bulan-5; 
-			for ($jump = 5; $jump >=0 ;$jump--) { 
+			$a = $bulan-5;
+			for ($jump = 5; $jump >=0 ;$jump--) {
 				if ($a <= 0) {
 					$a = 12 + ($a);
 					$tahun = $tahun -1;
@@ -666,27 +682,41 @@ class User_C extends CI_Controller {
 	    		// 	$tahun = $tahun -1;
 	    		// }
 	    		$hari_kerja[$a] = $number[$a] - $total[$a];
-	    		$seratus = 100;
 	    		$key = 'hadir_'.$a;
+	    		$keyon = 'ontime_'.$a;
+	    		$keyla = 'late_'.$a;
 	    		$persen[] = array(date('M Y', strtotime($tahun.'-'.$a)) , ($jml_hadir[0]->$key / $hari_kerja[$a]) * 100);
+	    		if ($jml_hadir[0]->$key != 0) {
+	    			$persenon[] = array(date('M Y', strtotime($tahun.'-'.$a)) , ($jml_ontime[0]->$keyon / $jml_hadir[0]->$key) * 100);
+	    			$persenla[] = array(date('M Y', strtotime($tahun.'-'.$a)) , ($jml_late[0]->$keyla / $jml_hadir[0]->$key) * 100);
+	    		}
+	    		else{
+	    			$persenon[] = array(date('M Y', strtotime($tahun.'-'.$a)) , 0);
+	    			$persenla[] = array(date('M Y', strtotime($tahun.'-'.$a)) , 0);
+	    		}
+
 	    		$kehadiran[date('M Y', strtotime($tahun.'-'.$a))] = array((int)$jml_hadir[0]->$key);
 	    		$workday[date('M Y', strtotime($tahun.'-'.$a))] = array((int)$hari_kerja[$a]);
+	    		$ontime[date('M Y', strtotime($tahun.'-'.$a))] = array((int)$jml_ontime[0]->$keyon);
+	    		$late[date('M Y', strtotime($tahun.'-'.$a))] = array((int)$jml_late[0]->$keyla);
 	    		// echo "<pre>";
 	    		// // print_r($kehadiran);
 	    		// // print_r($workday);
+	    		// // print_r($persen);
+	    		// // print_r($persenon);
 	    		// echo "Bulan: ".$a;
 	    		// echo ", HADIR: ".$jml_hadir[0]->$key;
+	    		// echo ", ontime: ".$jml_ontime[0]->$keyon;
+	    		// echo ", late: ".$jml_late[0]->$keyla;
 	    		// echo ", HARI KERJA: ".$hari_kerja[$a];
-	    		// echo ", HASIL: ".($jml_hadir[0]->$key / $hari_kerja[$a]) * 100 ." %";
+	    		// echo ", PERSEN HADIR: ".($jml_hadir[0]->$key / $hari_kerja[$a]) * 100 ." %";
+	    		// echo ", PERSEN ONTIME: ".($jml_ontime[0]->$keyon / $jml_hadir[0]->$key) * 100 ." %";
+	    		// echo ", PERSEN LATE: ".($jml_late[0]->$keyla / $jml_hadir[0]->$key) * 100 ." %";
 	    		// echo "</pre>";
 	    		$a = $a + 1;
 	    		// $a =$a -1;
 	    	}
 			/*END HITUNG PROSENTASE*/
-
-
-
-
 
 			// echo "<pre>";
 			// var_dump($total);
@@ -701,9 +731,14 @@ class User_C extends CI_Controller {
 			// var_dump($hari_kerja);
 			// echo "</pre>";
 			// print_r($persen);
-			$data['persen'] = json_encode($persen);
 			$data['kehadiran'] = json_encode($kehadiran);
 			$data['workday'] = json_encode($workday);
+			$data['ontime'] = json_encode($ontime);
+			$data['late'] = json_encode($late);
+			
+			$data['persen'] = json_encode($persen);
+			$data['persenon'] = json_encode($persenon);
+			$data['persenla'] = json_encode($persenla);
 			$data['id_k'] =$id_k;
 
 			$dataCondition['id_k'] =$id_k;

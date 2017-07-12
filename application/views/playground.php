@@ -4,16 +4,6 @@
 	<title></title>
 </head>
 <body>
-<?php echo form_open_multipart('Playground_C/upload');?>
-
-<input type="file" name="foto" size="20" />
-<input type="file" name="kk" size="20" />
-<input type="file" name="ktp" size="20" />
-
-<br /><br />
-
-<input type="submit" value="upload" />
-</form>
 
 </body>
 </html>

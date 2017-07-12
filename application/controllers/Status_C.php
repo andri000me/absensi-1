@@ -133,6 +133,7 @@ class Status_C extends CI_Controller {
 			$this->form_validation->set_rules('u_misc','Nama Misc','trim|required');
 			$dataCondition['id_m'] = $this->input->post('u_id_m');
 			$data['misc'] = $this->input->post('u_misc');
+			$data['detail'] = $this->input->post('u_detail');
 			if($this->form_validation->run()==TRUE){
 				$result = $this->Absen_M->update('data_m',$dataCondition,$data);
 				if($result){

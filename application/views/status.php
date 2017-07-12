@@ -89,9 +89,9 @@ $('#deleteStatusModal').on('show.bs.modal', function(e) {
 	        		echo "<td>".$row->keterangan_s."</td>";
 	        		echo "<td> 
 	        				<div class='btn-group'>
-		        				<a data-href='".base_url()."Status_C/delete_status/".$row->id_s."' data-toggle='modal' data-target='#deleteStatusModal' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-trash'></span></a>
-		                        <a href='".base_url()."Status_C/update_status/".$row->id_s."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-edit'></span></a>
-		                        <a href='".base_url()."Overview_C/detail_per_status/".$row->id_s."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-th'></span></a>
+		        				<a title='delete' data-href='".base_url()."Status_C/delete_status/".$row->id_s."' data-toggle='modal' data-target='#deleteStatusModal' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-trash'></span></a>
+		                        <a title='edit' href='".base_url()."Status_C/update_status/".$row->id_s."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-edit'></span></a>
+		                        <a title='list absen per status' href='".base_url()."Overview_C/detail_per_status/".$row->id_s."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-th'></span></a>
 	                        </div>
 	                         </td>";
 	        		echo "</tr>";

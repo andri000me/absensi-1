@@ -1,4 +1,4 @@
-<?php 
+    <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Absen_M extends CI_Model {
     public function __construct(){
@@ -27,9 +27,15 @@ class Absen_M extends CI_Model {
     }
     public function delete($table,$dataCondition){
         $this->db->where($dataCondition);
-        $result = $this->db->delete($table);        
+        $result = $this->db->delete($table);
+        if (!$result) {
+             $error = $this->db->error();
+             return $error;
+        }
+        else{
+            return $result;
+        }
         //return $this->db->get_compiled_delete($table);
-        return $result;
     }
     public function update($table,$dataCondition,$dataUpdate){
         $this->db->where($dataCondition);

@@ -153,9 +153,9 @@ $(document).ready(function() {
                     $tahun = date('Y');
                     echo "<td>
                         <div class='btn-group'>
-                        <a data-href='".base_url()."User_C/delete_user/".$row->id_k."' data-toggle='modal' data-target='#deleteUserModal' class='btn btn-xs btn-danger'><span class='glyphicon glyphicon-trash'></span></a>
-                        <a href='".base_url()."User_C/update_user/".$row->id_k."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-edit'></span></a>
-                        <a href='".base_url()."User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun."' class='btn btn-xs btn-warning'><span class='glyphicon glyphicon-th'></span></a>
+                        <a title='delete' data-href='".base_url()."User_C/delete_user/".$row->id_k."' data-toggle='modal' data-target='#deleteUserModal' class='btn btn-xs btn-danger'><span class='glyphicon glyphicon-trash'></span></a>
+                        <a title='edit' href='".base_url()."User_C/update_user/".$row->id_k."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-edit'></span></a>
+                        <a title='detail absen per user' href='".base_url()."User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun."' class='btn btn-xs btn-warning'><span class='glyphicon glyphicon-th'></span></a>
                         </div>
                         </td>";
                     echo "</tr>";

@@ -9,28 +9,6 @@ $(document).ready(function() {
     });
 } );
 </script>
-<div class="modal fade" id="addPengaturanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          	<div class="modal-header">
-            	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            	<h4 class="modal-title" id="myModalLabel">Add Pengaturan</h4>
-          	</div>
-            <form class="form-horizontal" action="<?php echo base_url();?>status_c/create_misc" method="POST" enctype="multipart/form-data">
-          		<div class="modal-body ">
-              		<div class="form-group">
-                		<div class="col-sm-12">
-                  			<input type="text" class="form-control" placeholder="isi aturan" name="c_misc">
-                		</div>
-              		</div>
-          		</div>
-	          	<div class="modal-footer">
-	            	<button type="submit" class="btn btn-primary">Submit</button>
-	        	</div>
-        	</form>
-        </div>
-    </div>
-</div>
 
 
 <div class="modal fade" id="deletePengaturanModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

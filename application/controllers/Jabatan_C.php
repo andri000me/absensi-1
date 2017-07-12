@@ -2,7 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Jabatan_C extends CI_Controller {
-
 	public function __construct(){
         parent::__construct();
         $this->load->model('Absen_M');
@@ -44,16 +43,16 @@ class Jabatan_C extends CI_Controller {
 		}
 		redirect('Jabatan_C');
 	}
-	public function delete_jabatan($data)
+	public function delete_jabatan($dataD)
 	{
-		$datad['id_j'] = $data;
+		$datad['id_j'] = $dataD;
 		$result = $this->Absen_M->delete('data_j',$datad);
 		if($result){
 			$alert_delete_jabatan = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Delete Jabatan Berhasil!  </strong></div>";
 			$this->session->set_flashdata('alert_delete_jabatan', $alert_delete_jabatan);
 		}
 		else{
-			$alert_delete_jabatan = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>  <strong>Delete Jabatan Gagal!  </strong>jabatan :".$data."</div>";
+			$alert_delete_jabatan = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>  <strong>Delete Jabatan Gagal!  </strong>jabatan :".$dataD."</div>";
 			$this->session->set_flashdata('alert_delete_jabatan', $alert_delete_jabatan);
 		}
 		var_dump($result);

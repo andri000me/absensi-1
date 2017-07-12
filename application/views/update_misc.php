@@ -5,7 +5,7 @@
         <li class='active'>Update</li>
     </ol>
     <h3> UPDATE MISC</h3>
-    <form class="form-horizontal" action="<?php echo base_url();?>status_c/update_misc_info" method="POST" id="registerForm" autocomplete="on" enctype="multipart/form-data">
+    <form class="form-horizontal" action="<?php echo base_url();?>Status_C/update_misc_info" method="POST" id="registerForm" autocomplete="on" enctype="multipart/form-data">
         <div class="form-group">
             <div class="col-sm-12">
                 <input type="text" class="form-control" name="u_id_m" value="<?php echo $row->id_m?>" readonly>
@@ -13,7 +13,14 @@
         </div>
         <div class="form-group">
             <div class="col-sm-12">
+                <label class="control-label"> Value </label>
                 <input type="text" class="form-control" name="u_misc" value="<?php echo $row->misc?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <label class="control-label"> Konteks </label>
+                <input type="text" class="form-control" name="u_detail" value="<?php echo $row->detail?>">
             </div>
         </div>
         <br>

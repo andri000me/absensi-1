@@ -90,8 +90,8 @@ $(document).ready(function() {
 		        		echo "<td>".$key->detail."</td>";
 		        		echo "<td>".$key->acc."</td>";
 		        		echo "<td> Rp ".number_format($key->denda,2,',','.')."</td>";
-		        		echo "<td class='text-center'> <a class='no-print margin-20' href='".base_url()."User_C/delete_absensi_ku/".$key->id_A."/".$key->id_k."' ><span class='glyphicon glyphicon-trash'></span></a>
-		        					<a class='no-print' href='".base_url()."User_C/edit_absensi_ku/".$key->id_A."/".$key->id_k."'><span class='glyphicon glyphicon-edit'></span></a>
+		        		echo "<td class='text-center'> <a title='delete' class='no-print margin-20' href='".base_url()."User_C/delete_absensi_ku/".$key->id_A."/".$key->id_k."' ><span class='glyphicon glyphicon-trash'></span></a>
+		        					<a title='edit' class='no-print' href='".base_url()."User_C/edit_absensi_ku/".$key->id_A."/".$key->id_k."'><span class='glyphicon glyphicon-edit'></span></a>
 		                  </td>";
 		        		echo "</tr>";
 	        		}

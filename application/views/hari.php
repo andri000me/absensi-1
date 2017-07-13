@@ -6,7 +6,7 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function() {
-	    $('#examplw').DataTable({paging: false});
+	    $('#examplw').DataTable();
 	} );
 </script>
 <div class="absen_print">
@@ -52,7 +52,7 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
-		    $('#examplq').DataTable({paging: false});
+		    $('#examplq').DataTable();
 		} );
 	</script>
 	<br><hr>

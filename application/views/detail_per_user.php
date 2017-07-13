@@ -46,9 +46,7 @@
 	<br>
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#exampld').DataTable({
-      paging: false,
-    });
+    $('#exampld').DataTable();
 
 } );
 </script>
@@ -114,9 +112,7 @@ $(document).ready(function() {
 	<h3>Ijin bulan <?=$dateObj->format('F')?></h3>
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#examplij').DataTable({
-      paging: false,
-    });
+    $('#examplij').DataTable();
 
 } );
 </script>

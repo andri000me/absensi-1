@@ -11,12 +11,17 @@
 <link rel="stylesheet" href="<?php echo base_url()?>assets/css/bootstrap.css">
 <link rel="stylesheet" href="<?php echo base_url()?>assets/css/clockpicker.css">
 <link rel="stylesheet" href="<?php echo base_url()?>assets/css/dataTables.bootstrap.min.css">
-
+<!-- 
+<link rel="stylesheet" href="<?php echo base_url()?>assets/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="<?php echo base_url()?>assets/css/jquery.dataTables.min.css">
+ -->
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.js"></script>
-
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/jQuery.print.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/dataTables.bootstrap.min.js"></script>
+
+<script type="text/javascript" src="<?php echo base_url()?>assets/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url()?>assets/js/buttons.print.min.js"></script>
 
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/highcharts.src.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/exporting.js"></script>
@@ -65,24 +70,41 @@
 jQuery(function($) { 'use strict';
     
     $('button#print_btn').on('click', function(e) {
+      $('#exampli').DataTable().destroy();
+      $('#examplo').DataTable().destroy();
+      $('#examplw').DataTable().destroy();
+      $('#examplq').DataTable().destroy();
+      $('#examplij').DataTable().destroy();
+      $('#exampld').DataTable().destroy();
+      
+      $('#exampli').DataTable({paging: false});
+      $('#examplo').DataTable({paging: false});
+      
+      $('#examplw').DataTable({paging: false});
+      $('#examplq').DataTable({paging: false});
+      
+      $('#exampld').DataTable({paging: false});
+      $('#examplij').DataTable({paging: false});
+      
       $(".absen_print").print({
-        //Use Global styles
         globalStyles : false,
-        //Add link with attrbute media=print
         mediaPrint : false,
-        //Custom stylesheet
         stylesheet : "<?php echo base_url("assets/css/bootstrap.css") ?>",
-        //Print in a hidden iframe
         iframe : false,
-        //Don't print this
-        //noPrintSelector : ".avoid-this",
-        //Add this at top
-        //prepend : "Hello World!!!<br/>",
-        //Add this on bottom
-        //append : "<br/>Buh Bye!",
-        //Log to console when printing is done via a deffered callback
         deferred: $.Deferred().done(function() { console.log('Printing done', arguments); })
       });
+      $('#exampli').DataTable().destroy();
+      $('#examplo').DataTable().destroy();
+      $('#examplw').DataTable().destroy();
+      $('#examplq').DataTable().destroy();
+      $('#examplij').DataTable().destroy();
+      $('#exampld').DataTable().destroy();
+      $('#exampli').DataTable();
+      $('#examplo').DataTable();
+      $('#examplw').DataTable();
+      $('#examplq').DataTable();
+      $('#exampld').DataTable();
+      $('#examplij').DataTable();
     });
     // Fork https://github.com/sathvikp/jQuery.print for the full list of options
 });

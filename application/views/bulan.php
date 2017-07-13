@@ -6,9 +6,7 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#exampli').DataTable({
-    	"serverSide": false
-    });
+    $('#exampli').DataTable();
 } );
 </script>
 <div class="absen_print">
@@ -53,9 +51,7 @@ $(document).ready(function() {
 	</div>
 	<script type="text/javascript">
 	$(document).ready(function() {
-	    $('#examplo').DataTable(
-	    	"serverSide": false
-	    );
+	    $('#examplo').DataTable();
 
 	} );
 	</script>
@@ -97,24 +93,3 @@ $(document).ready(function() {
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function(e) {
-       $('button#print_btn').on('click', function(e)  {
-			// $('#exampli').DataTable().destroy();
-			// $('#examplo').DataTable().destroy();
-			// $(document).ready(function() {
-			//     $('#exampli').DataTable({paging:false});
-			// });
-			// $(document).ready(function() {
-			//     $('#examplo').DataTable({paging:false});
-			// });
-            $('#ijin_print,#absen_print').printThis({
-                styles: [
-                		'<?php echo base_url("assets/css/bootstrap.css")?>'
-                		],
-            	exclude : ['.noprint']
-            });
-       }); 
-    });
-</script>

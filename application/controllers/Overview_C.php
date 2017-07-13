@@ -19,8 +19,8 @@ class Overview_C extends CI_Controller {
             $this->load->view('html/footer');
     }
     public function lihat($bulan_or_hari){
-        if ($this->input->post() != null) {
-            if ($bulan_or_hari =='bulan') {
+        if ($bulan_or_hari =='bulan') {
+            if ($this->input->post() != null) {
                 $data['tahun'] = $this->input->post('l_tahun');
                 $data['bulan'] = $this->input->post('l_bulan');
                 $datax['cari'] = $this->Absen_M->rawQuery("
@@ -59,7 +59,9 @@ class Overview_C extends CI_Controller {
                 $this->load->view('bulan',$datax);
                 $this->load->view('html/footer');   
             }
-            else {
+        }
+        else {
+            if ($this->input->post() != null) {
                 $datar['tanggal'] = $this->input->post('l_hari');
                 $datax['cari'] = $this->Absen_M->rawQuery("
 
@@ -79,7 +81,7 @@ class Overview_C extends CI_Controller {
                 $this->load->view('harian');
                 $this->load->view('hari',$datax);
                 $this->load->view('html/footer');
-            }
+            }        
         }
     }
     public function detail_per_status($apa = 0){

@@ -40,6 +40,9 @@ class User_C extends CI_Controller {
 			    $data['email_k'] = $this->input->post('c_email');
 			    $data['noHp_k'] = $this->input->post('c_nohp');
 			    $data['jabatan_k'] = $this->input->post('c_jabatan');
+
+			    $data['date_added'] = date('Y-m-d');
+			    $data['bisa_cuti'] = 0;
 			    
 			    $datal['username_k'] = $this->input->post('c_username');
 			    $datal['password_k'] = md5($this->input->post('c_password'));
@@ -67,8 +70,12 @@ class User_C extends CI_Controller {
 					$datal['id_k'] = $result;
 					$resultl = $this->Absen_M->create('data_l',$datal);
 					if ($resultl) {
+
 						$cuti['id_k'] = $result;
 						$cuti['cuti_berapakali'] = 0;
+						$cuti['jatah_cuti'] = 0;
+						$cuti['last_sync'] = 0;
+
 						$resultc = $this->Absen_M->create('data_c',$cuti);
 						if ($resultc) {
 							$alert_create_user = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Create User Berhasil!</strong></div>";
@@ -78,21 +85,18 @@ class User_C extends CI_Controller {
 						else{
 							$alert_create_user = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Create User Gagal!(database cuti)</strong></div>";
 		            		$this->session->set_flashdata('alert_create_user', $alert_create_user);
-							//redirect(base_url('User_C'));
 							$this->index();
 						}
 					}
 					else{
 						$alert_create_user = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Create User Gagal!(database login)</strong></div>";
 	            		$this->session->set_flashdata('alert_create_user', $alert_create_user);
-						//redirect(base_url('User_C'));
 						$this->index();
 					}
 				}
 				else{
 					$alert_create_user = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Create User Gagal!(database karyawan)</strong></div>";
 					$this->session->set_flashdata('alert_create_user', $alert_create_user);
-					//redirect(base_url('User_C'));
 					$this->index();
 				}
 			}
@@ -104,8 +108,6 @@ class User_C extends CI_Controller {
 	            $this->index();
 			}
 		}
-			// redirect(base_url('User_C'));
-		
 	}
 	public function delete_user($data)
 	{

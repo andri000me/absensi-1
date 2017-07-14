@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col-md-6">
 				<br/><h1>Selamat Datang, -nama user-</h1>
-				<h3>Juli 2015</h3>		
+				<h4>Juli 2015</h4>		
 			</div>
 			<div class="col-md-6">
 				<button class="btn btn-primary btn-lg">TAMBAH ABSENSI</button>

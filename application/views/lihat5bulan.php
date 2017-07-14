@@ -7,7 +7,7 @@
 	</ol>
 	<h3 class="text-center">User <?=$nama_k[0]->nama_k?></h3>
 	<?php
-	if ($persen != array()) {?>
+	//if ($persen != array()) {?>
 		<div class="5bulan" id="5bulan" style="min-width: 100%;height: 400px;margin: 0 auto;"></div>
 		<script type="text/javascript">
 			$(function () { 
@@ -30,10 +30,7 @@
 				    },
 				    plotOptions: {line: {dataLabels: {enabled: true},enableMouseTracking: true}},
 				    series: [
-				    	{ 
-				    		name: "Persentase Kehadiran",
-				    		data: <?=$persen?>
-					    },
+	
 					    { 
 				    		name: "Persentase Ontime",
 				    		data: <?=$persenon?>
@@ -48,6 +45,6 @@
 			});
 		</script>
 		
-	<?php }
+	<?php //}
 	?>
 </div>

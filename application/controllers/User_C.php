@@ -8,8 +8,99 @@ class User_C extends CI_Controller {
         date_default_timezone_set("Asia/Jakarta");
         $this->load->model('Absen_M');
     }
+    public function cek_bisa_cuti_nol()
+    {
+    	$dataCondition['bisa_cuti'] = 0;
+    	$query = $this->Absen_M->read("data_k",$dataCondition)->result();
+    	// echo "<pre>";
+    	if ($query != array()) {
+	    	foreach ($query as $row) {
+	    		//echo $row->date_added."<br>";
+	    		$d1 = new DateTime();
+				$d2 = new DateTime($row->date_added);
+				$d3 = $d1->diff($d2);
+				$d4 = ($d3->y*12)+$d3->m;
+				// var_dump($d1);
+				// var_dump($d2);
+				// echo "D4:".$d4."<br>";
+				// $a = 13;$b=12;
+				// echo "13 %12 = ".($a % 12)."<br><br>";
+				if ($d4 > 12) {					
+					$dataCondition['id_k'] = $row->id_k;
+					$dataUpdate['bisa_cuti'] = 1;
+					$query = $this->Absen_M->update("data_k",$dataCondition,$dataUpdate);
+					// $results = json_decode($query, true);
+					unset($dataUpdate['bisa_cuti'],$dataCondition['id_k']);
+					
+					// if ($results['status']) {
+					// 	echo "sukses k".$row->id_k."<br>";
+					// }
+					// else{
+					// 	echo "gagal update k".$row->id_k;
+					// }
+					
+					$dataC['id_k'] = $row->id_k;
+					$data['jatah_cuti'] = $d4  % 12;
+					$data['last_sync'] = date('Y-m-d');
+					$queryl = $this->Absen_M->update("data_c",$dataC,$data);
+					// $results = json_decode($queryl, true);
+					// if ($results['status']) {
+					// 	echo "sukses l".$row->id_k;
+					// }
+					// else{
+					// 	var_dump($results['error_message']);
+					// }
+					unset($data['jatah_cuti'],$dataC['id_k'],$data['last_sync']);
+				}
+	    	}
+    	}
+    	// else{
+    	// 	echo "nothing";
+    	// }
+    	// var_dump($query);
+    	// echo "</pre>";
+    }
+    public function cek_bisa_cuti_satu()
+    {
+    	$query = $this->Absen_M->rawQuery("
+				SELECT data_k.id_k,
+					data_k.date_added,
+					data_c.jatah_cuti,
+					data_c.last_sync
+				FROM data_k
+				INNER JOIN data_c ON data_c.id_k = data_k.id_k
+				WHERE data_k.bisa_cuti = 1
+    	")->result();
+    	foreach ($query as $row) {
+    		// echo $row->last_sync;
+    		$d1 = new DateTime($row->last_sync);
+			$d2 = new DateTime();
+			$d3 = $d1->diff($d2);
+			$d4 = ($d3->y*12)+$d3->m;
+    		if ($d4 != 0) {
+    			$dataCondition['id_k'] = $row->id_k;
+    			$dataUpdate['last_sync'] = date('Y-m-d');
+    			$dataUpdate['jatah_cuti'] = (int)$row->jatah_cuti + $d4;
+    			$update_data_c = $this->Absen_M->update('data_c',$dataCondition,$dataUpdate);
+     			// $results = json_decode($update_data_c,true);
+				// if ($results['status']) {
+				// 	echo "sukses l=".$row->id_k."<br>";
+				// }
+				// else{
+				// 	var_dump($results['error_message']);
+				// }
+
+    		}
+    		// else{
+    		// 	echo " >> 0 <br>";
+    		// }
+    	}
+
+    }
     public function index()
     {
+    	$this->cek_bisa_cuti_nol();
+    	$this->cek_bisa_cuti_satu();
         $data['jabatans'] = $this->Absen_M->readS('data_j');
         $datar['hak_akses'] = 1;
         $data['id_admin'] = $this->Absen_M->read('data_l',$datar)->result();
@@ -281,7 +372,6 @@ class User_C extends CI_Controller {
     }*/
     public function detail_per_user_per_bulan($siapa,$bulan,$tahun)
     {
-		
 			$data['siapa'] = $siapa;
 			$dataCondition['id_k'] =$siapa;
 			$data['nama_k'] = $this->Absen_M->read('data_k',$dataCondition)->result();
@@ -312,11 +402,12 @@ class User_C extends CI_Controller {
 			    	$data_chart[] = array(date('Y-m-d',$date), (float)date("H.i", strtotime($absen->jam)) );
 			    }
 
-			    $data['data_chart'] = json_encode($data_chart);
+			   //  $data['data_chart'] = json_encode($data_chart);
+		    // }
+		    // else{
 		    }
-		    else{
-		    	$data['data_chart'] = json_encode($data_chart);
-		    }
+		    $data['data_chart'] = json_encode($data_chart);
+		    // }
 
 		    $data['cuti'] = $this->Absen_M->read('data_c',$datar)->result();
 		    $data['bulan'] = $bulan;
@@ -687,10 +778,10 @@ class User_C extends CI_Controller {
 	    		$key = 'hadir_'.$a;
 	    		$keyon = 'ontime_'.$a;
 	    		$keyla = 'late_'.$a;
-	    		$persen[] = array(date('M Y', strtotime($tahun.'-'.$a)) , ($jml_hadir[0]->$key / $hari_kerja[$a]) * 100);
+	    		// $persen[] = array(date('M Y', strtotime($tahun.'-'.$a)) , ($jml_hadir[0]->$key / $hari_kerja[$a]) * 100);
 	    		if ($jml_hadir[0]->$key != 0) {
-	    			$persenon[] = array(date('M Y', strtotime($tahun.'-'.$a)) , ($jml_ontime[0]->$keyon / $jml_hadir[0]->$key) * 100);
-	    			$persenla[] = array(date('M Y', strtotime($tahun.'-'.$a)) , ($jml_late[0]->$keyla / $jml_hadir[0]->$key) * 100);
+	    			$persenon[] = array(date('M Y', strtotime($tahun.'-'.$a)) , ($jml_ontime[0]->$keyon / $hari_kerja[$a]) * 100);
+	    			$persenla[] = array(date('M Y', strtotime($tahun.'-'.$a)) , ($jml_late[0]->$keyla / $hari_kerja[$a]) * 100);
 	    		}
 	    		else{
 	    			$persenon[] = array(date('M Y', strtotime($tahun.'-'.$a)) , 0);
@@ -738,7 +829,7 @@ class User_C extends CI_Controller {
 			$data['ontime'] = json_encode($ontime);
 			$data['late'] = json_encode($late);
 			
-			$data['persen'] = json_encode($persen);
+			// $data['persen'] = json_encode($persen);
 			$data['persenon'] = json_encode($persenon);
 			$data['persenla'] = json_encode($persenla);
 			$data['id_k'] =$id_k;

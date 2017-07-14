@@ -3,18 +3,8 @@
 		<div class="row">
 			<br/>
 			<div class="col-md-6">
-<<<<<<< HEAD
-<<<<<<< HEAD
 				<h1>Selamat Datang, -nama user-</h1>
 				<h3>Juli 2015</h3>		
-=======
-				<br/><h1>Selamat Datang, -nama user-</h1>
-				<h4>Juli 2015</h4>		
->>>>>>> 2cd2cac44ea641f17ff2eb1df468370e9e87b34a
-=======
-				<br/><h1>Selamat Datang, -nama user-</h1>
-				<h4>Juli 2015</h4>		
->>>>>>> c75c0472e54f6cbbd39622dce2674f3f5d9974a6
 			</div>
 			<div class="col-md-6">
 				<div class="dist">

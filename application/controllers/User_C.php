@@ -253,19 +253,27 @@ class User_C extends CI_Controller {
 			$this->form_validation->set_rules('u_email','Email','trim|required|valid_email');
 			$this->form_validation->set_rules('u_nohp','No HP','trim|required|min_length[12]');
 			$this->form_validation->set_rules('u_jabatan','Jabatan','trim|required');
-			$dataCondition['id_k'] = $this->input->post('u_id');
+			
 			if($this->form_validation->run()==TRUE){
-			    $data['id_k'] = $this->input->post('u_id');
+				$dataCondition['id_k'] = $this->input->post('u_id');
+			    //$data['id_k'] = $this->input->post('u_id');
 			    $data['nama_k'] = $this->input->post('u_nama');
 				$data['alamat_k'] = $this->input->post('u_alamat');
 			    $data['email_k'] = $this->input->post('u_email');
 			    $data['noHp_k'] = $this->input->post('u_nohp');
 			    $data['jabatan_k'] = $this->input->post('u_jabatan');
+			    $unlink_foto_k= $this->input->post('u_foto_k');
+
+			    // $data['jabatan_k'] = $this->input->post('u_jabatan');
+			    // $data['jabatan_k'] = $this->input->post('u_jabatan');
+
+				
 				$config['upload_path']          = FCPATH."assets/img/";
 	            $config['allowed_types']        = 'gif|jpg|png|jpeg';
 	            $this->load->library('upload', $config);
 	            if(null !== 'u_foto'){
 		            if($this->upload->do_upload('u_foto')){
+			    		unlink(FCPATH."/".$unlink_foto_k);
 		                $datax = $this->upload->data();
 		                $data['foto_k'] = "assets/img/".$datax['file_name'];
 		            }
@@ -293,7 +301,7 @@ class User_C extends CI_Controller {
 	            $this->session->set_flashdata('alert_update_info', $alert_update_info);
 				//redirect('User_C/update_user/'.$data['id_k']);
 			}
-			redirect('User_C/update_user/'.$data['id_k']);
+			redirect('User_C/update_user/'.$dataCondition['id_k']);
 			
 		}
 		

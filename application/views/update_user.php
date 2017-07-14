@@ -18,6 +18,7 @@ foreach ($user->result() as $row) {
         <br>
         <br>
         <?=$this->session->flashdata("alert_update_info");?>
+        <?=$this->session->flashdata("alert_update_cuti");?>
         <?=$this->session->flashdata("alert_update_login");?>
         <form class="form-horizontal" action="<?php echo base_url();?>User_C/update_info" method="POST" id="registerForm" autocomplete="on" enctype="multipart/form-data">
             <div class="col-xs-12 col-sm-4" style="margin-top:50px; padding: 10px 10px 10px 10px;background-color: #f1f1f1">
@@ -69,13 +70,13 @@ foreach ($user->result() as $row) {
                 <input type="text" class="form-control" name="u_bisa_cuti_db" value="<?php echo $row->bisa_cuti;?>">
                 
                 <!-- VARIABEL UNTUK LINK FOTO-->
-                <input type="text" class="form-control" name="u_foto_k" value="<?php echo $row->foto_k;?>">
+                <input type="text" class="form-control" name="unlink_foto_k" value="<?php echo $row->foto_k;?>">
 
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Bisa cuti</label>
                     <div class="col-sm-10">
-                        <select name="u_bisa_cuti_form" id="input" class="form-control" required="required" value="<?=$row->bisa_cuti?>">
+                        <select name="u_bisa_cuti_form" id="input" class="form-control" required="required" >
                             <?php if ($row->bisa_cuti == 0 ) {?>
                                 <option value="0" selected >0</option>
                                 <option value="1" >1</option>

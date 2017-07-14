@@ -94,7 +94,7 @@ class Home_C extends CI_Controller {
 				// redirect();
 			}
 		}
-			redirect();
+			redirect("Home_C/view/dashboard");
 	}
 
 	public function logout() 

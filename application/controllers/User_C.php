@@ -262,16 +262,33 @@ class User_C extends CI_Controller {
 			    $data['email_k'] = $this->input->post('u_email');
 			    $data['noHp_k'] = $this->input->post('u_nohp');
 			    $data['jabatan_k'] = $this->input->post('u_jabatan');
-			    $unlink_foto_k= $this->input->post('u_foto_k');
 
-			    // $data['jabatan_k'] = $this->input->post('u_jabatan');
-			    // $data['jabatan_k'] = $this->input->post('u_jabatan');
+			    $data_banding['bisa_cuti_db'] = (int)$this->input->post('u_bisa_cuti_db');
+			    $data_banding['bisa_cuti_form'] = (int)$this->input->post('u_bisa_cuti_form');
 
+			    if ($data_banding['bisa_cuti_form'] > $data_banding['bisa_cuti_db']) { // apakah terjadi update bisa cuti-> apakah edit bisa_cuti dari 0 menjadi 1
+			    	$dataUpdate['jatah_cuti'] = 1;
+			    	$dataUpdate['last_sync'] = date("Y-m-d");
+			    	$update_data_c = $this->Absen_M->update('data_c',$dataCondition,$dataUpdate);
+			    	$results = json_decode($update_data_c, true);
+					if ($results['status']) {
+						$alert_update_cuti = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Update cuti Berhasil!</strong></div>";
+						$this->session->set_flashdata('alert_update_cuti', $alert_update_cuti);
+					}else{
+						$alert_update_cuti = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Update cuti gagal!</strong></div>";
+						$this->session->set_flashdata('alert_update_cuti', $alert_update_cuti);
+					} 
+			    }
+			    else{
+			    	$alert_update_cuti = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>F = ".$data_banding['bisa_cuti_form']."|| DB = ".$data_banding['bisa_cuti_db']."</strong></div>";
+					$this->session->set_flashdata('alert_update_cuti', $alert_update_cuti);
+			    }
 				
 				$config['upload_path']          = FCPATH."assets/img/";
 	            $config['allowed_types']        = 'gif|jpg|png|jpeg';
 	            $this->load->library('upload', $config);
 	            if(null !== 'u_foto'){
+			    	$unlink_foto_k= $this->input->post('unlink_foto_k');
 		            if($this->upload->do_upload('u_foto')){
 			    		unlink(FCPATH."/".$unlink_foto_k);
 		                $datax = $this->upload->data();
@@ -301,6 +318,10 @@ class User_C extends CI_Controller {
 	            $this->session->set_flashdata('alert_update_info', $alert_update_info);
 				//redirect('User_C/update_user/'.$data['id_k']);
 			}
+			// echo"<pre>";
+			// var_dump($data);
+			// var_dump($data_banding);
+			// echo"<pre>";
 			redirect('User_C/update_user/'.$dataCondition['id_k']);
 			
 		}

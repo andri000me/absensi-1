@@ -45,21 +45,50 @@
 	<!-- start content -->
 	<div class="col-sm-12">
 		<div class="box">
-		    <div class="col-sm-4">
-		    	<br/><h1>Stasistik Bulanan</h1>
-		    	<h3>Juli 2015</h3>	
+		    <div class="col-sm-3">
+		    	<br/><h2>Stasistik Bulanan</h2>
+		    	<h4>Juli 2015</h4>	
 		    </div>
-		    <div class="col-sm-6">
-		    	<botton class="btn btn-primary btn-lg">Pilih Bulan</botton>
-		    	<botton class="btn btn-primary btn-lg">Pilih Tahun</botton>
-		    	<botton  class="btn btn-primary btn-lg">Tampilkan</botton>
-		    	<botton  class="btn btn-primary btn-lg">Cetak</botton >
-		    </div>  
-		    <!-- <div class="col-sm-1"><botton  class="btn btn-primary btn-lg">Tampilkan</botton ></div>  
-		    <div class="col-sm-1"><botton  class="btn btn-primary btn-lg">Cetak</botton ></div>   -->
+		    <div class="col-sm-3"></div>
+		    
+		    <div class="col-sm-2 distance">
+	            <select class="form-control" data-placeholder="Nama Karyawan"  name="l_tahun">
+	            	<?php $date = date('Y'); 
+	            		for($x = $date; $x>=2017; $x--) { ?>
+	                <option value="00">Pilih Tahun</option>
+				    <option value="<?php echo $x;?>"><?php echo $x; ?></option>
+				    <?php } ?>
+				</select>
+			</div>
+			<div class="col-sm-2 distance">
+	            <select class="form-control" data-placeholder="Nama Karyawan"  name="l_bulan">
+	                <option value="00">Pilih Bulan </option>
+				    <option value="01">Januari </option>
+				    <option value="02">Februari </option>
+				    <option value="03">Maret </option>
+				    <option value="04">April </option>
+				    <option value="05">Mei </option>
+				    <option value="06">Juni </option>
+				    <option value="07">Juli </option>
+				    <option value="08">Agustus </option>
+				    <option value="09">September </option>
+				    <option value="10">Oktober </option>
+				    <option value="11">November </option>
+				    <option value="12">Desember </option>
+				</select>
+			</div>
+		    <div class="col-sm-1 distance">
+		    	<botton  class="btn btn-primary btn-laporan">TAMPILKAN</botton>
+		    </div> 
+		 
+		    <div class="col-sm-1 distance">
+		    	<hr class="vertical-line">
+		    	<botton  class="btn btn-primary btn-laporan distance2">CETAK</botton >
+		    </div>	    
 	    </div>
+    </div>  
+    <hr class="horizontal-line">
 
-    </div>   
     <div class="col-sm-12">
     	<div class="col-sm-2">
 		    <br/><p>Total Denda</p>
@@ -81,10 +110,10 @@
     </div>
     <br>
 	<br>
-	<br>
+
     
     <!-- tabel -->           
-	<div class="col-sm-12">
+	<div class="col-sm-12 distance-tabel">
 		<div class="container">
 		        <div class="table-responsive">
 		        	<table class="table table-condensed" id="table">
@@ -103,27 +132,17 @@
 		                <tbody>
 		                    <tr class="table-flag-blue">
 		                        
-		                        <td><a href="">94633</a></td>
-		                        <td>11/05/2017</td>
-		                        <td>17/05/2017</td>
-		                        <td>Rp. 160.000,00</td>
-		                        <td>Rp. 667,00</td>
-		                        <td>Waiting Confirmation</td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
 		                        <td><a href="">Setuju</a></td>
 		                        <td><a href="">Tidak</a></td>
 		                    </tr>
 
-		                    <tr class="table-flag-blue">
-		                        
-		                        <td><a href="">96633</a></td>
-		                        <td>11/05/2017</td>
-		                        <td>17/05/2017</td>
-		                        <td>Rp. 224.000,00</td>
-		                        <td>Rp. 667,00</td>
-		                        <td>Waiting Confirmation</td>
-		                        <td><a href="">Setuju</a></td>
-		                        <td><a href="">Tidak</a></td>
-		                    </tr>        
+		                   
 		                </tbody>
 		            </table>
 		        </div>

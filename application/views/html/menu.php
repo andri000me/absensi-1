@@ -27,9 +27,9 @@
           <ul class="nav navbar-nav navbar-right">
 
             <?php if ($this->session->userdata('logged_in')['hak_akses'] == 1 or $this->session->userdata('logged_in')['hak_akses'] == 2){ ?>
-                <li <?php echo ($active =="Home_C")? 'class = active':''?>><a href="<?php echo site_url('Home_C/view')?>"> Dashboard </a></li>
+                <li <?php echo ($active =="Home_C")? 'class = active':''?>><a href="<?php echo site_url('Home_C/view/dashboard')?>"> Dashboard </a></li>
                 
-                <li <?php echo ($active =="Home_C")? 'class = active':''?>><a href="<?php echo site_url('Home_C/view')?>"> Pengguna </a></li>
+                <li <?php echo ($active =="User_C")? 'class = active':''?>><a href="<?php echo site_url('User_C') ?>"> Pengguna </a></li>
 
                 <li <?php echo ($active =="Acc_C")? 'class = active':''?>>
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -42,7 +42,7 @@
                   </ul>
                 </li>
 
-                <li <?php echo ($active =="Status_C")? 'class = active':''?>>
+                <li <?php echo ($active =="Status_C" or $active =="Jabatan_C" or $active=="Holiday_C")? 'class = active':''?>>
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span>Pengaturan</span>
                     <b class="arrow fa fa-caret-down"></b>
@@ -50,7 +50,7 @@
                   <ul class="dropdown-menu dropdown-navbar">
                     <li><a href="<?php echo site_url('Status_C/view/pengaturan') ?>">Pengaturan</a></li>
                     <li><a href="<?php echo site_url('Status_C/view') ?>">Status</a></li>
-                    <li><a href="<?php echo site_url('Jabatan_C')?>">Jabatan</a></li>
+                    <li><a href="<?php echo base_url('Jabatan_C')?>">Jabatan</a></li>
                     <li><a href="<?php echo site_url('Holiday_C/') ?>">Hari Libur</a></li>                
                   </ul>
                 </li>
@@ -61,7 +61,6 @@
                     <b class="arrow fa fa-caret-down"></b>
                   </a>
                   <ul class="dropdown-menu dropdown-navbar">
-                    <li><a href="<?php echo site_url('User_C') ?>">Data Karyawan</a></li>
                     <li><a href="<?php echo site_url("User_C/update_user/".$this->session->userdata('logged_in')['id_k'])?>">myAccounts</a></li>
                   <?php if (isset($this->session->userdata['logged_in'])) { ?>
                     <li>
@@ -73,20 +72,19 @@
                   </ul>
                 </li>
 
+                <?php if ($apakah_hari_libur == array()) { ?>
+                <li>
+                  <a href="<?php echo site_url('Home_C/view/ijin')?>">Izin</a>
+                </li>
+                <?php }
+                    unset($apakah_hari_libur);
+                ?>
                 
                 <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
                   <a href="<?php echo site_url('Overview_C/view') ?>">Laporan</a>
                 </li>
 
               <?php } else { ?>
-                <?php 
-                  if ($apakah_hari_libur == array()) { ?>
-                  <li>
-                    <a href="<?php echo site_url('Home_C/view/ijin')?>">ijin</a>
-                  </li>
-                  <?php }
-                    unset($apakah_hari_libur);
-                  ?>
                   <li>
                     <a href="" data-toggle="modal" data-target="#loginModal">Logins</a>
                   </li>

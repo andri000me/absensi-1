@@ -32,9 +32,6 @@ class Home_C extends CI_Controller {
 			unset($dataCondition);
 			$this->load->view('html/header');
 			$this->load->view('html/menu');
-			if (isset($this->session->userdata['logged_in'])) {
-				$this->load->view('dashboard',$data);
-			}
 			$this->load->view($page,$data);
 			$this->load->view('html/footer');
 		}
@@ -99,6 +96,7 @@ class Home_C extends CI_Controller {
 		}
 			redirect();
 	}
+
 	public function logout() 
 	{
 		$sess_array = array(

@@ -16,6 +16,7 @@ foreach ($user->result() as $row) {
         </div>
     </div>
         <br>
+        <br>
         <?=$this->session->flashdata("alert_update_info");?>
         <?=$this->session->flashdata("alert_update_login");?>
         <form class="form-horizontal" action="<?php echo base_url();?>User_C/update_info" method="POST" id="registerForm" autocomplete="on" enctype="multipart/form-data">
@@ -57,13 +58,41 @@ foreach ($user->result() as $row) {
                         <input type="text" class="form-control"  name="u_nohp" value="<?php echo $row->noHp_k;?>">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Date added</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"  name="u_date_added" value="<?php echo $row->date_added;?>" disabled>
+                    </div>
+                </div>
+
+                <!-- VARIABEL UNTUK CEK APAKAH BISA_CUTI DIUPDATE -->
+                <input type="text" class="form-control" name="u_bisa_cuti_db" value="<?php echo $row->bisa_cuti;?>">
+                
+                <!-- VARIABEL UNTUK LINK FOTO-->
+                <input type="text" class="form-control" name="u_foto_k" value="<?php echo $row->foto_k;?>">
+
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Bisa cuti</label>
+                    <div class="col-sm-10">
+                        <select name="u_bisa_cuti_form" id="input" class="form-control" required="required" value="<?=$row->bisa_cuti?>">
+                            <?php if ($row->bisa_cuti == 0 ) {?>
+                                <option value="0" selected >0</option>
+                                <option value="1" >1</option>
+                            <?php } else{ ?>
+                                <option value="0" >0</option>
+                                <option value="1" selected >1</option>
+                            <?php }?>
+                        </select>
+                    </div>
+                </div>
                 <div class="form-group" >
                     <label class="col-sm-2 control-label">Jabatan</label>
                     <div class="col-sm-10">
                         <select class=" form-control" name="u_jabatan" tabindex="2" value="<?php echo $row->jabatan_k;?>">
                             <?php
                             $a=$row->jabatan_k;
-                            foreach($jabatans->result() as $option){ 
+                            foreach($jabatans->result() as $option){
                                 echo '<option value="'.$option->id_j.'"';
                                 echo ($a == $option->id_j) ? 'selected' : '';
                                 echo '>'.$option->jabatan.'</option>';

@@ -55,6 +55,18 @@
                   </ul>
                 </li>
 
+                <?php if ($apakah_hari_libur == array()) { ?>
+                <li>
+                  <a href="<?php echo site_url('Home_C/view/ijin')?>">Izin</a>
+                </li>
+                <?php }
+                    unset($apakah_hari_libur);
+                ?>
+                
+                <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
+                  <a href="<?php echo site_url('Overview_C/view') ?>">Laporan</a>
+                </li>
+
                 <li <?php echo ($active =="User_C")? 'class = active':''?>>
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span>User</span>
@@ -70,18 +82,6 @@
                     <li><a href="" data-toggle="modal" data-target="#loginModal">Logins</a></li>
                   <?php } ?>
                   </ul>
-                </li>
-
-                <?php if ($apakah_hari_libur == array()) { ?>
-                <li>
-                  <a href="<?php echo site_url('Home_C/view/ijin')?>">Izin</a>
-                </li>
-                <?php }
-                    unset($apakah_hari_libur);
-                ?>
-                
-                <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
-                  <a href="<?php echo site_url('Overview_C/view') ?>">Laporan</a>
                 </li>
 
               <?php } else { ?>

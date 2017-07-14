@@ -31,7 +31,8 @@ body {
 }
 .distance2{
   margin-top: -96px;
-  margin-left: 57px;
+  /*margin-left: 57px;*/
+  margin-left: 106px;
 
 }
 .distance-tabel{
@@ -50,9 +51,11 @@ body {
   height:34px; 
   background-color:black;
   margin-top: 0px;
-  margin-left: 31px;
+ /* margin-left: 31px;*/
+ margin-left: 54px;
 }
 .horizontal-line{
   width:100%; 
-  height:10px;
+  height:100px;
+  background-color:black;
 }

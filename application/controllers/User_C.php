@@ -319,11 +319,10 @@ class User_C extends CI_Controller {
 	            $this->session->set_flashdata('alert_update_info', $alert_update_info);
 				//redirect('User_C/update_user/'.$data['id_k']);
 			}
-			// echo"<pre>";
-			// var_dump($data);
-			// var_dump($data_banding);
-			// echo"<pre>";
-			redirect('User_C/update_user/'.$dataCondition['id_k']);
+			echo"<pre>";
+			var_dump($dataCondition);
+			echo"<pre>";
+			// redirect('User_C/update_user/'.$dataCondition['id_k']);
 			
 		}
 		

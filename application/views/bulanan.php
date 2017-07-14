@@ -78,7 +78,7 @@
 				</select>
 			</div>
 		    <div class="col-sm-1 distance">
-		    	<botton  class="btn btn-primary btn-laporan dis-tom">TAMPILKAN</botton>
+		    	<botton  class="btn btn-primary btn-laporan">TAMPILKAN</botton>
 		    </div> 
 		 
 		    <div class="col-sm-1 distance">

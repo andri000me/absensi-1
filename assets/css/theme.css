@@ -31,16 +31,13 @@ body {
 }
 .distance2{
   margin-top: -96px;
- /* margin-left: -20px;*/
   margin-left: 57px;
 
 }
 .distance-tabel{
   margin-top: 50px;
 }
-/*.jarak{
-  margin-right:  20px;
-}*/
+
 .btn-laporan{
   padding: 4px 16px;
   font-size: 18px;
@@ -53,8 +50,7 @@ body {
   height:34px; 
   background-color:black;
   margin-top: 0px;
-  /*margin-left: -50px;*/
-  margin-left: 32px;
+  margin-left: 31px;
 }
 .horizontal-line{
   width:100%; 

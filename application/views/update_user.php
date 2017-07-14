@@ -67,10 +67,10 @@ foreach ($user->result() as $row) {
                 </div>
 
                 <!-- VARIABEL UNTUK CEK APAKAH BISA_CUTI DIUPDATE -->
-                <input type="text" class="form-control" name="u_bisa_cuti_db" value="<?php echo $row->bisa_cuti;?>">
+                <input type="hidden" class="form-control" name="u_bisa_cuti_db" value="<?php echo $row->bisa_cuti;?>">
                 
                 <!-- VARIABEL UNTUK LINK FOTO-->
-                <input type="text" class="form-control" name="unlink_foto_k" value="<?php echo $row->foto_k;?>">
+                <input type="hidden" class="form-control" name="unlink_foto_k" value="<?php echo $row->foto_k;?>">
 
 
                 <div class="form-group">

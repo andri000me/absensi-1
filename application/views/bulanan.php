@@ -60,12 +60,29 @@
 	    </div>
 
     </div>   
-    <hr>  
-       
+    <div class="col-sm-12">
+    	<div class="col-sm-2">
+		    <br/><p>Total Denda</p>
+		    <h4>Rp 768.000</h4>	
+		</div>
+		<div class="col-sm-2">
+		    <br/><p>Rata2 Keterlambatan</p>
+		    <h4>25 Menit</h4>	
+		</div>
+		<div class="col-sm-4"></div>
+		<div class="col-sm-2">
+		    <br/><p>Rangking 1</p>
+		    <h4>Ibnu Shodiqin</h4>	
+		</div>
+		<div class="col-sm-2">
+		    <br/><p>Rangking Terakhir</p>
+		    <h4>M. HandharBeni</h4>	
+		</div>
+    </div>
+    <br>
+	<br>
+	<br>
     
-            
-
-
     <!-- tabel -->           
 	<div class="col-sm-12">
 		<div class="container">

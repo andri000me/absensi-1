@@ -23,7 +23,7 @@ class Home_C extends CI_Controller {
 		else {
 			$data['nama_karyawan']=$this->Absen_M->readS('data_k')->result();
 			$data['status']=$this->Absen_M->readS('data_s')->result();
-			
+
 			$dataCondition['end']= '00:00:00';
 			$data['ijin']=$this->Absen_M->rawQuery("
 				SELECT data_k.nama_k, data_i.perihal, data_i.start, data_i.end, data_i.tanggal, data_i.id_i FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE end = '".$dataCondition['end']."'")->result();
@@ -32,6 +32,9 @@ class Home_C extends CI_Controller {
 			unset($dataCondition);
 			$this->load->view('html/header');
 			$this->load->view('html/menu');
+			if (isset($this->session->userdata['logged_in'])) {
+				$this->load->view('dashboard',$data);
+			}
 			$this->load->view($page,$data);
 			$this->load->view('html/footer');
 		}

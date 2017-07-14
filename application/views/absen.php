@@ -1,7 +1,12 @@
 <div class="container" >
 	<div class="row">
-		<div class="col-xs-12 text-center"><h4 id="demo3"></h4> </div>
-		<div class="col-xs-12 text-center"><h4> <?=date('Y-m-d');?></h4> </div>
+		<div class="distance">
+			<div class="col-xs-12 text-center">
+				<h2> Absensi Illiyin Studio</h2>
+				<h4 id="demo3"></h4>
+				<h4> <?= date('Y-m-d');?></h4>
+			</div>
+		</div>
 	</div>
 </div>
 <br>
@@ -11,11 +16,13 @@
 		<?=$this->session->flashdata("alert_login");?>
 		</div>
 	</div>
-	<div class="panel panel-default" style="margin-top: 20px;">
-	  	<div class="panel-body">
-		  	<div class="row">
-		  		<form  id="form-absen" method="POST">
-					<div class="form-group col-xs-12" >
+	<div class="row">
+		<div class="distance2">
+		<div class="col-md-6">
+	  	<div class="panel panel-default">
+		  	<div class="panel-body">
+		  		<form id="form-absen" method="POST">
+					<div class="form-group col-xs-12">
 				        <select class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%" name="c_id_k">
 				        <option></option>
 					        <?php 
@@ -54,6 +61,8 @@
 					</div>
 				</form>
 		  	</div>
+		</div>
+		</div>
 		</div>
 	</div>
 </div>

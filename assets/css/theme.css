@@ -16,6 +16,12 @@ body {
 .theme-showcase .navbar .container {
   width: auto;
 }
+
 .black{
 	color: #000 !important;
+}
+
+.dist{
+  padding-top: 30px;
+  float: right;
 }

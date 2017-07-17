@@ -80,6 +80,7 @@
 
                 <li <?php echo ($active =="User_C")? 'class = active':''?>>
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <img class="profil" src="<?php echo base_url('assets')?>/img/avatar5.jpg" alt="User's Photo" />  
                     <span>User</span>
                     <b class="arrow fa fa-caret-down"></b>
                   </a>

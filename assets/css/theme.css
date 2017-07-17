@@ -33,3 +33,38 @@ body {
 .distance2{
   padding-left: 20%;
 }
+
+.distance{
+  padding-top: 75px;
+  float: auto;
+}
+.distance2{
+  margin-top: -96px;
+  /*margin-left: 57px;*/
+  margin-left: 106px;
+
+}
+.distance-tabel{
+  margin-top: 50px;
+}
+
+.btn-laporan{
+  padding: 4px 16px;
+  font-size: 18px;
+  line-height: 1.3333333;
+  border-radius: 6px;
+
+}
+.vertical-line{
+  width:1px; 
+  height:34px; 
+  background-color:black;
+  margin-top: 0px;
+ /* margin-left: 31px;*/
+ margin-left: 54px;
+}
+.horizontal-line{
+  width:100%; 
+  height:100px;
+  background-color:black;
+}

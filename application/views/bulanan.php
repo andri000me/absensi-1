@@ -45,11 +45,14 @@
 	<!-- start content -->
 	<div class="col-sm-12">
 		<div class="box">
+		<div class="container">
+
 		    <div class="col-sm-3">
 		    	<br/><h2>Stasistik Bulanan</h2>
 		    	<h4>Juli 2015</h4>	
 		    </div>
 		    <div class="col-sm-3"></div>
+		    <div class="col-sm-2"></div>
 		    
 		    <div class="col-sm-2 distance">
 	            <select class="form-control" data-placeholder="Nama Karyawan"  name="l_tahun">
@@ -88,30 +91,37 @@
 	    </div>
     </div>  
     <hr class="horizontal-line">
-
+    <hr>
     <div class="col-sm-12">
-    	<div class="col-sm-2">
-		    <br/><p>Total Denda</p>
-		    <h4>Rp 768.000</h4>	
-		</div>
-		<div class="col-sm-2">
-		    <br/><p>Rata2 Keterlambatan</p>
-		    <h4>25 Menit</h4>	
-		</div>
-		<div class="col-sm-4"></div>
-		<div class="col-sm-2">
-		    <br/><p>Rangking 1</p>
-		    <h4>Ibnu Shodiqin</h4>	
-		</div>
-		<div class="col-sm-2">
-		    <br/><p>Rangking Terakhir</p>
-		    <h4>M. HandharBeni</h4>	
-		</div>
+    	<div class="container">
+	    	<div class="col-sm-2">
+			    <br/><p>Total Denda</p>
+			    <h4>Rp 768.000</h4>	
+			</div>
+			<div class="col-sm-2">
+			    <br/><p>Rata2 Keterlambatan</p>
+			    <h4>25 Menit</h4>	
+			</div>
+			<div class="col-sm-4"></div>
+			<div class="col-sm-2">
+			    <br/><p>Rangking 1</p>
+			    <h4>Ibnu Shodiqin</h4>	
+			</div>
+			<div class="col-sm-2">
+			    <br/><p>Rangking Terakhir</p>
+			    <h4>M. HandharBeni</h4>	
+			</div>
+		</div>	
     </div>
+<<<<<<< HEAD
     <br>
 	<br>
 
     
+=======
+
+    <hr>
+>>>>>>> 74debd2d6605cb7dae49c4e9266ac30e70824da3
     <!-- tabel -->           
 	<div class="col-sm-12 distance-tabel">
 		<div class="container">

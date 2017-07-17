@@ -16,49 +16,56 @@
 		<?=$this->session->flashdata("alert_login");?>
 		</div>
 	</div>
-	<div class="panel panel-default" style="margin-top: 20px;">
-	  	<div class="panel-body">
-		  	<div class="row">
-		  		<form  id="form-absen" method="POST">
-					<div class="form-group col-xs-12" >
-				        <select class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%" name="c_id_k">
-				        <option></option>
-					        <?php 
-			            		foreach($nama_karyawan as $row){
-					              	echo '<option value="'.$row->id_k.'">'.$row->nama_k.'</option>';
-					            }
-					        ?>
-				        </select>
-					</div>
-					<div class="form-group col-xs-12">
-				        <select data-placeholder="Keterangan" class="chosen-select" tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()" id="keterangan">
-				            <option value=""></option>
-					            <?php
-					            	if(isset($this->session->userdata['logged_in'])) {
-							            foreach($status as $row){
-								            echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
-								        }
-								    }
-								    else{
-								    	foreach($status as $row){
-								    		if ($row->keterangan_s == 'libur') {
-								    			echo "";
-								    		}else {
-								            	echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
-								    		}
-								        }
-								    }
-					            ?>
-				        </select>
-					</div>
-					<div class="form-group col-xs-12" id="myDIV">
-						<textarea class="form-control" placeholder="ketikkan alasan disini." name="c_detail" style="min-height: 100px;"></textarea>
-					</div>
-					<div class="col-xs-12">
-						<a class="btn btn-primary" id="submit-absen" onclick="kirim()">Submit</a>
-					</div>
-				</form>
-		  	</div>
+
+	<div class="row">
+		<div class="distance2">
+			<div class="col-md-6">
+			  	<div class="panel panel-default">
+				  	<div class="panel-body">
+				  		<form id="form-absen" method="POST">
+							<div class="form-group col-xs-12">
+						        <select class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%" name="c_id_k">
+						        <option></option>
+							        <?php 
+					            		foreach($nama_karyawan as $row)						            {
+							              	echo '<option value="'.$row->id_k.'">'.$row->nama_k.'</option>';
+							            }
+							        ?>
+						        </select>
+							</div>
+							<div class="form-group col-xs-12">
+						        <select data-placeholder="Keterangan" class="chosen-select" tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()" id="keterangan">
+						            <option value=""></option>
+							            <?php
+							            	if(isset($this->session->userdata['logged_in'])) {
+									            foreach($status as $row){
+										            echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
+										        }
+										    }
+										    else{
+										    	foreach($status as $row){
+										    		if ($row->keterangan_s == 'libur') {
+										    			echo "";
+										    		}else {
+										            	echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
+										    		}
+										        }
+										    }
+							            ?>
+						        </select>
+							</div>
+							<div class="form-group col-xs-12" id="myDIV">
+								<textarea class="form-control" placeholder="ketikkan alasan disini." name="c_detail" style="min-height: 100px;"></textarea>
+							</div>
+							<div class="col-xs-12">
+								<a class="btn btn-primary" id="submit-absen" onclick="kirim()">Submit</a>
+							</div>
+						</form>
+				  	</div>
+				</div>
+			</div>
+
+		</div>
 	</div>
 </div>
 <br>

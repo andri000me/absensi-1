@@ -14,7 +14,7 @@ class Overview_C extends CI_Controller {
     {
             $this->load->view('html/header');
             $this->load->view('html/menu');
-            $this->load->view('html/side_menu');
+            // $this->load->view('html/side_menu');
             $this->load->view("Overview/".$page);
             $this->load->view('html/footer');
     }

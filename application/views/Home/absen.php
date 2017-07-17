@@ -18,8 +18,8 @@
 	</div>
 
 	<div class="row">
-		<div class="distance2">
-			<div class="col-md-6">
+		<div class="center-block">
+			<div class="col-sm-4 col-sm-push-4">
 			  	<div class="panel panel-default">
 				  	<div class="panel-body">
 				  		<form id="form-absen" method="POST">
@@ -70,28 +70,6 @@
 </div>
 <br>
 <br>
-<div class="container">
-	<div class="table-responsive"><!--  -->
-  		<table class="table  table-condensed" id="show-absenx"><!-- id="examplb" -->
-  			<thead>
-	        		<tr>
-		            	<th>id_A</th>
-		            	<th>Nama karyawan</th>
-		            	<th>Keterangan</th>
-		            	<th>Detail</th>
-		            	<th>Tanggal</th>
-		            	<th>Jam</th>
-		            	<th>Acc</th>
-		            	<th>denda</th>
-	            	</tr>
-        	</thead>
-	        <tbody>
-	        	
-	        </tbody>
-  		</table>
-	</div>
-</div>
-
 
 
 <?php
@@ -149,33 +127,33 @@ function myFunction() {
 
 </script>
 <script type="text/javascript">
-	window.onload=show();
-	function show(){
-	    $.get('<?php echo base_url('Home_C/show_absen/')?>', function(html){
-	    	var data = JSON.parse(html);
-	    	console.log(data);
-	    	$('#show-absenx').DataTable().destroy();
+	// window.onload=show();
+	// function show(){
+	//     $.get('<?php echo base_url('Home_C/show_absen/')?>', function(html){
+	//     	var data = JSON.parse(html);
+	//     	console.log(data);
+	//     	$('#show-absenx').DataTable().destroy();
 
-	    	$('#show-absenx').DataTable({
-	    		data : (data),
-	    		columns: [
-	    		{ "data": "id_a" },
-	    		{ "data": "nama_k" },
-	    		{ "data": "keterangan_s" },
-	    		{ "data": "detail" },
-	    		{ "data": "tanggal" },
-	    		{ "data": "jam" },
-	    		{ "data": "acc" ,
-	    			"render": function ( data, type, full, meta ) {
-					      return data === '0' ?'<a class="btn btn-xs btn-danger">belum di acc</a>' : '<a class="btn btn-xs btn-success">sudah di acc</a>';
-					}
-				},
-	    		{ "data": "denda" , render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}],
-			 	paging : false
-			 	// render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}],
-	    	});
-	    });
-	}
+	//     	$('#show-absenx').DataTable({
+	//     		data : (data),
+	//     		columns: [
+	//     		{ "data": "id_a" },
+	//     		{ "data": "nama_k" },
+	//     		{ "data": "keterangan_s" },
+	//     		{ "data": "detail" },
+	//     		{ "data": "tanggal" },
+	//     		{ "data": "jam" },
+	//     		{ "data": "acc" ,
+	//     			"render": function ( data, type, full, meta ) {
+	// 				      return data === '0' ?'<a class="btn btn-xs btn-danger">belum di acc</a>' : '<a class="btn btn-xs btn-success">sudah di acc</a>';
+	// 				}
+	// 			},
+	//     		{ "data": "denda" , render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}],
+	// 		 	paging : false
+	// 		 	// render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}],
+	//     	});
+	//     });
+	// }
 	
 </script>
 <script type="text/javascript">
@@ -199,7 +177,7 @@ function myFunction() {
 	            // console.log(data);
 	            $('#submit-absen').text('Submits'); //change button text
 	            $('#submit-absen').attr('disabled',false); //set button enable 
-	            show();
+	            // show();
 
 	        },
 	        error: function (jqXHR, textStatus, errorThrown)

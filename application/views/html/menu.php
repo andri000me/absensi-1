@@ -63,8 +63,19 @@
                     unset($apakah_hari_libur);
                 ?>
                 
-                <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
+               <!--  <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
                   <a href="<?php echo site_url('Overview_C/view') ?>">Laporan</a>
+
+                </li> -->
+                 <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span>Laporan</span>
+                    <b class="arrow fa fa-caret-down"></b>
+                  </a>
+                  <ul class="dropdown-menu dropdown-navbar">
+                    <li><a href="<?php echo base_url('Overview_C/view')?>">Bulanan</a></li>
+                    <li><a href="<?php echo base_url('Overview_C/view/harian')?>">Harian</a></li>
+                  </ul>
                 </li>
 
                 <li <?php echo ($active =="User_C")? 'class = active':''?>>

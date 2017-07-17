@@ -2,7 +2,7 @@
 	
 	<h4>Laporan Absensi Harian</h4><br>
 
-		<form action="<?php echo base_url('Overview_C/lihat/hari')?>" method="POST" class="form-horizontal" role="form" >
+		<form action="<?php echo base_url('Overview_C/lihat/hari')?>" method="POST" class="form-inline" role="form" >
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Tanggal</label>
 			    <div class="col-sm-5">

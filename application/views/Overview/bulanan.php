@@ -49,7 +49,6 @@
 		    	<br/><h2>Stasistik Bulanan</h2>
 		    	<h4>Juli 2015</h4>	
 		    </div>
-<<<<<<< HEAD:application/views/Overview/bulanan.php
 		    <div class="col-sm-3"></div>
 			<form action="<?php echo base_url('Overview_C/lihat/bulan')?>" method="POST" class="form-horizontal" role="form" >
 			    <div class="col-sm-2 distance">
@@ -89,7 +88,6 @@
 	    </div>
     </div>
     <hr class="horizontal-line">
-=======
 		    <div class="col-sm-2"></div>
 		    
 		    <div class="col-sm-2 distance">
@@ -132,8 +130,6 @@
 	    </div>
 	    <hr class="horizontal-line">
     </div>  
-    
->>>>>>> 488e8d9a5fc44e7277c9a7f0bd12e5409c177707:application/views/bulanan.php
 
     <div class="col-sm-12">
     	<div class="container">
@@ -160,7 +156,7 @@
 
     </div>
 
-    
+    <hr>
     <!-- tabel -->           
 	<div class="col-sm-12 distance-tabel">
 		<div class="container">

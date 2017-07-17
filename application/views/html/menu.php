@@ -61,8 +61,6 @@
                 <?php }
                     unset($apakah_hari_libur);
                 ?>
-                
-<<<<<<< HEAD
                 <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
                   <a href="<?php echo base_url('Overview_C/view') ?>">Laporan</a>
                 </li>
@@ -70,7 +68,6 @@
                 <li <?php echo ($active1 =="update_my_account")? 'class = active':''?>>
                   <a class="dropdown-toggle" data-toggle="dropdown">
                     <span><img src="<?php echo base_url().$this->session->userdata('logged_in')['link_foto']?>" class="img-rounded" style='width: 30px'></span>
-=======
                <!--  <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
                   <a href="<?php echo site_url('Overview_C/view') ?>">Laporan</a>
 
@@ -90,7 +87,6 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img class="profil" src="<?php echo base_url('assets')?>/img/avatar5.jpg" alt="User's Photo" />  
                     <span>User</span>
->>>>>>> 488e8d9a5fc44e7277c9a7f0bd12e5409c177707
                     <b class="arrow fa fa-caret-down"></b>
                   </a>
                   <ul class="dropdown-menu dropdown-navbar">

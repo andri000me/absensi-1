@@ -16,7 +16,6 @@
 		<?=$this->session->flashdata("alert_login");?>
 		</div>
 	</div>
-<<<<<<< HEAD:application/views/Home/absen.php
 	<div class="panel panel-default" style="margin-top: 20px;">
 	  	<div class="panel-body">
 		  	<div class="row">
@@ -60,7 +59,6 @@
 					</div>
 				</form>
 		  	</div>
-=======
 	<div class="row">
 		<div class="distance2">
 			<div class="col-md-6">
@@ -108,7 +106,6 @@
 				  	</div>
 				</div>
 			</div>
->>>>>>> 488e8d9a5fc44e7277c9a7f0bd12e5409c177707:application/views/absen.php
 		</div>
 	</div>
 </div>

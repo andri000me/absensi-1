@@ -14,13 +14,10 @@ class Overview_C extends CI_Controller {
     {
             $this->load->view('html/header');
             $this->load->view('html/menu');
-<<<<<<< HEAD
             $this->load->view('html/side_menu');
             $this->load->view("Overview/".$page);
-=======
             // $this->load->view('html/side_menu');
             $this->load->view($page);
->>>>>>> 488e8d9a5fc44e7277c9a7f0bd12e5409c177707
             $this->load->view('html/footer');
     }
     public function lihat($bulan_or_hari){

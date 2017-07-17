@@ -345,8 +345,8 @@ class User_C extends CI_Controller {
 			// var_dump($dataCondition);
 			// echo"<pre>";
 			$back_to = $this->router->fetch_method();
-			echo $back_to;
-			// redirect('User_C/'.$back_to.'/'.$dataCondition['id_k']);
+			// echo $back_to;
+			redirect('User_C/'.$back_to.'/'.$dataCondition['id_k']);
 			
 		}
 		

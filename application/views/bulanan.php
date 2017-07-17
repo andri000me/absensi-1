@@ -113,15 +113,10 @@
 			</div>
 		</div>	
     </div>
-<<<<<<< HEAD
     <br>
 	<br>
 
-    
-=======
-
     <hr>
->>>>>>> 74debd2d6605cb7dae49c4e9266ac30e70824da3
     <!-- tabel -->           
 	<div class="col-sm-12 distance-tabel">
 		<div class="container">

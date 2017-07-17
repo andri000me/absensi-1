@@ -23,6 +23,7 @@
 		<table class="table table-condensed" id="tabel_absen">
 			<thead>
 		    	<tr>
+		        	<th>id_a</th>
 		        	<th>Nama</th>
 		            <th>Absensi</th>
 		            <th>Keterangan</th>
@@ -72,13 +73,19 @@ function show(){
 	$('#tabel_absen').DataTable({
 		data : (data.absen),
 		columns: [
+			{ "data": "id_a" },
 			{ "data": "nama_k" },
 			{ "data": "keterangan_s" },
 			{ "data": "detail" },
 			{ "data": "tanggal" },
 			{ "data": "jam" },
 			{ "data": "denda" , render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )},
-			{ "data": "id_a" }],
+			{ "data": "id_a" ,
+                        render: function ( data, type, full, meta ) {
+                            return '<a style="margin: 0 20px 0 20px;">Setujui</a>'+'<a>Tolak</a>';
+                        }
+            }
+        ],
 		paging : false,
 		aoColumnDefs: [{ "bSortable": true, "aTargets": [] }]
   		});

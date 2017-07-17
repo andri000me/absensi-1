@@ -45,13 +45,12 @@
 	<!-- start content -->
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-12">
 			    <div class="col-sm-3">
 			    	<br/><h2>Stasistik Bulanan</h2>
 			    	<h4>Juli 2015</h4>	
 			    </div>
 
-			    <div class="col-sm-2"></div>
+			    <!-- <div class="col-sm-2"></div> -->
 				<form action="<?php echo base_url('Overview_C/lihat/bulan')?>" method="POST" class="form-horizontal" role="form" >
 				    <div class="col-sm-2 distance">
 			            <select class="form-control" data-placeholder="Nama Karyawan"  name="l_tahun">
@@ -90,7 +89,6 @@
 			    <div class="col-sm-1 distance">    	
 			    	<button  class="btn btn-primary btn-laporan" id="print_btn" >CETAK</button>
 			    </div>	 
-			</div>       
 	    </div>
 	    <hr class="horizontal-line col-sm-12 col-xs-12 pull right">
     </div>

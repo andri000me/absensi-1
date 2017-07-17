@@ -114,6 +114,7 @@
 					{ "bSortable": false, "aTargets": [6] }
 				]
 			});
+			console.log(data.list_ijin);
 			$('#tabel-ijin').DataTable({
 				"data" :(data.list_ijin),
 				"columns": [

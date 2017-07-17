@@ -12,7 +12,7 @@ class Playground_C extends CI_Controller {
     {
         	$this->load->view('html/header');
     		$this->load->view('html/menu');
-    		$this->load->view('playground');
+    		$this->load->view('Playground/playground');
     		$this->load->view('html/footer');
     }
     public function upload()

@@ -8,7 +8,8 @@ class Home_C extends CI_Controller {
         $this->load->model('Absen_M');
 		date_default_timezone_set("Asia/Jakarta");
     }
-	public function view($page = 'absen')
+	
+	public function view_absen()
 	{
 		$date = date('Y-m-d');
 		$dataCondition['tanggal'] = $date;
@@ -24,17 +25,52 @@ class Home_C extends CI_Controller {
 			$data['nama_karyawan']=$this->Absen_M->readS('data_k')->result();
 			$data['status']=$this->Absen_M->readS('data_s')->result();
 
+			$this->load->view('html/header');
+			$this->load->view('html/menu');
+			$this->load->view('Home/absen',$data);
+			$this->load->view('html/footer');
+		}
+	}
+	public function view_ijin()
+	{
+		$date = date('Y-m-d');
+		$dataCondition['tanggal'] = $date;
+		$apakah_hari_libur = $this->Absen_M->read('data_libur',$dataCondition)->result();
+		unset($dataCondition['tanggal']);
+		if ($apakah_hari_libur != array() AND isset($this->session->userdata['logged_in']) == false) {
+			$this->load->view('html/header');
+			$this->load->view('html/block');
+		}elseif($apakah_hari_libur != array() AND isset($this->session->userdata['logged_in']) == true){
+			redirect('Jabatan_C');
+		}
+		else {
+			$data['nama_karyawan']=$this->Absen_M->readS('data_k')->result();
 			$dataCondition['end']= '00:00:00';
 			$data['ijin']=$this->Absen_M->rawQuery("
 				SELECT data_k.nama_k, data_i.perihal, data_i.start, data_i.end, data_i.tanggal, data_i.id_i FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE end = '".$dataCondition['end']."'")->result();
 			$data['list_ijin']=$this->Absen_M->rawQuery("
 				SELECT data_k.nama_k, data_i.perihal, data_i.start, data_i.end, data_i.tanggal, data_i.id_i,data_i.denda FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE tanggal = '".$date."'")->result();
 			unset($dataCondition);
+
 			$this->load->view('html/header');
 			$this->load->view('html/menu');
-			$this->load->view($page,$data);
+			$this->load->view('Home/ijin',$data);
 			$this->load->view('html/footer');
 		}
+	}
+	public function view_dashboard()
+	{
+		$date = date('Y-m-d');
+		$dataCondition['tanggal'] = $date;
+		$apakah_hari_libur = $this->Absen_M->read('data_libur',$dataCondition)->result();
+		unset($dataCondition['tanggal']);
+		$data['nama_karyawan']=$this->Absen_M->readS('data_k')->result();
+		$data['status']=$this->Absen_M->readS('data_s')->result();
+
+		$this->load->view('html/header');
+		$this->load->view('html/menu');
+		$this->load->view('Home/dashboard',$data);
+		$this->load->view('html/footer');
 	}
 	public function show_absen()
 	{
@@ -44,7 +80,7 @@ class Home_C extends CI_Controller {
 				INNER JOIN data_k ON data_ra.id_k = data_k.id_k
 				INNER JOIN data_s ON data_ra.id_s = data_s.id_s
 				WHERE tanggal = '".$date."'	ORDER BY data_ra.id_a DESC ")->result();
-		echo json_encode($data['absen']);
+		echo json_encode($data);
 	}
 	public function show_ijin()
 	{
@@ -75,11 +111,14 @@ class Home_C extends CI_Controller {
 							'password_k' => md5($this->input->post('l_password')
 			));
 			$result = $this->Absen_M->read('data_l',$data)->result();
+			$data_k['id_k'] = $result[0]->id_k;
+			$link_foto = $this->Absen_M->read('data_k',$data_k)->result();
 			if ($result != array()) {
 				$session_data = array(
 					'username' => $result[0]->username_k,
 					'id_k' => $result[0]->id_k,
-					'hak_akses' => $result[0]->hak_akses
+					'hak_akses' => $result[0]->hak_akses,
+					'link_foto' => $link_foto[0]->foto_k
 				);
 				if (($session_data['hak_akses'] == '1') or ($session_data['hak_akses'] == '2')) {
 					$this->session->set_flashdata("alert_login", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' 	aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>login sukses!</strong> </div>");
@@ -94,7 +133,7 @@ class Home_C extends CI_Controller {
 				// redirect();
 			}
 		}
-			redirect("Home_C/view/dashboard");
+			redirect();
 	}
 
 	public function logout() 
@@ -115,8 +154,6 @@ class Home_C extends CI_Controller {
 			$data['id_k'] = $this->input->post('c_id_k');
 			$data['id_s'] = $this->input->post('c_status');
 
-			$date = date('m');
-			
 			$where_idm['id_m'] =  1;
 			$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
 			$jam_masuk = $datax['jam_masuk'][0]->misc;
@@ -200,33 +237,43 @@ class Home_C extends CI_Controller {
 			$datas['id_k'] = $data['id_k'];
 			$datas['tanggal'] = $data['tanggal'];
 			$cari = $this->Absen_M->searchResult('data_ra',$datas)->result_array();//apakah sudah absen hari ini
-			if ($cari === array()) 
+			if ($cari == array())
 			{
 				$datas['start'] = $jam_masuk;
 				$datas['end'] = $jam_pulang;
-				if ($data['id_s'] == 3) 
+				if ($data['id_s'] == 3)
 				{
 					$where_idk['id_k'] = $data['id_k'];
-					$cuti_ku = $this->Absen_M->read('data_c',$where_idk)->result();
-					$wes_cuti = $cuti_ku[0]->cuti_berapakali;
-					
-					if ($wes_cuti == $date) 
-					{
-						echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal!</strong> Batas cuti anda habis</div>";
+					$data_k = $this->Absen_M->read('data_k',$where_idk)->result();
+					if ($data_k[0]->bisa_cuti == 0 and $data_k[0]->jabatan_k != 12) {
+						echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Anda belum bisa cuti!</strong></div>";
 					}
-					else
-					{
-						$result = $this->Absen_M->create('data_ra',$data);
-						if($result){
-							echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti berhasil!</strong></div>";
+					elseif ($data_k[0]->bisa_cuti==0 and $data_k[0]->jabatan_k == 12) {
+						echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Magang tidak boleh cuti!</strong></div>";
+					}
+					else{// bisa_cuti ==1 dan bukan anak magang
+						$data_c = $this->Absen_M->read('data_c',$where_idk)->result();
+						$wes_cuti = $data_c[0]->cuti_berapakali;
+						$jatah_cuti = $data_c[0]->jatah_cuti;
+						
+						if ($wes_cuti == $jatah_cuti)
+						{
+							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal!</strong> Batas cuti anda habis</div>";
 						}
 						else
 						{
-							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal!</strong></div>";
-						}
+							$result = $this->Absen_M->create('data_ra',$data);
+							if($result){
+								echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti berhasil!</strong></div>";
+							}
+							else
+							{
+								echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal!</strong></div>";
+							}
+						}	
 					}
 				}
-				else
+				else// hadir
 				{
 					$result = $this->Absen_M->create('data_ra',$data);
 					if($result && $data['id_s'] != 6)
@@ -236,7 +283,7 @@ class Home_C extends CI_Controller {
 					elseif ($result && $data['id_s'] == 6) {
 						echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin 1 hari berhasil!</strong> jangan lupa membayar sejumlah $data[denda]</div>";
 					}
-					else
+					elseif($result == false)
 					{
 						echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal!</strong></div>";
 					}

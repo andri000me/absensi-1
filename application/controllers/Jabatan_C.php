@@ -15,7 +15,7 @@ class Jabatan_C extends CI_Controller {
 		    $data['jabatans'] = $this->Absen_M->rawQuery("SELECT * FROM data_j where id_j != 9")->result();
 			$this->load->view('html/header');
 			$this->load->view('html/menu');
-			$this->load->view('jabatan',$data);
+			$this->load->view('Jabatan/jabatan',$data);
 			$this->load->view('html/footer');
 	}
 	
@@ -64,7 +64,7 @@ class Jabatan_C extends CI_Controller {
 	    $datax['jabatan'] = $this->Absen_M->read('data_j',$dataCondition)->result();
 		$this->load->view('html/header');
 		$this->load->view('html/menu');
-		$this->load->view('update_jabatan',$datax);
+		$this->load->view('Jabatan/update_jabatan',$datax);
 		$this->load->view('html/footer');
 	}
 	public function update_info()

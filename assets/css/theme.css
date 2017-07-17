@@ -58,6 +58,7 @@ body {
   border-radius: 6px;
 
 }
+
 .vertical-line{
   width:1px; 
   height:34px; 
@@ -67,6 +68,7 @@ body {
   margin-left: 54px;
   /*margin: auto;*/
 }
+
 .horizontal-line{
   width: 85%;
   height: 1px;

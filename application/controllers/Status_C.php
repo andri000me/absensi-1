@@ -16,7 +16,7 @@ class Status_C extends CI_Controller {
 	        $data['pengaturans'] = $this->Absen_M->readS('data_m');
 			$this->load->view('html/header');
 			$this->load->view('html/menu');
-			$this->load->view($page,$data);
+			$this->load->view("Status/".$page,$data);
 			$this->load->view('html/footer');
 	}
 	public function create_status(){
@@ -64,7 +64,7 @@ class Status_C extends CI_Controller {
 	        $datax['status'] = $this->Absen_M->read('data_s',$dataCondition);
 			$this->load->view('html/header');
 			$this->load->view('html/menu');
-			$this->load->view('update_status',$datax);
+			$this->load->view('Status/update_status',$datax);
 			$this->load->view('html/footer');
 		}else{
 			redirect();
@@ -125,7 +125,7 @@ class Status_C extends CI_Controller {
 		$datax['misc'] = $this->Absen_M->read('data_m',$dataCondition);
 		$this->load->view('html/header');
 		$this->load->view('html/menu');
-		$this->load->view('update_misc',$datax);
+		$this->load->view('Status/update_misc',$datax);
 		$this->load->view('html/footer');
 	}
 	public function update_misc_info($data){
@@ -167,9 +167,4 @@ class Status_C extends CI_Controller {
 		}
 		redirect('Status_C/view/pengaturan');
 	}
-	
-
-
-
-
 }

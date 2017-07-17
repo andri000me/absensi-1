@@ -70,6 +70,7 @@
 jQuery(function($) { 'use strict';
     
     $('button#print_btn').on('click', function(e) {
+      console.log('head');
       $('#exampli').DataTable().destroy();
       $('#examplo').DataTable().destroy();
       $('#examplw').DataTable().destroy();

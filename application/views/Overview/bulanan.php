@@ -43,6 +43,7 @@
 	</div> -->
 
 	<!-- start content -->
+<<<<<<< HEAD:application/views/bulanan.php
 	<div class="container">
 		<div class="col-sm-12">
 			<div class="row">
@@ -52,6 +53,16 @@
 			    </div>
 			    <div class="col-sm-2"></div>
 			    
+=======
+	<div class="col-sm-12">
+		<div class="container">
+		    <div class="col-sm-3">
+		    	<br/><h2>Stasistik Bulanan</h2>
+		    	<h4>Juli 2015</h4>	
+		    </div>
+		    <div class="col-sm-3"></div>
+			<form action="<?php echo base_url('Overview_C/lihat/bulan')?>" method="POST" class="form-horizontal" role="form" >
+>>>>>>> 34963018e0322e1db4a9e623b519415a6b7d0c0d:application/views/Overview/bulanan.php
 			    <div class="col-sm-2 distance">
 		            <select class="form-control" data-placeholder="Nama Karyawan"  name="l_tahun">
 		            	<?php $date = date('Y'); 
@@ -62,7 +73,11 @@
 					</select>
 				</div>
 				<div class="col-sm-2 distance">
+<<<<<<< HEAD:application/views/bulanan.php
 		            <select class="form-control" data-placeholder="Nama Karyawan"  name="l_bulan">
+=======
+		            <select class="form-control" data-placeholder="Nama Karyawan"  name="l_bulan" >
+>>>>>>> 34963018e0322e1db4a9e623b519415a6b7d0c0d:application/views/Overview/bulanan.php
 		                <option value="00">Pilih Bulan </option>
 					    <option value="01">Januari </option>
 					    <option value="02">Februari </option>
@@ -79,6 +94,7 @@
 					</select>
 				</div>
 			    <div class="col-sm-1 distance">
+<<<<<<< HEAD:application/views/bulanan.php
 			    	<botton  class="btn btn-primary btn-laporan">TAMPILKAN</botton>
 			    </div> 
 			    <div class="col-sm-1 distance">
@@ -90,10 +106,18 @@
 			    	<botton  class="btn btn-primary btn-laporan">CETAK</botton >
 			    </div>	
 			</div>        
+=======
+			    	<button type="submit" class="btn btn-primary">TAMPILKAN</button>
+			    </div> 
+			</form>
+		    <div class="col-sm-1 distance">
+		    	<hr class="vertical-line">
+		    	<button  class="btn btn-primary btn-laporan distance2" id="print_btn" >CETAK</button>
+		    </div>	    
+>>>>>>> 34963018e0322e1db4a9e623b519415a6b7d0c0d:application/views/Overview/bulanan.php
 	    </div>
-	    <hr class="horizontal-line">
-    </div>  
-    
+    </div>
+    <hr class="horizontal-line">
 
     <div class="container">
     	<div class="col-sm-12">
@@ -121,7 +145,7 @@
 
     </div>
 
-    
+    <hr>
     <!-- tabel -->           
 	<div class="container">
 		<div class="col-sm-12 distance-tabel">
@@ -161,12 +185,3 @@
 		    </div>
 	    </div>
 
-			<script type="text/javascript">
-                $(document).ready( function() {
-                    $('#table').dataTable( {
-                        "aoColumnDefs": [
-                          { "bSortable": true, "aTargets": [ 7 ] }
-                        ] } );
-                    
-                } );
-            </script>  

@@ -7,6 +7,9 @@ class User_C extends CI_Controller {
         parent::__construct();
         date_default_timezone_set("Asia/Jakarta");
         $this->load->model('Absen_M');
+        if (!$this->session->userdata('logged_in')){
+            redirect();
+        }
     }
     public function cek_bisa_cuti_nol()
     {
@@ -91,9 +94,11 @@ class User_C extends CI_Controller {
 				// }
 
     		}
-    		// else{
-    		// 	echo " >> 0 <br>";
-    		// }
+    		else{
+    			$dataCondition['id_k'] = $row->id_k;
+    			$dataUpdate['last_sync'] = date('Y-m-d');
+    			$update_data_c = $this->Absen_M->update('data_c',$dataCondition,$dataUpdate);
+    		}
     	}
 
     }
@@ -102,17 +107,17 @@ class User_C extends CI_Controller {
     	$this->cek_bisa_cuti_nol();
     	$this->cek_bisa_cuti_satu();
         $data['jabatans'] = $this->Absen_M->readS('data_j');
-        $datar['hak_akses'] = 1;
-        $data['id_admin'] = $this->Absen_M->read('data_l',$datar)->result();
-        if (($this->session->userdata('logged_in')['id_k']) == ($data['id_admin'][0]->id_k)) {
+        // $datar['hak_akses'] = 1;
+        // $data['id_admin'] = $this->Absen_M->read('data_l',$datar)->result();
+        if (($this->session->userdata('logged_in')['id_k']) == 1) {
         	$data['karyawan'] = $this->Absen_M->rawQuery("SELECT data_k.id_k,data_k.nama_k,data_k.alamat_k,data_k.email_k,data_k.noHp_k,data_k.jabatan_k,data_k.foto_k FROM data_l INNER JOIN data_k ON data_l.id_k = data_k.id_k WHERE data_k.id_k != ".$this->session->userdata('logged_in')['id_k']);
-        } else {
+        } else { //jika admin yang login, maka jangan tampilkan data superadmni dan admin
         	$data['karyawan'] = $this->Absen_M->rawQuery("SELECT data_k.id_k,data_k.nama_k,data_k.alamat_k,data_k.email_k,data_k.noHp_k,data_k.jabatan_k,data_k.foto_k FROM data_l INNER JOIN data_k ON data_l.id_k = data_k.id_k WHERE data_l.hak_akses != 1 AND data_k.id_k != ".$this->session->userdata('logged_in')['id_k']);
         }
         
 		$this->load->view('html/header');
 		$this->load->view('html/menu');
-		$this->load->view('user',$data);
+		$this->load->view('User/user',$data);
 		$this->load->view('html/footer');
 	}
 	public function create_user()
@@ -231,18 +236,25 @@ class User_C extends CI_Controller {
 	}
 	public function update_user($data)
 	{
-		if (isset($this->session->userdata['logged_in'])) {
 			$dataCondition['id_k'] = $data;
 			$datax['user'] = $this->Absen_M->read('data_k',$dataCondition);//user
 			$datax['login'] = $this->Absen_M->read('data_l',$dataCondition);//login
 		    $datax['jabatans'] = $this->Absen_M->readS('data_j');//jabatan
 			$this->load->view('html/header');
 			$this->load->view('html/menu');
-			$this->load->view('update_user',$datax);
+			$this->load->view('User/update_user',$datax);
 			$this->load->view('html/footer');
-		}else{
-			redirect();
-		}
+	}
+	public function update_my_account($data)
+	{
+			$dataCondition['id_k'] = $data;
+			$datax['user'] = $this->Absen_M->read('data_k',$dataCondition);//user
+			$datax['login'] = $this->Absen_M->read('data_l',$dataCondition);//login
+		    $datax['jabatans'] = $this->Absen_M->readS('data_j');//jabatan
+			$this->load->view('html/header');
+			$this->load->view('html/menu');
+			$this->load->view('User/update_user',$datax);
+			$this->load->view('html/footer');
 	}
 	public function update_info()
 	{
@@ -273,16 +285,26 @@ class User_C extends CI_Controller {
 			    	$update_data_c = $this->Absen_M->update('data_c',$dataCondition,$dataUpdate);
 			    	$results = json_decode($update_data_c, true);
 					if ($results['status']) {
-						$alert_update_cuti = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Update cuti Berhasil!</strong></div>";
+						$alert_update_cuti = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Update bisa_cuti = 1 Berhasil!</strong></div>";
 						$this->session->set_flashdata('alert_update_cuti', $alert_update_cuti);
 					}else{
-						$alert_update_cuti = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Update cuti gagal!</strong></div>";
+						$alert_update_cuti = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Update bisa_cuti = 1 gagal!</strong></div>";
 						$this->session->set_flashdata('alert_update_cuti', $alert_update_cuti);
 					} 
 			    }
-			    else{
-			    	$alert_update_cuti = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>F = ".$data_banding['bisa_cuti_form']."|| DB = ".$data_banding['bisa_cuti_db']."</strong></div>";
-					$this->session->set_flashdata('alert_update_cuti', $alert_update_cuti);
+			    else{ //dari 1 menjadi 0
+			    	$data['bisa_cuti'] = $data_banding['bisa_cuti_form'];
+			    	$dataUpdate['jatah_cuti'] = 0;
+			    	$dataUpdate['last_sync'] = date("0000-00-00");
+			    	$update_data_c = $this->Absen_M->update('data_c',$dataCondition,$dataUpdate);
+			    	$results = json_decode($update_data_c, true);
+					if ($results['status']) {
+						$alert_update_cuti = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Update bisa_cuti = 0 Berhasil!</strong></div>";
+						$this->session->set_flashdata('alert_update_cuti', $alert_update_cuti);
+					}else{
+						$alert_update_cuti = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Update bisa_cuti = 0 gagal!</strong></div>";
+						$this->session->set_flashdata('alert_update_cuti', $alert_update_cuti);
+					} 
 			    }
 				
 				$config['upload_path']          = FCPATH."assets/img/";
@@ -320,10 +342,11 @@ class User_C extends CI_Controller {
 				//redirect('User_C/update_user/'.$data['id_k']);
 			}
 			// echo"<pre>";
-			// var_dump($data);
-			// var_dump($data_banding);
+			// var_dump($dataCondition);
 			// echo"<pre>";
-			redirect('User_C/update_user/'.$dataCondition['id_k']);
+			$back_to = $this->router->fetch_method();
+			echo $back_to;
+			// redirect('User_C/'.$back_to.'/'.$dataCondition['id_k']);
 			
 		}
 		
@@ -444,7 +467,7 @@ class User_C extends CI_Controller {
 		    $data['tahun'] = $tahun;
 		    $this->load->view('html/header');
 		    $this->load->view('html/menu');
-		    $this->load->view('detail_per_user',$data);
+		    $this->load->view('User/detail_per_user',$data);
 		    $this->load->view('html/footer');
 		    // print_r($data_chart);
 		
@@ -461,7 +484,7 @@ class User_C extends CI_Controller {
 	        $datax['status'] = $this->Absen_M->readS('data_s');
 	        $this->load->view('html/header');
 	        $this->load->view('html/menu');
-	        $this->load->view('edit_absensi',$datax);
+	        $this->load->view('User/edit_absensi',$datax);
 	        $this->load->view('html/footer');
     }
     public function delete_absensi_ku($data,$datab){
@@ -631,7 +654,7 @@ class User_C extends CI_Controller {
 
 	        $this->load->view('html/header');
 	        $this->load->view('html/menu');
-	        $this->load->view('edit_ijin',$datax);
+	        $this->load->view('User/edit_ijin',$datax);
 	        $this->load->view('html/footer');
 		}else{
 			redirect();
@@ -871,7 +894,7 @@ class User_C extends CI_Controller {
 			$data['bulan'] =$bulan;
 			$data['tahun'] =$tahun;
 			//$data['persen'] =$persen;
-			$this->load->view('lihat5bulan',$data);
+			$this->load->view('User/lihat5bulan',$data);
 	        $this->load->view('html/footer');
 		}else{
 			redirect();

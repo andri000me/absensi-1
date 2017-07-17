@@ -9,7 +9,6 @@ class Acc_C extends CI_Controller {
         parent::__construct();
         $this->load->model('Absen_M');
         date_default_timezone_set("Asia/Jakarta");
-        // $this->date = date('Y-m-d');
         if (!$this->session->userdata('logged_in')){
             redirect();
         }
@@ -17,34 +16,47 @@ class Acc_C extends CI_Controller {
 
     public function lihat_perbulan()
     {
-        $date = date('Y-m-d');
         $datar['data_s'] = $this->Absen_M->rawQuery("SELECT * FROM data_s");
-        $datar['bulan'] = substr($date,-5,2);
-        $datar['tahun'] = substr($date,-10,4);
-
         $this->load->view('html/header');
         $this->load->view('html/menu');
-        $this->load->view('modal_acc',$datar);
-        $this->load->view('acc');
-        $this->load->view('javaskrip');
+        $this->load->view('Acc/modal_acc',$datar);
+        $this->load->view('Acc/acc');
+        $this->load->view('Acc/javaskrip_perbulan');
         $this->load->view('html/footer');
     }
     public function lihat_pertanggal()
     {        
-        $date = date('Y-m-d');
         $datar['data_s'] = $this->Absen_M->rawQuery("SELECT * FROM data_s");
-        $datar['tanggal'] = substr($date,-2,2);
-        $datar['bulan'] = substr($date,-5,2);
-        $datar['tahun'] = substr($date,-10,4);
-
         $this->load->view('html/header');
         $this->load->view('html/menu');
-        $this->load->view('modal_acc',$datar);
-        $this->load->view('acc_pertanggal');
-        $this->load->view('javaskrip');
+        $this->load->view('Acc/modal_acc',$datar);
+        $this->load->view('Acc/acc_pertanggal');
+        $this->load->view('Acc/javaskrip_pertanggal');
         $this->load->view('html/footer');
     }
-    public function show()
+    public function show_perbulan()
+    {
+        $date = $this->input->post('vbulan');
+        $year = $this->input->post('vtahun');
+        $datar['absen']= $this->Absen_M->rawQuery("SELECT 
+            data_ra.id_a, 
+            data_s.keterangan_s,
+            data_ra.detail, 
+            data_ra.tanggal, 
+            data_ra.jam, 
+            data_ra.acc, 
+            data_ra.id_k,
+            data_ra.denda, 
+            data_k.nama_k 
+            FROM data_ra
+            INNER JOIN data_k ON data_ra.id_k = data_k.id_k
+            INNER JOIN data_s ON data_ra.id_s = data_s.id_s
+            WHERE tanggal LIKE'".$year."-".$date."%' ORDER BY data_ra.id_a DESC")->result();
+        $datar['ijin']= $this->Absen_M->rawQuery("SELECT data_k.nama_k, data_k.id_k, data_i.perihal, data_i.end, data_i.start, data_i.tanggal, data_i.id_i,data_i.denda FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE tanggal LIKE '".$year."-".$date."%' ")->result();
+        $datar['data_s'] = $this->Absen_M->rawQuery("SELECT * FROM data_s")->result();
+        echo json_encode($datar);
+    }
+    public function show_pertanggal()
     {
         $date = $this->input->post('vtanggal');
         $datar['absen']= $this->Absen_M->rawQuery("SELECT 
@@ -60,8 +72,8 @@ class Acc_C extends CI_Controller {
             FROM data_ra
             INNER JOIN data_k ON data_ra.id_k = data_k.id_k
             INNER JOIN data_s ON data_ra.id_s = data_s.id_s
-            WHERE tanggal LIKE'".$date."%' ORDER BY data_ra.id_a DESC")->result();
-        $datar['ijin']= $this->Absen_M->rawQuery("SELECT data_k.nama_k, data_k.id_k, data_i.perihal, data_i.end, data_i.start, data_i.tanggal, data_i.id_i,data_i.denda FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE tanggal LIKE '".$date."%' ")->result();
+            WHERE tanggal ='".$date."' ORDER BY data_ra.id_a DESC")->result();
+        $datar['ijin']= $this->Absen_M->rawQuery("SELECT data_k.nama_k, data_k.id_k, data_i.perihal, data_i.end, data_i.start, data_i.tanggal, data_i.id_i,data_i.denda FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE tanggal ='".$date."%' ")->result();
         $datar['data_s'] = $this->Absen_M->rawQuery("SELECT * FROM data_s")->result();
         echo json_encode($datar);
     }

@@ -13,7 +13,7 @@ class Holiday_C extends CI_Controller {
             $datar['liburan'] = $this->Absen_M->readS('data_libur')->result();
         	$this->load->view('html/header');
     		$this->load->view('html/menu');
-    		$this->load->view('holiday',$datar);
+    		$this->load->view('Holiday/holiday',$datar);
     		$this->load->view('html/footer');
     }
     public function create_liburan()
@@ -66,7 +66,7 @@ class Holiday_C extends CI_Controller {
             $datax['liburan'] = $this->Absen_M->read('data_libur',$dataCondition)->result();
             $this->load->view('html/header');
             $this->load->view('html/menu');
-            $this->load->view('update_libur',$datax);
+            $this->load->view('Holiday/update_libur',$datax);
             $this->load->view('html/footer');
         }else{
             redirect();

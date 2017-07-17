@@ -3,10 +3,11 @@
 window.onload = update;
 function update()
 {
+    console.log('show_perbulan');
     $('#lihat').text('loading...'); //change button text
     $('#lihat').attr('disabled',true); //set button disable 
     var url;
-    url = "<?php echo base_url('Acc_C/show/')?>";
+    url = "<?php echo base_url('Acc_C/show_perbulan/')?>";
     var formData = new FormData($('#form')[0]);
     //console.log(formData);
     $.ajax({
@@ -17,9 +18,10 @@ function update()
         processData: false,
         success: function(data){
             var response = JSON.parse(data);
-            $('#absenpertanggal').DataTable().destroy();
-            $('#ijinpertanggal').DataTable().destroy();
-            $('#absenpertanggal').DataTable(
+            console.log(response);
+            $('#absenperbulan').DataTable().destroy();
+            $('#ijinperbulan').DataTable().destroy();
+            $('#absenperbulan').DataTable(
                 {"data" :(response.absen),
                 "columns": [
                     { "data": "id_a" },
@@ -47,9 +49,10 @@ function update()
                 ],
                 "columnDefs": [
                     { "width": "74px", "targets": 8 }
-                ]
+                ],
+                serverSide:false
             });
-            $('#ijinpertanggal').DataTable(
+            $('#ijinperbulan').DataTable(
                 {"data" :(response.ijin),
                 "columns": [
                     { "data": "id_i" },
@@ -71,8 +74,8 @@ function update()
                 ]
             });
 
-            console.log(response.ijin);
-            $('#lihat').text('Submits');
+            // console.log(response.ijin);
+            $('#lihat').text('TAMPILKAN');
             $('#lihat').attr('disabled',false);
         },
         error: function (jqXHR, textStatus, errorThrown)

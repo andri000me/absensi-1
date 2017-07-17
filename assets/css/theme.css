@@ -18,20 +18,33 @@ body {
 }
 
 .black{
-	color: #000 !important;
+  color: #000 !important;
 }
 
 .dist{
   padding-top: 30px;
   float: right;
 }
+
+.distance{
+  padding-top: 10%;
+}
+
+.distance2{
+  padding-left: 20%;
+}
+
 .distance{
   padding-top: 75px;
   float: auto;
 }
 .distance2{
   margin-top: -96px;
-  margin-left: 57px;
+  /*margin-left: 57px;*/
+  margin-left: 106px;
+ /* margin-left: auto;
+  margin-right: auto;
+  margin-bottom: auto;*/
 
 }
 .distance-tabel{
@@ -50,9 +63,22 @@ body {
   height:34px; 
   background-color:black;
   margin-top: 0px;
-  margin-left: 31px;
+ /* margin-left: 31px;*/
+  margin-left: 54px;
+  /*margin: auto;*/
 }
 .horizontal-line{
-  width:100%; 
-  height:10px;
+  width: 85%;
+  height: 1px;
+  background-color: black;
+  /*margin-left: 101px;*/
+  margin: auto;
+
+}
+.profil{
+  margin: -8px 8px 0 0;
+  border-radius: 100%;
+  border: 2px solid rgba(255,255,255,0.5);
+  max-width: 33px !important;
+
 }

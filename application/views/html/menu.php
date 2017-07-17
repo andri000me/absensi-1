@@ -1,5 +1,6 @@
     <?php 
       $active = $this->router->fetch_class();
+      $active1= $this->router->fetch_method();
     ?>
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -23,13 +24,11 @@
           ?>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-
           <ul class="nav navbar-nav navbar-right">
-
             <?php if ($this->session->userdata('logged_in')['hak_akses'] == 1 or $this->session->userdata('logged_in')['hak_akses'] == 2){ ?>
-                <li <?php echo ($active =="Home_C")? 'class = active':''?>><a href="<?php echo site_url('Home_C/view/dashboard')?>"> Dashboard </a></li>
+                <li <?php echo ($active1 =="view_dashboard")? 'class = active':''?>><a href="<?php echo base_url('Home_C/view_dashboard')?>"> Dashboard </a></li>
                 
-                <li <?php echo ($active =="User_C")? 'class = active':''?>><a href="<?php echo site_url('User_C') ?>"> Pengguna </a></li>
+                <li <?php echo ($active =="User_C" or $active1 =="update_user ")? 'class = active':''?>><a href="<?php echo base_url('User_C') ?>"> Pengguna </a></li>
 
                 <li <?php echo ($active =="Acc_C")? 'class = active':''?>>
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -37,8 +36,8 @@
                     <b class="arrow fa fa-caret-down"></b>
                   </a>
                   <ul class="dropdown-menu dropdown-navbar">
-                    <li><a href="<?php echo site_url('Acc_C/lihat_pertanggal') ?>">Harian</a></li>
-                    <li><a href="<?php echo site_url('Acc_C/lihat_perbulan') ?>">Bulanan</a></li>
+                    <li><a href="<?php echo base_url('Acc_C/lihat_pertanggal') ?>">Harian</a></li>
+                    <li><a href="<?php echo base_url('Acc_C/lihat_perbulan') ?>">Bulanan</a></li>
                   </ul>
                 </li>
 
@@ -48,35 +47,57 @@
                     <b class="arrow fa fa-caret-down"></b>
                   </a>
                   <ul class="dropdown-menu dropdown-navbar">
-                    <li><a href="<?php echo site_url('Status_C/view/pengaturan') ?>">Pengaturan</a></li>
-                    <li><a href="<?php echo site_url('Status_C/view') ?>">Status</a></li>
+                    <li><a href="<?php echo base_url('Status_C/view/pengaturan') ?>">Pengaturan</a></li>
+                    <li><a href="<?php echo base_url('Status_C/view') ?>">Status</a></li>
                     <li><a href="<?php echo base_url('Jabatan_C')?>">Jabatan</a></li>
-                    <li><a href="<?php echo site_url('Holiday_C/') ?>">Hari Libur</a></li>                
+                    <li><a href="<?php echo base_url('Holiday_C/') ?>">Hari Libur</a></li>                
                   </ul>
                 </li>
 
                 <?php if ($apakah_hari_libur == array()) { ?>
-                <li>
-                  <a href="<?php echo site_url('Home_C/view/ijin')?>">Izin</a>
+                <li <?php echo ($active1 =="view_ijin")? 'class = active':''?>>
+                  <a href="<?php echo base_url('Home_C/view_ijin')?>">Izin</a>
                 </li>
                 <?php }
                     unset($apakah_hari_libur);
                 ?>
                 
+<<<<<<< HEAD
                 <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
+                  <a href="<?php echo base_url('Overview_C/view') ?>">Laporan</a>
+                </li>
+
+                <li <?php echo ($active1 =="update_my_account")? 'class = active':''?>>
+                  <a class="dropdown-toggle" data-toggle="dropdown">
+                    <span><img src="<?php echo base_url().$this->session->userdata('logged_in')['link_foto']?>" class="img-rounded" style='width: 30px'></span>
+=======
+               <!--  <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
                   <a href="<?php echo site_url('Overview_C/view') ?>">Laporan</a>
+
+                </li> -->
+                 <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span>Laporan</span>
+                    <b class="arrow fa fa-caret-down"></b>
+                  </a>
+                  <ul class="dropdown-menu dropdown-navbar">
+                    <li><a href="<?php echo base_url('Overview_C/view')?>">Bulanan</a></li>
+                    <li><a href="<?php echo base_url('Overview_C/view/harian')?>">Harian</a></li>
+                  </ul>
                 </li>
 
                 <li <?php echo ($active =="User_C")? 'class = active':''?>>
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <img class="profil" src="<?php echo base_url('assets')?>/img/avatar5.jpg" alt="User's Photo" />  
                     <span>User</span>
+>>>>>>> 488e8d9a5fc44e7277c9a7f0bd12e5409c177707
                     <b class="arrow fa fa-caret-down"></b>
                   </a>
                   <ul class="dropdown-menu dropdown-navbar">
-                    <li><a href="<?php echo site_url("User_C/update_user/".$this->session->userdata('logged_in')['id_k'])?>">myAccounts</a></li>
+                    <li><a href="<?php echo base_url("User_C/update_my_account/".$this->session->userdata('logged_in')['id_k'])?>">myAccounts</a></li>
                   <?php if (isset($this->session->userdata['logged_in'])) { ?>
                     <li>
-                      <a id='hak-akses' href="<?php echo site_url('Home_C/logout/')?>" data-my="<?php echo $this->session->userdata('logged_in')['username']?>">Logout <?php echo $this->session->userdata('logged_in')['username']?> </a>
+                      <a id='hak-akses' href="<?php echo base_url('Home_C/logout/')?>" data-my="<?php echo $this->session->userdata('logged_in')['username']?>">Logout <?php echo $this->session->userdata('logged_in')['username']?> </a>
                     </li>
                   <?php } else { ?>
                     <li><a href="" data-toggle="modal" data-target="#loginModal">Logins</a></li>
@@ -93,7 +114,6 @@
         </div>
       </div>
     </nav>
-    
 
     <script>
       var div = document.getElementById("hak-akses");

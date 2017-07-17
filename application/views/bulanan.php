@@ -44,14 +44,11 @@
 
 	<!-- start content -->
 	<div class="col-sm-12">
-		<div class="box">
 		<div class="container">
-
 		    <div class="col-sm-3">
 		    	<br/><h2>Stasistik Bulanan</h2>
 		    	<h4>Juli 2015</h4>	
 		    </div>
-		    <div class="col-sm-3"></div>
 		    <div class="col-sm-2"></div>
 		    
 		    <div class="col-sm-2 distance">
@@ -83,15 +80,19 @@
 		    <div class="col-sm-1 distance">
 		    	<botton  class="btn btn-primary btn-laporan">TAMPILKAN</botton>
 		    </div> 
-		 
 		    <div class="col-sm-1 distance">
 		    	<hr class="vertical-line">
-		    	<botton  class="btn btn-primary btn-laporan distance2">CETAK</botton >
+		    </div>
+		 
+		    <div class="col-sm-1 distance">
+		    	
+		    	<botton  class="btn btn-primary btn-laporan">CETAK</botton >
 		    </div>	    
 	    </div>
+	    <hr class="horizontal-line">
     </div>  
-    <hr class="horizontal-line">
-    <hr>
+    
+
     <div class="col-sm-12">
     	<div class="container">
 	    	<div class="col-sm-2">
@@ -111,7 +112,10 @@
 			    <br/><p>Rangking Terakhir</p>
 			    <h4>M. HandharBeni</h4>	
 			</div>
+
 		</div>	
+		<hr class="horizontal-line">
+
     </div>
     <br>
 	<br>

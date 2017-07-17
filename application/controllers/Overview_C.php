@@ -25,9 +25,9 @@ class Overview_C extends CI_Controller {
                 $data['bulan'] = $this->input->post('l_bulan');
                 $datax['cari'] = $this->Absen_M->rawQuery("
 
-                    SELECT  data_ra.id_a, 
-                            data_ra.detail, 
-                            data_ra.tanggal, 
+                    SELECT  data_ra.id_a,
+                            data_ra.detail,
+                            data_ra.tanggal,
                             data_ra.jam, 
                             data_s.keterangan_s, 
                             data_ra.acc,
@@ -51,10 +51,25 @@ class Overview_C extends CI_Controller {
 
                 $dateObj   = DateTime::createFromFormat('!m', $data['bulan']);
                 $datax['yg_dicari']  = $dateObj->format('F');
+
+                $datax['ranking_1'] = $this->Absen_M->rawQuery("
+                    SELECT data_ra.id_k,data_k.nama_k,count(data_ra.id_k) AS jumlah 
+                        from data_ra 
+                        INNER JOIN data_k ON data_ra.id_k = data_k.id_k 
+                        WHERE data_ra.detail = 'telat'
+                        GROUP BY id_k 
+                        ORDER BY jumlah DESC limit 1
+                        ")->result();// paling banyak tealat nya
+                $datax['ranking_x'] = $this->Absen_M->rawQuery("SELECT data_ra.id_k,data_k.nama_k,count(data_ra.id_k) AS jumlah 
+                        from data_ra 
+                        INNER JOIN data_k ON data_ra.id_k = data_k.id_k 
+                        WHERE data_ra.detail = 'telat'
+                        GROUP BY id_k 
+                        ORDER BY jumlah ASC limit 1")->result();//paling sedikit telat
                 
                 $this->load->view('html/header');
                 $this->load->view('html/menu');
-                $this->load->view('html/side_menu');
+                // $this->load->view('html/side_menu');
                 $this->load->view('Overview/bulanan');
                 $this->load->view('Overview/bulan',$datax);
                 $this->load->view('html/footer');   
@@ -77,7 +92,7 @@ class Overview_C extends CI_Controller {
                 unset($datar);
                 $this->load->view('html/header');
                 $this->load->view('html/menu');
-                $this->load->view('html/side_menu');
+                // $this->load->view('html/side_menu');
                 $this->load->view('Overview/harian');
                 $this->load->view('Overview/hari',$datax);
                 $this->load->view('html/footer');

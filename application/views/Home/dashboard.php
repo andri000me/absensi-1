@@ -82,7 +82,8 @@ function show(){
 			{ "data": "denda" , render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )},
 			{ "data": "id_a" ,
                         render: function ( data, type, full, meta ) {
-                            return '<a style="margin: 0 20px 0 20px;">Setujui</a>'+'<a>Tolak</a>';
+                            return '<a data-toggle="modal" data-target="#acceptAbsenModal" title="ok" data-idaccept="'+data+'" style="margin: 0 20px 0 20px;">Setujui</a>'+
+                            '<a data-toggle="modal" data-target="#rejectAbsenModal" title="tolak" data-idreject="'+data+'">Tolak</a>';
                         }
             }
         ],
@@ -112,3 +113,143 @@ function show(){
 	
 </script>
 
+
+
+
+<!-- modal reject absen -->
+<div class="modal fade" id="rejectAbsenModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form id="formreject">      
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Reject Absen</h4>
+                </div>
+                    <input type="hidden" name="id_rej" id="idReject">
+                    <div class="modal-body ">
+                        Update acc menjadi belum disetujui. Jika status adalah hadir, maka tidak dapat melakukan ijin.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                        <a class="btn btn-primary" id="btn-reject" >Submit</a>
+                    </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+$('#rejectAbsenModal').on('show.bs.modal', function(e) {
+    $("#idReject").attr('value', $(e.relatedTarget).data('idreject'));
+});
+</script>
+<!-- /modal reject absen -->
+
+<!-- modal accept absen -->
+<div class="modal fade" id="acceptAbsenModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form id="formaccept">      
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Accept Absen</h4>
+                </div>
+                    <input type="hidden" name="id_acc" id="idAccept">
+                    <div class="modal-body ">
+                        Akan mengupdate acc menjadi telah disetujui
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                        <a class="btn btn-primary" id="btn-acc" >Acc</a>
+                    </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+$('#acceptAbsenModal').on('show.bs.modal', function(e) {
+    $("#idAccept").attr('value', $(e.relatedTarget).data('idaccept'));
+});
+</script>
+<!-- /modal accept absen -->
+
+
+<script type="text/javascript">
+	$("#btn-reject" ).click(function() {
+  //alert( "woy" );
+    $('#btn-reject').text('rejecting...'); //change button text
+    $('#btn-reject').attr('disabled',true); //set button disable 
+    var url;
+
+    url = "<?php echo base_url('Acc_C/rejectAbsen/')?>";
+    var formData = new FormData($('#formreject')[0]);
+    console.log(formData);
+    $.ajax({
+        url : url,
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(data)
+        {
+            // var response = JSON.parse(data);
+            // $.each(response , function(index,item){
+            //  console.log(item.tanggal);
+            // });
+            $("#notif").html(data);
+            // console.log(response);
+            $('#btn-reject').text('reject'); //change button text
+            $('#btn-reject').attr('disabled',false); //set button enable 
+            $('#rejectAbsenModal').modal('hide');
+            // $('#main').load('seminar-overview.php #main > *');
+            show();
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            console.log(jqXHR, textStatus, errorThrown);
+            $('#btn-reject').text('eror'); //change button text
+            $('#btn-reject').attr('disabled',false); //set button enable 
+
+        }
+    });
+});
+
+$("#btn-acc" ).click(function() {
+  //alert( "woy" );
+    $('#btn-acc').text('accepting...'); //change button text
+    $('#btn-acc').attr('disabled',true); //set button disable 
+    var url;
+
+    url = "<?php echo base_url('Acc_C/acceptAbsen/')?>";
+    var formData = new FormData($('#formaccept')[0]);
+    $.ajax({
+        url : url,
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(data)
+        {
+            // var response = JSON.parse(data);
+            // $.each(response , function(index,item){
+            //  console.log(item.tanggal);
+            // });
+            $("#notif").html(data);
+            // console.log(response);
+            $('#btn-acc').text('Accept'); //change button text
+            $('#btn-acc').attr('disabled',false); //set button enable 
+            $('#acceptAbsenModal').modal('hide');
+            // $('#main').load('seminar-overview.php #main > *');
+            show();
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            console.log(jqXHR, textStatus, errorThrown);
+            $('#btn-acc').text('eror'); //change button text
+            $('#btn-acc').attr('disabled',false); //set button enable 
+
+        }
+    });
+});
+</script>

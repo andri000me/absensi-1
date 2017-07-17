@@ -50,7 +50,7 @@
 	    	<h4>Juli 2015</h4>	
 	    </div>
 	<div style="margin-top: 50px">
-		
+	<form action="<?php echo base_url('overview_c/lihat/bulan')?>" method="POST" class="form-horizontal" role="form" >
 	    <div class="col-sm-2" style="padding-bottom: 20px">
 	    	<select class="form-control" data-placeholder="Nama Karyawan"  name="l_tahun">
             	<?php $date = date('Y'); 
@@ -81,6 +81,7 @@
 	    	<button type="submit" class="btn btn-primary col-sm-12 col-xs-12">TAMPILKAN</button>
 	    <!-- <hr class="vertical-line hidden-xs"> -->
 	    </div>
+	</form>
 	    <div class="col-sm-2 col-xs-6" style="padding-bottom: 20px">
 	    	<button class="btn btn-primary col-sm-12 col-xs-12" id="print_btn" >CETAK</button>
 	    </div>
@@ -93,65 +94,4 @@
     
 
 
-    <div class="container">
-    	<div class="col-sm-12">
-    		<div class="row">
-		    	<div class="col-sm-2">
-				    <br/><p>Total Denda</p>
-				    <h4>Rp 768.000</h4>	
-				</div>
-				<div class="col-sm-2">
-				    <br/><p>Rata2 Keterlambatan</p>
-				    <h4>25 Menit</h4>	
-				</div>
-				<div class="col-sm-4"></div>
-				<div class="col-sm-2">
-				    <br/><p>Rangking 1</p>
-				    <h4>Ibnu Shodiqin</h4>	
-				</div>
-				<div class="col-sm-2">
-				    <br/><p>Rangking Terakhir</p>
-				    <h4>M. HandharBeni</h4>	
-				</div>
-			</div>	
-		</div>
-		<hr class="horizontal-line col-sm-12 col-xs-12 pull right">	
-    </div>
-
-
-    <!-- tabel -->           
-	<div class="container">
-		<div class="col-sm-12 distance-tabel">
-			<div class="row">
-		        <div class="table-responsive">
-		        	<table class="table table-condensed" id="table">
-		                <thead>
-		                    <tr>
-		                        <th>Nama</th>
-		                        <th>Absensi</th>
-		                        <th>Keterangan</th>
-		                        <th>Tanggal</th>
-		                        <th>Jam</th>
-		                        <th>Denda</th>
-		                        <th colspan="2">Pilih Aksi</th>
-
-		                    </tr>
-		                </thead>
-		                <tbody>
-		                    <tr class="table-flag-blue">
-		                        
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td><a href="">Setuju</a></td>
-		                        <td><a href="">Tidak</a></td>
-		                    </tr>
-		                </tbody>
-		            </table>
-		        </div>
-		    </div>
-	    </div>
-	</div>    
+<!-- -->

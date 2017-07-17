@@ -79,7 +79,7 @@ class Home_C extends CI_Controller {
 				SELECT data_ra.id_a, data_s.keterangan_s, data_ra.detail, data_ra.tanggal, data_ra.jam, data_ra.acc, data_k.nama_k, data_ra.denda FROM data_ra
 				INNER JOIN data_k ON data_ra.id_k = data_k.id_k
 				INNER JOIN data_s ON data_ra.id_s = data_s.id_s
-				WHERE tanggal = '".$date."'	ORDER BY data_ra.id_a DESC ")->result();
+				WHERE tanggal = '".$date."' AND acc = 0	ORDER BY data_ra.id_a DESC ")->result();
 		echo json_encode($data);
 	}
 	public function show_ijin()
@@ -405,4 +405,37 @@ class Home_C extends CI_Controller {
 			}
 			echo json_encode($alert_stop_ijin);
 	}
+	public function acceptAbsen()
+    {
+    	$dataUpdate['acc'] = 1;
+    	$dataCondition['id_a'] = $this->input->post('id_acc');
+    	$result = $this->Absen_M->update('data_ra',$dataCondition,$dataUpdate);
+    	if($result){
+			$alert_update_absen_acc = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong> absen berhasil di ACC!</strong></div>";
+			// $this->session->set_flashdata('alert_update_absen_acc', $alert_update_absen_acc);
+		}
+		else{
+			$alert_update_absen_acc = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>absen gagal di acc! </strong></div>";
+			// $this->session->set_flashdata('alert_update_absen_acc', $alert_update_absen_acc);
+		}
+        echo $alert_update_absen_acc;
+		// redirect('Acc_C/lihat/'.$bulan.'/'.$tahun);
+    	
+    }
+    public function rejectAbsen()
+    {
+    	$dataUpdate['acc'] = 0;
+    	$dataCondition['id_a'] = $this->input->post('id_rej');
+    	$result = $this->Absen_M->update('data_ra',$dataCondition,$dataUpdate);
+    	if($result){
+			$alert_update_absen_acc = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong> absen berhasil di tolak!</strong></div>";
+			// $this->session->set_flashdata('alert_update_absen_acc', $alert_update_absen_acc);
+        }
+        else{
+            $alert_update_absen_acc = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>absen gagal di tolak! </strong></div>";
+            // $this->session->set_flashdata('alert_update_absen_acc', $alert_update_absen_acc);
+        }
+        // redirect('Acc_C/lihat/'.$bulan.'/'.$tahun);
+        echo $alert_update_absen_acc;
+    }
 }

@@ -1,9 +1,29 @@
-<div class="container">
-	<div class="col-xs-12 col-sm-2">
-		<button type="button" id="print_btn" class="btn btn-success"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> </button>
-		<!-- <a class="btn btn-default" onclick="print()" role="button">cetak pdf js</a> -->
-	</div>
-</div>
+
+    <div class="container">
+    	<div class="col-sm-12">
+    		<div class="row">
+		    	<div class="col-sm-2">
+				    <br/><p>Total Denda</p>
+				    <h4>Rp. <?=number_format($denda_absen[0]->total_denda,2,',','.')?> <br> + Rp. <?=number_format($denda_ijin[0]->total_denda,2,',','.') ?></h4>
+				</div>
+				<div class="col-sm-2">
+				    <br/><p>Rata2 Keterlambatan</p>
+				    <h4>25 Menit</h4>	
+				</div>
+				<div class="col-sm-4"></div>
+				<div class="col-sm-2">
+				    <br/><p>Rangking 1</p>
+				    <h4><?=$ranking_1[0]->nama_k?></h4>	
+				</div>
+				<div class="col-sm-2">
+				    <br/><p>Rangking Terakhir</p>
+				    <h4><?=$ranking_x[0]->nama_k?></h4>	
+				</div>
+			</div>	
+		</div>
+		<hr class="horizontal-line col-sm-12 col-xs-12 pull right">	
+    </div>
+
 <script type="text/javascript">
 $(document).ready(function() {
     $('#exampli').DataTable();
@@ -46,7 +66,7 @@ $(document).ready(function() {
 			        </tbody>
 		  		</table>
 			</div>
-			<h3>total denda absen bulan ini Rp. <?=number_format($denda_absen[0]->total_denda,2,',','.')?></h3>
+			
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -89,7 +109,6 @@ $(document).ready(function() {
 			        </tbody>
 		  		</table>
 			</div>
-			<h3>total kompensasi ijin bulan ini Rp. <?=number_format($denda_ijin[0]->total_denda,2,',','.') ?></h3>
 		</div>
 	</div>
 </div>

@@ -61,13 +61,7 @@
                 <?php }
                     unset($apakah_hari_libur);
                 ?>
-                <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
-                  <a href="<?php echo base_url('Overview_C/view') ?>">Laporan</a>
-                </li>
-
-                <li <?php echo ($active1 =="update_my_account")? 'class = active':''?>>
-                  <a class="dropdown-toggle" data-toggle="dropdown">
-                    <span><img src="<?php echo base_url().$this->session->userdata('logged_in')['link_foto']?>" class="img-rounded" style='width: 30px'></span>
+                
                <!--  <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
                   <a href="<?php echo site_url('Overview_C/view') ?>">Laporan</a>
 

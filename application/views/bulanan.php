@@ -43,13 +43,13 @@
 	</div> -->
 
 	<!-- start content -->
-	<div class="container">
-		<div class="col-sm-12">
+	<div class="col-sm-12">
+		<div class="container">
 		    <div class="col-sm-3">
 		    	<br/><h2>Stasistik Bulanan</h2>
 		    	<h4>Juli 2015</h4>	
 		    </div>
-		    <div class="col-sm-2"></div>
+		    <div class="col-sm-1"></div>
 		    
 		    <div class="col-sm-2 distance">
 	            <select class="form-control" data-placeholder="Nama Karyawan"  name="l_tahun">
@@ -84,8 +84,7 @@
 		    	<hr class="vertical-line">
 		    </div>
 		 
-		    <div class="col-sm-1 distance">
-		    	<!-- <hr class="vertical-line"> -->
+		    <div class="col-sm-1 distance">	
 		    	<botton  class="btn btn-primary btn-laporan">CETAK</botton >
 		    </div>	    
 	    </div>
@@ -93,8 +92,8 @@
     </div>  
     
 
-    <div class="container">
-    	<div class="col-sm-12">
+    <div class="col-sm-12">
+    	<div class="container">
 	    	<div class="col-sm-2">
 			    <br/><p>Total Denda</p>
 			    <h4>Rp 768.000</h4>	

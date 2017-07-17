@@ -25,6 +25,15 @@ body {
   padding-top: 30px;
   float: right;
 }
+
+.distance{
+  padding-top: 10%;
+}
+
+.distance2{
+  padding-left: 20%;
+}
+
 .distance{
   padding-top: 75px;
   float: auto;

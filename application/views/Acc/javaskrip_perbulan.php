@@ -38,7 +38,7 @@ function update()
                         "render": $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' ) },
                     { "data": "id_a",
                         "render": function ( data, type, full, meta ) {
-                            return '<div class="btn-group">'+
+                            return '<div class="btn-group no-print">'+
                             '<a class="btn btn-xs btn-primary" data-toggle="modal" data-target="#acceptAbsenModal" title="ok" data-idaccept="'+data+'"><span class="glyphicon glyphicon-ok"></span></a>'+
                             '<a class="btn btn-xs btn-primary" onclick="edit(this)" data-toggle="modal" title="edit" data-target="#updateAbsenModal" data-idupdate="'+data+'"><span class="glyphicon glyphicon-edit"></span></a>'+
                             '<a class="btn btn-xs btn-primary" data-toggle="modal" data-target="#deleteAbsenModal" title="hapus" data-idhapus="'+data+'"><span class="glyphicon glyphicon-trash"></span></a>'+
@@ -65,7 +65,7 @@ function update()
                         "render": $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' ) },
                     { "data": "id_i",
                         "render": function ( data, type, full, meta ) {
-                            return'<div class="btn-group"><a class="btn btn-xs btn-primary" data-idi="'+data+'" onclick="editIjin(this)" data-toggle="modal" data-target="#updateIjinModal"><span class="glyphicon glyphicon-edit"></span></a><a class="btn btn-xs btn-primary" data-idi="'+data+'" data-toggle="modal" data-target="#deleteIjinModal"><span class="glyphicon glyphicon-trash"></span></a></div>';
+                            return'<div class="btn-group no-print"><a class="btn btn-xs btn-primary" data-idi="'+data+'" onclick="editIjin(this)" data-toggle="modal" data-target="#updateIjinModal"><span class="glyphicon glyphicon-edit"></span></a><a class="btn btn-xs btn-primary" data-idi="'+data+'" data-toggle="modal" data-target="#deleteIjinModal"><span class="glyphicon glyphicon-trash"></span></a></div>';
                         }
                     }
                 ],

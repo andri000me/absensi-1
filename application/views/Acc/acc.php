@@ -142,7 +142,7 @@
                         <th>end</th>
                         <th>tanggal</th>
                         <th>denda</th>
-                        <th class="no-print">action</th>
+                        <th class="no-print ">action</th>
                     </tr>
                 </thead>
                 <tbody>

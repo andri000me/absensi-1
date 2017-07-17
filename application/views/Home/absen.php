@@ -19,7 +19,7 @@
 
 	<div class="row">
 		<div class="center-block">
-			<div class="col-sm-4 col-sm-push-4">
+			<div class="col-xs-4 col-sm-push-4">
 			  	<div class="panel panel-default">
 				  	<div class="panel-body">
 				  		<form id="form-absen" method="POST">

@@ -54,15 +54,6 @@
                   </ul>
                 </li>
 
-                <?php if ($apakah_hari_libur == array()) { ?>
-                <li <?php echo ($active1 =="view_ijin")? 'class = active':''?>>
-                  <a href="<?php echo base_url('Home_C/view_ijin')?>">Izin</a>
-                </li>
-                <?php }
-                    unset($apakah_hari_libur);
-                ?>
-                
-
                <!--  <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
                   <a href="<?php echo site_url('Overview_C/view') ?>">Laporan</a>
 

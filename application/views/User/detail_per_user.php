@@ -13,7 +13,7 @@
 		<?=$this->session->flashdata("alert_delete_ijin_ku");?>
 		<div class="col-xs-12 col-sm-10" >
 			<h3>Absensi bulan <?=$dateObj->format('F')?>	</h3>
-			<h3>User <?=$nama_k[0]->nama_k?> memiliki sisa cuti <?= $date - ($cuti[0]->cuti_berapakali);?></h3>
+			<h3>User <?=$nama_k[0]->nama_k?> memiliki sisa cuti <?= ($cuti[0]->jatah_cuti)- ($cuti[0]->cuti_berapakali);?></h3>
 			<h5> telah cuti sebanyak <?= $cuti[0]->cuti_berapakali;?></h5>
 			<br>
 		</div>

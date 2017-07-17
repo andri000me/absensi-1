@@ -267,6 +267,7 @@ class User_C extends CI_Controller {
 			    $data_banding['bisa_cuti_form'] = (int)$this->input->post('u_bisa_cuti_form');
 
 			    if ($data_banding['bisa_cuti_form'] > $data_banding['bisa_cuti_db']) { // apakah terjadi update bisa cuti-> apakah edit bisa_cuti dari 0 menjadi 1
+			    	$data['bisa_cuti'] = $data_banding['bisa_cuti_form'];
 			    	$dataUpdate['jatah_cuti'] = 1;
 			    	$dataUpdate['last_sync'] = date("Y-m-d");
 			    	$update_data_c = $this->Absen_M->update('data_c',$dataCondition,$dataUpdate);

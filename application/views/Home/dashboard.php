@@ -53,7 +53,8 @@
 		            <th>Keterangan</th>
 		            <th>Start</th>
 		            <th>End</th>
-		            <th>Kompensasi</th>
+                    <th>Kompensasi</th>
+		            <th>Stop</th>
 		        </tr>
 		    </thead>
 		    <tbody>
@@ -108,6 +109,13 @@ function show(){
 					{ "data": "end" },
 					{ 	"data": "denda",
 						"render": $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}
+                    ,{ "data": "id_i",
+                        "render": function ( data, type, full, meta ) {
+                            if (myData != '') {
+                                return '<a  class="btn btn-xs btn-danger" data-idi="'+data+'" onclick="stop(this)">Stop</a>';
+                            }
+                        }
+                    }
 				],
 				"paging" : false
 			});
@@ -239,4 +247,14 @@ $("#btn-acc" ).click(function() {
         }
     });
 });
+function stop(elem){
+        var uidi = $(elem).data('idi');
+        var url = "<?=base_url('Home_C/stop_ijin/')?>";
+        var alert = document.getElementById('alert');
+        $.get(url + uidi, function(html){
+            var object = JSON.parse(html);
+            alert.innerHTML = object;
+        });
+        show();
+    }
 </script>

@@ -66,7 +66,7 @@
 
                 <li <?php echo ($active =="User_C")? 'class = active':''?>>
                   <a class="dropdown-toggle" data-toggle="dropdown">
-                  <img class="profil" src="<?php echo base_url('assets')?>/img/avatar5.jpg" alt="User's Photo" />  
+                  <img class="profil" src="<?php echo base_url().$this->session->userdata('logged_in')['link_foto']?>" alt="User's Photo" />  
                     <span>User</span>
                     <b class="arrow fa fa-caret-down"></b>
                   </a>
@@ -81,7 +81,6 @@
                   <?php } ?>
                   </ul>
                 </li>
-
               <?php } else { ?>
                   <li>
                     <a href="" data-toggle="modal" data-target="#loginModal">Logins</a>

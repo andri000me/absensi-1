@@ -82,7 +82,6 @@
 	function show() {
 		$.get('<?php echo base_url('Home_C/show_ijin/')?>', function(html){
 	    	var data = JSON.parse(html);
-	    	console.log('00'+myData);
 	    	$('#tabel').DataTable().destroy();
 	    	$('#tabel-ijin').DataTable().destroy();
 			$('#tabel').DataTable(
@@ -96,11 +95,7 @@
 					{ "data": "end" },
 					{ "data": "id_i",
 						"render": function ( data, type, full, meta ) {
-							if (myData != '') {
-								return '<a  class="btn btn-xs btn-danger" data-idi="'+data+'" onclick="stop(this)">Stop</a>';
-							}else{
-								return '<a  class="btn btn-xs btn-danger" disabled>Stop</a>';
-							}
+							return '<a  class="btn btn-xs btn-danger" data-idi="'+data+'" onclick="stop(this)">Stop</a>';
 						}
 					}
 				],

@@ -14,7 +14,7 @@
     <div class="row no-print">
         <div class="col-sm-3 col-xs-12">
             <h2>Stasistik Bulanan</h2>
-            <h4> bulan tahun </h4>
+            
         </div>
         <div class="col-sm-9" style="margin-top: 40px">
             <form method="POST" class="form-horizontal" id="form" >
@@ -54,56 +54,13 @@
             </div>
         </div>
     </div>
-    <!-- <div class="col-sm-12">
-        <div class="box">
-            <div class="col-sm-3">
-                <br/><h2>Stasistik Bulanan</h2>
-                <h4> bulan tahun </h4>  
-            </div>
-            <div class="col-sm-3"></div>
-            <form method="POST" class="form-horizontal" id="form" >
-                <div class="col-sm-2 distance">
-                    <select class="form-control" name="vtahun" id="pertahun">
-                        <?php $date = date('Y'); 
-                            for($x = $date; $x>=2017; $x--) { ?>
-                        <option value="00">Pilih Tahun</option>
-                        <option value="<?php echo $x;?>"><?php echo $x; ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-                <div class="col-sm-2 distance">
-                    <select class="form-control" name="vbulan" id="perbulan">
-                        <option value="00">Pilih Bulan </option>
-                        <option value="01">Januari </option>
-                        <option value="02">Februari </option>
-                        <option value="03">Maret </option>
-                        <option value="04">April </option>
-                        <option value="05">Mei </option>
-                        <option value="06">Juni </option>
-                        <option value="07">Juli </option>
-                        <option value="08">Agustus </option>
-                        <option value="09">September </option>
-                        <option value="10">Oktober </option>
-                        <option value="11">November </option>
-                        <option value="12">Desember </option>
-                    </select>
-                </div>
-                <div class="col-sm-1 distance">
-                    <button class="btn btn-primary" id="lihat" onclick="update()">TAMPILKAN</button>
-                </div> 
-            </form>
-            <div class="col-sm-1 distance">
-                <hr class="vertical-line">
-                <botton  class="btn btn-primary btn-laporan distance2" id="print_btn" >CETAK</botton >
-            </div>
-        </div>
-    </div>-->
     <br>
 </div>
 <div id="absen-print">
 <div class="container">
     <div>
         <h2>ABSEN</h2>
+        <h4 id="bulan-tahun"></h4>
         <div class='table-responsive'>
             <table class='table  table-condensed' id='absenperbulan'>
                 <thead>
@@ -154,8 +111,6 @@
 </div>
 
 <script type='text/javascript'>
-//<![CDATA[
-// jQuery(function($) { 'use strict';
     $( document ).ready(function() {
         $('button#print_acc').on('click', function(e) {
             console.log('acc');
@@ -179,11 +134,6 @@
             $('#ijinperbulan').DataTable().destroy();
             $('#absenperbulan').DataTable();
             $('#ijinperbulan').DataTable();
-          
-          
         });
-    // Fork https://github.com/sathvikp/jQuery.print for the full list of options
     });
-// });
-//]]>
 </script>

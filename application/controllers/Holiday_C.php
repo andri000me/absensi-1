@@ -23,12 +23,10 @@ class Holiday_C extends CI_Controller {
             $dataCondition['tanggal'] = $data['tanggal'];
             $data['detail'] = $this->input->post('c_detail');
             $result = $this->Absen_M->searchResult('data_libur',$dataCondition)->result();
-            // var_dump($result);
-            // die();
             if ($result) {
                 $notifikasi_libur = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Create libur Gagal! </strong>sudah ada di database</div>";
                 $this->session->set_flashdata('notifikasi_libur', $notifikasi_libur);
-            } else {
+            }else {
                 $result = $this->Absen_M->create('data_libur',$data);
                 if($result){
                     $notifikasi_libur = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Create libur Berhasil! </strong> </div>";
@@ -40,7 +38,6 @@ class Holiday_C extends CI_Controller {
                 }
                 unset($result,$data);
             }
-            
             redirect('Holiday_C');
         }
     }
@@ -77,7 +74,6 @@ class Holiday_C extends CI_Controller {
         if ($this->input->post() != null) {
             $data['tanggal'] = $this->input->post('u_tanggal');
             $data['detail'] = $this->input->post('u_detail');
-                // $this->session->set_flashdata("notifikasi_libur", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>update gagal</strong> duplikasi tanggal </div>");
             $data['id_libur'] = $this->input->post('u_id_libur');
             $dataCondition['id_libur'] = $data['id_libur'];
             

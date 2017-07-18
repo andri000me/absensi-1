@@ -1,9 +1,12 @@
 <div class="container">
 	<div class="col-md-12">
+        <div id="alert">
+            <?=$this->session->flashdata("alert_login");?>
+        </div>
 		<div class="row">
 			<br/>
 			<div class="col-md-6">
-				<h1>Selamat Datang, <?=$this->session->userdata('logged_in')['username']?></h1>
+				<h1>Selamat Datang, <?=$this->session->userdata('logged_in')['nama_k']?></h1>
 				<h3><?=date("l,d F Y")?></h3>
 			</div>
 			<div class="col-md-6">
@@ -113,9 +116,6 @@ function show(){
 	
 </script>
 
-
-
-
 <!-- modal reject absen -->
 <div class="modal fade" id="rejectAbsenModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -125,9 +125,9 @@ function show(){
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Reject Absen</h4>
                 </div>
-                    <input type="hidden" name="id_rej" id="idReject">
+                    <input type="hidden" name="id_del" id="idReject">
                     <div class="modal-body ">
-                        Update acc menjadi belum disetujui. Jika status adalah hadir, maka tidak dapat melakukan ijin.
+                        Hapus absen ini?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -182,7 +182,7 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
     $('#btn-reject').attr('disabled',true); //set button disable 
     var url;
 
-    url = "<?php echo base_url('Acc_C/rejectAbsen/')?>";
+    url = "<?php echo base_url('Acc_C/deleteAbsen/')?>";
     var formData = new FormData($('#formreject')[0]);
     console.log(formData);
     $.ajax({
@@ -193,16 +193,10 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
         processData: false,
         success: function(data)
         {
-            // var response = JSON.parse(data);
-            // $.each(response , function(index,item){
-            //  console.log(item.tanggal);
-            // });
             $("#notif").html(data);
-            // console.log(response);
             $('#btn-reject').text('reject'); //change button text
             $('#btn-reject').attr('disabled',false); //set button enable 
             $('#rejectAbsenModal').modal('hide');
-            // $('#main').load('seminar-overview.php #main > *');
             show();
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -231,16 +225,10 @@ $("#btn-acc" ).click(function() {
         processData: false,
         success: function(data)
         {
-            // var response = JSON.parse(data);
-            // $.each(response , function(index,item){
-            //  console.log(item.tanggal);
-            // });
             $("#notif").html(data);
-            // console.log(response);
             $('#btn-acc').text('Accept'); //change button text
             $('#btn-acc').attr('disabled',false); //set button enable 
             $('#acceptAbsenModal').modal('hide');
-            // $('#main').load('seminar-overview.php #main > *');
             show();
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -248,7 +236,6 @@ $("#btn-acc" ).click(function() {
             console.log(jqXHR, textStatus, errorThrown);
             $('#btn-acc').text('eror'); //change button text
             $('#btn-acc').attr('disabled',false); //set button enable 
-
         }
     });
 });

@@ -28,12 +28,10 @@ class Status_C extends CI_Controller {
 				if($result){
 					$alert_create_status = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Create Status Berhasil!</strong> status : $data[keterangan_s]</div>";
 					$this->session->set_flashdata('alert_create_status', $alert_create_status);
-					//$this->index();
 				}
 				else{
 					$alert_create_status = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Create Status Gagal </strong></div>";
 					$this->session->set_flashdata('alert_create_status', $alert_create_status);
-					//$this->index();
 				}
 			}
 			else{
@@ -48,13 +46,11 @@ class Status_C extends CI_Controller {
 		$result = $this->Absen_M->delete('data_s',$dataCondition);
 		if($result){
 			$alert_delete_status = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Delete Status Berhasil!</strong></div>";
-			$this->session->set_flashdata('alert_delete_status', $alert_delete_status);
-			
+			$this->session->set_flashdata('alert_delete_status', $alert_delete_status);			
 		}
 		else{
 			$alert_delete_status = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Delete Status Gagal!</strong></div>";
 			$this->session->set_flashdata('alert_delete_status', $alert_delete_status);
-			
 		}
 		redirect('Status_C/view');
 	}
@@ -80,20 +76,17 @@ class Status_C extends CI_Controller {
 				if($result){
 					$alert_update_info = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Update Status Berhasil !</strong></div>";
 					$this->session->set_flashdata('alert_update_info', $alert_update_info);
-					//$this->index();
 				}
 				else{
 					$alert_update_info = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Update Status Gagal! </strong></div>";
 					$this->session->set_flashdata('alert_update_info', $alert_update_info);
-					//$this->index();
 				}
 			}
 			else{
 				$alert_update_info = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",'</div>');
 	            $this->session->set_flashdata('alert_update_info', $alert_update_info);
 			}
-		}
-			
+		}			
 		redirect('Status_C/view');
 	}
 
@@ -143,7 +136,6 @@ class Status_C extends CI_Controller {
 				else{
 					$alert_update_pengaturan = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Update Misc Gagal! </strong></div>";
 					$this->session->set_flashdata('alert_update_pengaturan', $alert_update_pengaturan);
-					//$this->index();
 				}
 			}
 			else{

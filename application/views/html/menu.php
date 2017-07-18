@@ -41,6 +41,16 @@
                   </ul>
                 </li>
 
+                 <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span>Laporan</span>
+                    <b class="arrow fa fa-caret-down"></b>
+                  </a>
+                  <ul class="dropdown-menu dropdown-navbar">
+                    <li><a href="<?php echo base_url('Overview_C/view/harian')?>">Harian</a></li>
+                    <li><a href="<?php echo base_url('Overview_C/view')?>">Bulanan</a></li>
+                  </ul>
+                </li>
                 <li <?php echo ($active =="Status_C" or $active =="Jabatan_C" or $active=="Holiday_C")? 'class = active':''?>>
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span>Pengaturan</span>
@@ -51,21 +61,6 @@
                     <li><a href="<?php echo base_url('Status_C/view') ?>">Status</a></li>
                     <li><a href="<?php echo base_url('Jabatan_C')?>">Jabatan</a></li>
                     <li><a href="<?php echo base_url('Holiday_C/') ?>">Hari Libur</a></li>                
-                  </ul>
-                </li>
-
-               <!--  <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
-                  <a href="<?php echo site_url('Overview_C/view') ?>">Laporan</a>
-
-                </li> -->
-                 <li <?php echo ($active =="Overview_C")? 'class = active':''?>>
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span>Laporan</span>
-                    <b class="arrow fa fa-caret-down"></b>
-                  </a>
-                  <ul class="dropdown-menu dropdown-navbar">
-                    <li><a href="<?php echo base_url('Overview_C/view')?>">Bulanan</a></li>
-                    <li><a href="<?php echo base_url('Overview_C/view/harian')?>">Harian</a></li>
                   </ul>
                 </li>
 

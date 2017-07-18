@@ -23,7 +23,6 @@ class Jabatan_C extends CI_Controller {
 	{
 		if ($this->input->post() != null) {
 			$this->form_validation->set_rules('c_jabatan','Nama jabatan','trim|required|is_unique[data_j.jabatan]');
-
 			if($this->form_validation->run()==TRUE){
 				$data['jabatan'] = $this->input->post('c_jabatan');
 				$result = $this->Absen_M->create('data_j',$data);
@@ -55,8 +54,8 @@ class Jabatan_C extends CI_Controller {
 			$alert_delete_jabatan = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>  <strong>Delete Jabatan Gagal!  </strong>jabatan :".$dataD."</div>";
 			$this->session->set_flashdata('alert_delete_jabatan', $alert_delete_jabatan);
 		}
-		var_dump($result);
-		//redirect('Jabatan_C');
+		//var_dump($result);
+		redirect('Jabatan_C');
 	}
 	public function update_jabatan($data)
 	{

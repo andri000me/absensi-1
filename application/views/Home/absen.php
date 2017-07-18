@@ -12,21 +12,21 @@
 <br>
 <div class="container">
 	<div class="row">
-		<div class="col-xs-12" id="alert">
+		<div class="col-xs-10 col-xs-push-1 col-sm-4 col-sm-push-4 center-block" id="alert">
 		<?=$this->session->flashdata("alert_login");?>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="center-block">
-			<div class="col-xs-4 col-sm-push-4">
+			<div class="col-xs-10 col-xs-push-1 col-sm-4 col-sm-push-4">
 			  	<div class="panel panel-default">
 				  	<div class="panel-body">
 				  		<form id="form-absen" method="POST">
 							<div class="form-group col-xs-12">
-						        <select class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%" name="c_id_k">
+						        <select class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%;" name="c_id_k">
 						        <option></option>
-							        <?php 
+							        <?php
 					            		foreach($nama_karyawan as $row)						            {
 							              	echo '<option value="'.$row->id_k.'">'.$row->nama_k.'</option>';
 							            }
@@ -58,7 +58,7 @@
 								<textarea class="form-control" placeholder="ketikkan alasan disini." name="c_detail" style="min-height: 100px;"></textarea>
 							</div>
 							<div class="col-xs-12">
-								<a class="btn btn-primary" id="submit-absen" onclick="kirim()">Submit</a>
+								<a class="btn btn-primary col-xs-12" id="submit-absen" onclick="kirim()">Submit</a>
 							</div>
 						</form>
 				  	</div>
@@ -126,42 +126,12 @@ function myFunction() {
     }
 
 </script>
-<script type="text/javascript">
-	// window.onload=show();
-	// function show(){
-	//     $.get('<?php echo base_url('Home_C/show_absen/')?>', function(html){
-	//     	var data = JSON.parse(html);
-	//     	console.log(data);
-	//     	$('#show-absenx').DataTable().destroy();
 
-	//     	$('#show-absenx').DataTable({
-	//     		data : (data),
-	//     		columns: [
-	//     		{ "data": "id_a" },
-	//     		{ "data": "nama_k" },
-	//     		{ "data": "keterangan_s" },
-	//     		{ "data": "detail" },
-	//     		{ "data": "tanggal" },
-	//     		{ "data": "jam" },
-	//     		{ "data": "acc" ,
-	//     			"render": function ( data, type, full, meta ) {
-	// 				      return data === '0' ?'<a class="btn btn-xs btn-danger">belum di acc</a>' : '<a class="btn btn-xs btn-success">sudah di acc</a>';
-	// 				}
-	// 			},
-	//     		{ "data": "denda" , render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}],
-	// 		 	paging : false
-	// 		 	// render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}],
-	//     	});
-	//     });
-	// }
-	
-</script>
 <script type="text/javascript">
 	function kirim(){
 		$('#submit-absen').text('submiting...'); //change button text
 	    $('#submit-absen').attr('disabled',true); //set button disable 
 	    var url;
-
 	   	url = "<?php echo base_url('Home_C/create_absen/')?>";
 	    var formData = new FormData($('#form-absen')[0]);
 	    $.ajax({
@@ -172,13 +142,10 @@ function myFunction() {
 	        processData: false,
 	        success: function(data)
 	        {
-
 	            $("#alert").html(data);
-	            // console.log(data);
+	            console.log(data);
 	            $('#submit-absen').text('Submits'); //change button text
 	            $('#submit-absen').attr('disabled',false); //set button enable 
-	            // show();
-
 	        },
 	        error: function (jqXHR, textStatus, errorThrown)
 	        {
@@ -188,6 +155,6 @@ function myFunction() {
 
 	        }
 	    });
-	    show();
+	    // show();
 	}
 </script>

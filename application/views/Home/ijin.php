@@ -8,7 +8,6 @@
 	</div><br>
 	<div class="row">
 		<div class="col-xs-12" id="alert">
-
 		</div>
 	</div><br>
 	<div class="panel panel-default" style="margin-top: 20px;">
@@ -52,7 +51,6 @@
 					</tr>
 				</thead>
 				<tbody>
-					
 				</tbody>
 			</table>
 		</div>

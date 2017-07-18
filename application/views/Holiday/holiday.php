@@ -55,7 +55,7 @@ $('#deleteLiburModal').on('show.bs.modal', function(e) {
 <script type="text/javascript">
 $(document).ready(function() {
     $('#examplh').DataTable({
-    	paging: false,
+    	
     	"columnDefs": [
 	        { "width": "50px", "targets": 3 },
 	        { "width": "5px", "targets": 0 }

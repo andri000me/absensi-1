@@ -74,6 +74,7 @@ class User_C extends CI_Controller {
 				INNER JOIN data_c ON data_c.id_k = data_k.id_k
 				WHERE data_k.bisa_cuti = 1
     	")->result();
+    	
     	foreach ($query as $row) {
     		// echo $row->last_sync;
     		$d1 = new DateTime($row->last_sync);
@@ -268,7 +269,6 @@ class User_C extends CI_Controller {
 			
 			if($this->form_validation->run()==TRUE){
 				$dataCondition['id_k'] = $this->input->post('u_id');
-			    //$data['id_k'] = $this->input->post('u_id');
 			    $data['nama_k'] = $this->input->post('u_nama');
 				$data['alamat_k'] = $this->input->post('u_alamat');
 			    $data['email_k'] = $this->input->post('u_email');
@@ -292,7 +292,7 @@ class User_C extends CI_Controller {
 						$this->session->set_flashdata('alert_update_cuti', $alert_update_cuti);
 					} 
 			    }
-			    else{ //dari 1 menjadi 0
+			    elseif($data_banding['bisa_cuti_form'] < $data_banding['bisa_cuti_db']){ //dari 1 menjadi 0
 			    	$data['bisa_cuti'] = $data_banding['bisa_cuti_form'];
 			    	$dataUpdate['jatah_cuti'] = 0;
 			    	$dataUpdate['last_sync'] = date("0000-00-00");
@@ -320,8 +320,6 @@ class User_C extends CI_Controller {
 	            }
 		        $result = $this->Absen_M->update('data_k',$dataCondition, $data);
 				$results = json_decode($result, true);
-				/*false  object*/
-				/*true  array*/
 				if ($results['status']) {
 					$alert_update_info = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Update info Berhasil!</strong></div>";
 					$this->session->set_flashdata('alert_update_info', $alert_update_info);
@@ -339,17 +337,9 @@ class User_C extends CI_Controller {
 			{
 	            $alert_update_info = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",'</div>');
 	            $this->session->set_flashdata('alert_update_info', $alert_update_info);
-				//redirect('User_C/update_user/'.$data['id_k']);
 			}
-			// echo"<pre>";
-			// var_dump($dataCondition);
-			// echo"<pre>";
-			$back_to = $this->router->fetch_method();
-			// echo $back_to;
-			redirect('User_C/'.$back_to.'/'.$dataCondition['id_k']);
-			
+			redirect('User_C/update_user/'.$dataCondition['id_k']);
 		}
-		
 	}
 	public function update_login()
 	{

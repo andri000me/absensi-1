@@ -749,7 +749,9 @@ class User_C extends CI_Controller {
 				}
 				/*END BIKIN QUERY HITUNG TANGGAL MERAH di data_libur*/
 				
+				/*START HITUNG HARI DALAM BULAN a*/
 				$number[$a] = cal_days_in_month(CAL_GREGORIAN,date($a), date($tahun));
+				/*END HITUNG HARI DALAM BULAN a*/
 
 				/*START HITUNG SABTU MINGGU*/
 	    		$libur[$a] = 0;	

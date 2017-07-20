@@ -213,24 +213,45 @@ class Home_C extends CI_Controller {
 			{
 				if ($data['jam'] > $jam_masuk and $data['jam'] < $jam_pulang)
 				{
+					/*menentukan telat atau tidak*/
 					$dataCondition['id_k'] = $data['id_k'];
 					$datax['id_j'] = $this->Absen_M->read('data_k',$dataCondition)->result();
 					unset($dataCondition);
+					/*menentukan denda*/
+					echo "<pre>";
 					if ($datax['id_j'][0]->jabatan_k != 12) {/*saat bukan anak magang*/
 						$time1 = strtotime($data['jam']);
+						// var_dump($time1);
 						$time2 = strtotime($jam_masuk);
+						// var_dump($time2);
 						$seperempat = round(1/4 ,2);
-						$difference = round(abs($time1 - $time2) / 3600,2)  /*% $seperempat*/;
+						// var_dump($seperempat);
+						// var_dump(date('H:i:s'));
+						$difference = round(abs($time1 - $time2) / 3600,3)  /*% $seperempat*/;
+						// var_dump($difference);
 						$difference = floor($difference / $seperempat);
+						// var_dump($difference);
 						$where_idm['id_m'] =  7;
 						$datax['denda_terlambat'] = $this->Absen_M->read('data_m',$where_idm)->result();
 						$denda_terlambat = $datax['denda_terlambat'][0]->misc;
 						unset($where_idm,$datax);
-						$data['denda'] = $difference * $denda_terlambat;
+						$data['denda'] = ($difference * $denda_terlambat) + $denda_terlambat;
 					} else { /*jika anak magang*/
 						$data['denda'] = 0;
 					}
 					$data['detail'] = "telat";
+
+					/*menentukan berapa menit terlambat*/
+					$datetime1 = strtotime($jam_masuk);
+					$datetime2 = strtotime($data['jam']);
+					$interval  = abs($datetime2 - $datetime1);
+					$minutes   = round($interval / 60);
+					$data['late_minute'] = $minutes;
+					// echo 'Diff. in minutes is: '.$minutes."<br>";
+					// echo $data['denda'];
+					echo "</pre>";
+					die();
+
 				}
 				elseif ($data['jam']>$jam_pulang) {
 					echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Eror!</strong></div>";

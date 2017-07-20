@@ -1,44 +1,66 @@
 <div class="container">
-	<div class="row">
-	    <div class="col-sm-3 col-xs-12">
-	    	<br/><h2>Stasistik Bulanan</h2>
-	    	<h4>Juli 2015</h4>	
-	    </div>
-	<div style="margin-top: 50px">
-		
-	    <div class="col-sm-2" style="padding-bottom: 20px">
-	    	<select class="form-control" data-placeholder="Nama Karyawan"  name="l_tahun">
-            	<?php $date = date('Y'); 
-            		for($x = $date; $x>=2017; $x--) { ?>
-                <option value="00">Pilih Tahun</option>
-			    <option value="<?php echo $x;?>"><?php echo $x; ?></option>
-			    <?php } ?>
-			</select>
-	    </div>
-	    <div class="col-sm-2" style="padding-bottom: 20px">
-	    	<select class="form-control" data-placeholder="Nama Karyawan"  name="l_bulan" >
-                <option value="00">Pilih Bulan </option>
-			    <option value="01">Januari </option>
-			    <option value="02">Februari </option>
-			    <option value="03">Maret </option>
-			    <option value="04">April </option>
-			    <option value="05">Mei </option>
-			    <option value="06">Juni </option>
-			    <option value="07">Juli </option>
-			    <option value="08">Agustus </option>
-			    <option value="09">September </option>
-			    <option value="10">Oktober </option>
-			    <option value="11">November </option>
-			    <option value="12">Desember </option>
-			</select>
-	    </div>
-	    <div class="col-sm-2 col-xs-6" style="padding-bottom: 20px">
-	    	<button type="submit" class="btn btn-primary col-sm-12 col-xs-12">TAMPILKAN</button>
-	    <!-- <hr class="vertical-line hidden-xs"> -->
-	    </div>
-	    <div class="col-sm-2 col-xs-6" style="padding-bottom: 20px">
-	    	<button class="btn btn-primary col-sm-12 col-xs-12" id="print_btn" >CETAK</button>
-	    </div>
-	</div>
-	</div>
+	<?php
+	$result = $this->Absen_M->rawQuery("
+	SELECT 
+	DISTINCT data_ra.id_k AS me,
+	data_k.nama_k AS my,
+	(
+		SELECT count(data_ra.id_k)
+		FROM data_ra
+		INNER JOIN data_k ON data_ra.id_k = data_k.id_k
+		WHERE data_ra.detail = 'tepat waktu' AND data_k.jabatan_k != 12	AND MONTH (data_ra.tanggal) = '07' AND YEAR (data_ra.tanggal) = '2017' AND data_ra.id_k = me
+		GROUP BY data_ra.id_k
+	) AS ontime,
+	(
+		SELECT count(data_ra.id_k) FROM	data_ra	INNER JOIN data_k ON data_ra.id_k = data_k.id_k
+		WHERE	data_ra.detail = 'telat' AND data_k.jabatan_k != 12	AND MONTH (data_ra.tanggal) = '07' AND YEAR (data_ra.tanggal) = '2017' AND data_ra.id_k = me
+		GROUP BY data_ra.id_k
+	) AS late
+	
+	FROM data_ra 
+	INNER JOIN data_k ON data_ra.id_k = data_k.id_k
+	WHERE data_k.jabatan_k != 12
+	AND MONTH (data_ra.tanggal) = '07' AND YEAR (data_ra.tanggal) = '2017'
+
+	")->result();
+	
+	echo "<pre>";
+	foreach ($result as $key => $value) {
+		$karyawan[] = array('karyawan'=> $value->me ,'nama_k' =>$value->my,'late'=> $value->late , 'ontime' => $value->ontime);
+	}
+	foreach ($karyawan as $key => $row) {
+	    $late[$key]  = $row['late'];
+	    $ontime[$key] = $row['ontime'];
+	}
+	array_multisort($ontime, SORT_DESC,$late, SORT_ASC, $karyawan);
+	$last_id_karyawan = end($karyawan); // ambil ranking terakhir
+	var_dump($last_id_karyawan['nama_k']);
+	echo "</pre>";
+?>
+<table class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>ranking</th>
+			<th>id_k</th>
+			<th>nama_k</th>
+			<th>late</th>
+			<th>ontime</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php 
+		$a = 1;
+		foreach ($karyawan as $key ) {?>
+		<tr>
+			<td><?=$a?></td>
+			<td><?=$key['karyawan']?></td>
+			<td><?=$key['nama_k']?></td>
+			<td><?=$key['ontime']?></td>
+			<td><?=$key['late']?></td>
+		</tr>
+		<?php
+		$a++;
+		} ?>
+	</tbody>
+</table>
 </div>

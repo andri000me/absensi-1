@@ -65,7 +65,6 @@ function update()
                 "columnDefs": [
                     { "width": "74px", "targets": 8 }
                 ],
-                serverSide:false
             });
             $('#ijinperbulan').DataTable(
                 {"data" :(response.ijin),

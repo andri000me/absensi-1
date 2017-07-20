@@ -7,17 +7,21 @@
 				    <h4>Rp. <?=number_format($denda_absen[0]->total_denda,2,',','.')?>(Absen) <br> + Rp. <?=number_format($denda_ijin[0]->total_denda,2,',','.') ?>(Ijin)</h4>
 				</div>
 				<div class="col-sm-2 col-xs-12">
-				    <br/><p>Rata2 Keterlambatan</p>
-				    <h4>25 Menit</h4>	
+				    <br/><p>Rata2 Keterlambatan Karyawan</p>
+				    <h4><?=$late_avg_karyawan?> Menit</h4>	
 				</div>
-				<div class="col-sm-2 col-sm-push-3 col-xs-12">
+				<div class="col-sm-2 col-xs-12">
+				    <br/><p>Rata2 Keterlambatan Magang</p>
+				    <h4><?=$late_avg_magang?> Menit</h4>	
+				</div>
+				<!-- <div class="col-sm-2 col-sm-push-3 col-xs-12">
 				    <br/><p>Rangking 1</p>
-				    <h4><?=(isset($ranking_1[0]->nama_k)) ? $ranking_1[0]->nama_k :'-' ?></h4>	
+				    <h4>-</h4>	
 				</div>
 				<div class="col-sm-2 col-sm-push-3 col-xs-12">
 				    <br/><p>Rangking Terakhir</p>
-				    <h4><?=(isset($ranking_x[0]->nama_k)) ? $ranking_x[0]->nama_k : '-'?></h4>	
-				</div>
+				    <h4>-</h4>	
+				</div> -->
 			</div>	
 		</div>
 		<hr class="horizontal-line col-sm-12 col-xs-12 pull right">	
@@ -64,7 +68,6 @@ $(document).ready(function() {
 			        </tbody>
 		  		</table>
 			</div>
-			
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -108,5 +111,71 @@ $(document).ready(function() {
 		  		</table>
 			</div>
 		</div>
+	</div>
+	<br><hr>
+	<div class="container">
+		<div class="row">
+			<h3>Ranking Tepat Waktu Siswa Magang</h3>
+		</div>
+		<div class="row">
+			<div class="table-responsive">
+		  		<table class="table  table-condensed" id="examplo">
+		  			<thead>
+		        		<tr>
+		        			<th>ranking</th>
+			            	<th>nama siswa</th>
+			            	<th>ontime</th>
+			            	<th>late</th>
+		            	</tr>
+		        	</thead>
+			        <tbody>
+			        	<?php
+			        		$a = 1;
+							foreach ($magang as $row) { 
+			        		echo "<tr>";
+			        		echo "<td>".$a."</td>";
+			        		echo "<td>".$row['nama_k']."</td>";
+			        		echo "<td>".$row['ontime']."</td>";
+			        		echo "<td>".$row['late']."</td>";
+			        		echo "</tr>";
+			        		$a++;
+			        	}
+			        	?>
+			        </tbody>
+		  		</table>
+			</div>
+		</div><hr>
+		<div class="row">
+			<h3>Ranking Tepat Waktu Karyawan</h3>
+		</div>
+		<div class="row">
+			<div class="table-responsive">
+		  		<table class="table  table-condensed" id="examplo">
+		  			<thead>
+		        		<tr>
+		        			<th>ranking</th>
+			            	<th>nama Karyawan</th>
+			            	<th>ontime</th>
+			            	<th>late</th>
+		            	</tr>
+		        	</thead>
+			        <tbody>
+			        	<?php
+			        		$a = 1;
+							foreach ($karyawan as $row) { 
+			        		echo "<tr>";
+			        		echo "<td>".$a."</td>";
+			        		echo "<td>".$row['nama_k']."</td>";
+			        		echo "<td>".$row['ontime']."</td>";
+			        		echo "<td>".$row['late']."</td>";
+			        		echo "</tr>";
+			        		$a++;
+			        	}
+			        	?>
+			        </tbody>
+		  		</table>
+			</div>
+		</div>
+
 	</div>
 </div>

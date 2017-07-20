@@ -13,7 +13,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <a class="btn btn-primary" id="btn-delete-absen" >delete</a>
+                        <button class="btn btn-primary" id="btn-delete-absen" >delete</button>
                     </div>
             </div>
         </form>

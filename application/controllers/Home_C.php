@@ -139,6 +139,7 @@ class Home_C extends CI_Controller {
 			}else{
 				$this->session->set_flashdata("alert_login_validate", "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>login gagal!</strong> </div>");
 			}
+			redirect();
 		}
 		else {
 			$data = array(	'username_k' => $this->input->post('l_username'),
@@ -218,7 +219,7 @@ class Home_C extends CI_Controller {
 					$datax['id_j'] = $this->Absen_M->read('data_k',$dataCondition)->result();
 					unset($dataCondition);
 					/*menentukan denda*/
-					echo "<pre>";
+					// echo "<pre>";
 					if ($datax['id_j'][0]->jabatan_k != 12) {/*saat bukan anak magang*/
 						$time1 = strtotime($data['jam']);
 						// var_dump($time1);
@@ -249,8 +250,8 @@ class Home_C extends CI_Controller {
 					$data['late_minute'] = $minutes;
 					// echo 'Diff. in minutes is: '.$minutes."<br>";
 					// echo $data['denda'];
-					echo "</pre>";
-					die();
+					// echo "</pre>";
+					// die();
 
 				}
 				elseif ($data['jam']>$jam_pulang) {

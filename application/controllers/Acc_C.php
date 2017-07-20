@@ -168,7 +168,7 @@ class Acc_C extends CI_Controller {
                     $denda_terlambat = $datax['denda_terlambat'][0]->misc;
                     unset($where_idm,$datax);
 
-                    $data['denda'] = $difference * $denda_terlambat;
+                    $data['denda'] = ($difference * $denda_terlambat)+ $denda_terlambat;
                 }
                 else{
                     $data['detail'] = "tepat waktu";

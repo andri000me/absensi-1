@@ -101,6 +101,23 @@ class Home_C extends CI_Controller {
 		$this->load->view('Home/dashboard',$data);
 		$this->load->view('html/footer');
 	}
+	public function show_absen_n()
+	{
+		$date= date('Y-m-d');
+		$data['absen']=$this->Absen_M->rawQuery("
+				SELECT data_ra.id_a, 
+				data_s.keterangan_s, 
+				data_ra.detail, 
+				data_ra.tanggal, 
+				data_ra.jam, 
+				data_ra.acc, 
+				data_k.nama_k, 
+				data_ra.denda FROM data_ra
+				INNER JOIN data_k ON data_ra.id_k = data_k.id_k
+				INNER JOIN data_s ON data_ra.id_s = data_s.id_s
+				WHERE tanggal = '".$date."' ORDER BY data_ra.id_a DESC ")->result();
+		echo json_encode($data);
+	}
 	public function show_absen()
 	{
 		$date= date('Y-m-d');
@@ -380,7 +397,44 @@ class Home_C extends CI_Controller {
 			}
 		}
 	}
+	public function create_ijin_free()
+	{
+		if ($this->input->post() != null) {
+			$data['id_k'] = $this->input->post('c_id_k');
+			$data['perihal'] = $this->input->post('c_perihal');
+			$data['start'] = $this->input->post('c_jam_start');
+			$data['end'] = $this->input->post('c_jam_end');
+			$data['tanggal'] = date('Y-m-d');
 
+			$time1 = strtotime($data['start']);
+			$time2 = strtotime($data['end']);
+			$difference = round(abs($time2 - $time1) / 3600,2);
+
+			if ($difference >= 0.5) {
+				$where_idm['id_m'] =  6;
+				$datax['denda_ijin'] = $this->Absen_M->read('data_m',$where_idm)->result();
+				$denda_ijin = $datax['denda_ijin'][0]->misc;
+
+				$total_denda = 0;
+				$loop = $difference / 0.5;
+				for ($i=1; $i <=$loop ; $i++) { 
+					if ($i % 2 == 0) {
+						$total_denda += $denda_ijin;
+					}
+				}
+				$data['denda'] = $total_denda;
+				$result = $this->Absen_M->create('data_i',$data);
+				if($result){
+	 				$alert_create_ijin =  "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil dibuat</strong></div>";
+	 			}else{
+	 				$alert_create_ijin =  "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>gagal memasukkan ke database</strong></div>";	
+	 			}
+			} else {
+				$alert_create_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil di stop.</strong> Data ijin anda dihapus karena kurang dari 30 menit</div>";
+			}
+		}
+		echo json_encode($alert_create_ijin);
+	}
 	public function create_ijin()
 	{
 		if ($this->input->post() != null) {
@@ -458,18 +512,21 @@ class Home_C extends CI_Controller {
 			
 			$time1 = strtotime($start);
 			$time2 = strtotime($datau['end']);
-			$difference = round(abs($time2 - $time1) / 3600,2);
+			$difference = round(abs($time2 - $time1) / 3600,2);			
 			
 			if ($difference >= 0.5) {
-
 				$where_idm['id_m'] =  6;
 				$datax['denda_ijin'] = $this->Absen_M->read('data_m',$where_idm)->result();
 				$denda_ijin = $datax['denda_ijin'][0]->misc;
-				unset($where_idm,$datax);
 
-				$difference = round(ceil($difference), 0, PHP_ROUND_HALF_UP);
-				$datau['denda']= $difference * $denda_ijin;
-
+				$total_denda = 0;
+				$loop = $difference / 0.5;
+				for ($i=1; $i <=$loop ; $i++) { 
+					if ($i % 2 == 0) {
+						$total_denda += $denda_ijin;
+					}
+				}
+				$datau['denda'] = $total_denda;
 				$result = $this->Absen_M->update('data_i',$dataCondition,$datau);
 				$results = json_decode($result, true);
 

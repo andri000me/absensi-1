@@ -25,6 +25,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
+          <li>
+                    <a href="<?php echo base_url('Home_C/hari_ini') ?>">Hari ini</a>
+                  </li>
             <?php if ($this->session->userdata('logged_in')['hak_akses'] == 1 or $this->session->userdata('logged_in')['hak_akses'] == 2){ ?>
                 <li <?php echo ($active1 =="view_dashboard")? 'class = active':''?>><a href="<?php echo base_url('Home_C/view_dashboard')?>"> Dashboard </a></li>
                 
@@ -85,10 +88,9 @@
                   <li>
                     <a href="" data-toggle="modal" data-target="#loginModal">Login</a>
                   </li>
-                  <li>
-                    <a href="<?php echo base_url('Home_C/hari_ini') ?>">Hari ini</a>
-                  </li>
+                  
               <?php  } ?>
+
           </ul>
         </div>
       </div>

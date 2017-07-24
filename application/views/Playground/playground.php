@@ -1,66 +1,29 @@
 <div class="container">
-	<?php
-	$result = $this->Absen_M->rawQuery("
-	SELECT 
-	DISTINCT data_ra.id_k AS me,
-	data_k.nama_k AS my,
-	(
-		SELECT count(data_ra.id_k)
-		FROM data_ra
-		INNER JOIN data_k ON data_ra.id_k = data_k.id_k
-		WHERE data_ra.detail = 'tepat waktu' AND data_k.jabatan_k != 12	AND MONTH (data_ra.tanggal) = '07' AND YEAR (data_ra.tanggal) = '2017' AND data_ra.id_k = me
-		GROUP BY data_ra.id_k
-	) AS ontime,
-	(
-		SELECT count(data_ra.id_k) FROM	data_ra	INNER JOIN data_k ON data_ra.id_k = data_k.id_k
-		WHERE	data_ra.detail = 'telat' AND data_k.jabatan_k != 12	AND MONTH (data_ra.tanggal) = '07' AND YEAR (data_ra.tanggal) = '2017' AND data_ra.id_k = me
-		GROUP BY data_ra.id_k
-	) AS late
-	
-	FROM data_ra 
-	INNER JOIN data_k ON data_ra.id_k = data_k.id_k
-	WHERE data_k.jabatan_k != 12
-	AND MONTH (data_ra.tanggal) = '07' AND YEAR (data_ra.tanggal) = '2017'
+	<script type="text/javascript">
+		function diff_minutes(dt2, dt1){
+			var diffm =(dt2.getTime() - dt1.getTime()) / 1000;
+			var diffh =(dt2.getHours() - dt1.getHours());
+			diffm /= 60;
+			var result = [ Math.abs(diffh),Math.abs(Math.round(diffm))];
+			return (result);
+		}
+		var date = <?=date('Y-m-d') ?>;
+		var end = "11:00";
+		var start = "11:30";
+		
+		dt1 = new Date(date+' '+start);
+		dt2 = new Date(date+' '+end);
 
-	")->result();
-	
-	echo "<pre>";
-	foreach ($result as $key => $value) {
-		$karyawan[] = array('karyawan'=> $value->me ,'nama_k' =>$value->my,'late'=> $value->late , 'ontime' => $value->ontime);
-	}
-	foreach ($karyawan as $key => $row) {
-	    $late[$key]  = $row['late'];
-	    $ontime[$key] = $row['ontime'];
-	}
-	array_multisort($ontime, SORT_DESC,$late, SORT_ASC, $karyawan);
-	$last_id_karyawan = end($karyawan); // ambil ranking terakhir
-	var_dump($last_id_karyawan['nama_k']);
-	echo "</pre>";
-?>
-<table class="table table-striped table-hover">
-	<thead>
-		<tr>
-			<th>ranking</th>
-			<th>id_k</th>
-			<th>nama_k</th>
-			<th>late</th>
-			<th>ontime</th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php 
-		$a = 1;
-		foreach ($karyawan as $key ) {?>
-		<tr>
-			<td><?=$a?></td>
-			<td><?=$key['karyawan']?></td>
-			<td><?=$key['nama_k']?></td>
-			<td><?=$key['ontime']?></td>
-			<td><?=$key['late']?></td>
-		</tr>
-		<?php
-		$a++;
-		} ?>
-	</tbody>
-</table>
+		var result = diff_minutes(dt1, dt2);
+		if (result[0] == 0 && result[1] < 30) {
+			console.log(result[0]);
+		}
+		else if(result[0] == 0 && result[1] >= 30){
+			console.log(3000);
+		}
+		else if((result[0] > 0 && result[0] <= 1) || result[0] > 1){
+			console.log(result[0]);
+			console.log((result[0] * 3000));
+		}
+	</script>
 </div>

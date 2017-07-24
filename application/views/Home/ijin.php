@@ -3,14 +3,14 @@
         <div class="modal-content">
         	<div class="modal-header">
             	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            	<h4 class="modal-title" id="myModalLabel">ijin free form</h4>
+            	<h4 class="modal-title" id="myModalLabel">ijin free form <?=date('d-F-Y')?></h4>
           	</div>
-        	<form class="form-horizontal" method="POST">
-        		<h5 class="text-center"> *Atur value ijin secara manual. Pastikan jam awal dan jam akhir valid </h5><br>
+        	<form class="form-horizontal" method="POST" id="freeform">
+        		<h5 class="text-center"> *Atur value ijin secara manual. Pastikan jam awal dan jam akhir valid.</h5><br>
           		<div class="modal-body">
           			<div class="form-group">
 	              		<div class=" col-xs-12">
-	                  		<select class="chosen-select" data-placeholder="Nama Karyawan" name="c_id_k" required>
+	                  		<select class="chosen-select" data-placeholder="Nama Karyawan" name="c_id_k" required style="width: 100%">
 						    <?php 
 			            		foreach($nama_karyawan as $row)
 					            {
@@ -21,19 +21,48 @@
 	              		</div>
           			</div>
               		<div class="form-group">
-                		<div class="col-sm-12">
-                  			<textarea class="form-control" name="c_perihal" value="<?php echo set_value('c_perihal'); ?>" style="min-height: 100px;" required></textarea>
-                		</div>
+              			<div class="col-xs-12">
+	              			<label class='control-label'>keterangan</label>
+	                  		<textarea class="form-control" name="c_perihal"  style="min-height: 100px;" required></textarea>
+              			</div>
               		</div>
+              		<div class='form-group'><div class='col-xs-12'>
+                        <label class='control-label'>Jam Start</label>
+                        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" id="clockstart">
+						    <input type="text" class="form-control" name="c_jam_start">
+						    <span class="input-group-addon">
+						        <span class="glyphicon glyphicon-time"></span>
+						    </span>
+						</div>
+						</div>
+                    </div>
+                    <div class='form-group'><div class='col-xs-12'>
+                        <label class='control-label'>Jam End</label>
+                        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" id="clockend">
+						    <input type="text" class="form-control" name="c_jam_end">
+						    <span class="input-group-addon">
+						        <span class="glyphicon glyphicon-time"></span>
+						    </span>
+						</div>
+						</div>
+                    </div>
 	          	</div>
 	          	<div class="modal-footer">
 	            	<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-	            	<button type="submit" class="btn btn-primary" onclick="free()">Submit</button>
+	            	<button type="submit" class="btn btn-primary" onclick="free()" id="btn_free">Submit</button>
 	          	</div>
         	</form>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+	$('#ijinFreeformModal').on('shown.bs.modal', function () {
+		$('.chosen-select').chosen("destroy");
+		$('.chosen-select').chosen();
+    	$('#clockstart').clockpicker({placement: 'top'});
+    	$('#clockend').clockpicker({placement: 'top'});
+	});
+</script>
 
 <div class="container">
 	<div class="row">
@@ -168,6 +197,7 @@
 
 
 <script type="text/javascript">
+	
 	function submit() {
 		// console.log('aaaa');
 		var url = "<?=base_url('Home_C/create_ijin')?>";
@@ -199,6 +229,37 @@
 	        }
 	    });
 	    show();
+	}
+	function free(){
+		var url  = "<?=base_url('Home_C/create_ijin_free/')?>";
+		console.log(url);
+		$('#btn_free').text('creating...'); //change button text
+	    $('#btn_free').attr('disabled',true); //set button disable
+	    var formData = new FormData($('#freeform')[0]);
+	    $.ajax({
+	        url : url,
+	        type: "POST",
+	        data: formData,
+	        contentType: false,
+	        processData: false,
+	        success: function(data)
+	        {
+	        	var object = JSON.parse(data);
+	            $("#alert").html(object);
+	            // console.log(data);
+	            $('#btn_free').text('Submit'); //change button text
+	            $('#btn_free').attr('disabled',false); //set button enable 
+	            show();
+	        },
+	        error: function (jqXHR, textStatus, errorThrown)
+	        {
+	            console.log(jqXHR, textStatus, errorThrown);
+	            $('btn_free').text('eror'); //change button text
+	            $('btn_free').attr('disabled',false); //set button enable 
+	        }
+	    });
+	    show();
+
 	}
 	function stop(elem){
 		var uidi = $(elem).data('idi');

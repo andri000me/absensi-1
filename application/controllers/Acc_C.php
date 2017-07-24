@@ -311,6 +311,7 @@ class Acc_C extends CI_Controller {
                         $data['denda'] =0;
                         $data['late_minute']=0;
                         $data['detail'] = $this->input->post('u_detail');
+                        unset($data['id_s']);
                         $result = $this->Absen_M->update('data_ra',$dataCondition,$data);
                         $results = json_decode($result, true);
                         if ($results['status']) {
@@ -405,7 +406,6 @@ class Acc_C extends CI_Controller {
     public function update_ijin_ku(){
         if ($this->input->post() != null) {
             $dataCondition['id_i'] = $this->input->post('u_id_i');
-            // $data['id_k'] = $this->input->post('u_id_k');
             $data['perihal'] = $this->input->post('u_perihal');
             $data['start'] = $this->input->post('u_start');
             $data['end'] = $this->input->post('u_end');
@@ -423,28 +423,33 @@ class Acc_C extends CI_Controller {
             $denda_ijin = $datax['denda_ijin'][0]->misc;
             unset($where_idm,$datax);
 
+            $where_idm['id_m'] =  1;
+            $datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
+            $jam_masuk = $datax['jam_masuk'][0]->misc;
+            unset($where_idm);
+
             $where_idm['id_m'] =  4;
             $datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
             $jam_pulang = $datax['jam_pulang'][0]->misc;
             unset($datax,$where_idm);
 
-            $difference = round(ceil($difference), 0, PHP_ROUND_HALF_UP);
-            $data['denda']= $difference * $denda_ijin;
-
             if ($data['end'] > $jam_pulang) {
                 $data['end'] = $jam_pulang;
             }
-
-            $where_idm['id_m'] =  1;
-            $datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
-            $jam_masuk = $datax['jam_masuk'][0]->misc;
-            unset($where_idm);
 
             if ($data['start'] < $jam_masuk ) {
                 $alert_update_ijin_acc =  "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Ijin gagal! perbaiki jam ijin start</strong> Inputan jam diluar jam kerja</div>";
             }
 
             else{
+                $total_denda = 0;
+                $loop = $difference / 0.5;
+                for ($i=1; $i <=$loop ; $i++) { 
+                    if ($i % 2 == 0) {
+                        $total_denda += $denda_ijin;
+                    }
+                }
+                $data['denda'] = $total_denda;
 
                 $result = $this->Absen_M->update('data_i',$dataCondition,$data);
                 $results = json_decode($result, true);

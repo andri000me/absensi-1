@@ -47,7 +47,7 @@
 </div>
 
 <script type="text/javascript">
-	$.get('<?php echo base_url('Home_C/show_absen/')?>', function(html){
+	$.get('<?php echo base_url('Home_C/show_absen_n/')?>', function(html){
     	var data = JSON.parse(html);
     	console.log(data);
     	$('#tabel_absen').DataTable().destroy();
@@ -62,14 +62,13 @@
 			{ "data": "tanggal" },
 			{ "data": "jam" },
 			{ "data": "denda" , render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}
-        ],
-		paging : false,
-		aoColumnDefs: [{ "bSortable": true, "aTargets": [] }]
+        ]		
   		});
 	});
 
 	$.get('<?php echo base_url('Home_C/show_ijin/')?>', function(html){
 		var data = JSON.parse(html);
+    	console.log(data.list_ijin);
     	$('#tabel_ijin').DataTable().destroy();
 		$('#tabel_ijin').DataTable({
 			"data" :(data.list_ijin),

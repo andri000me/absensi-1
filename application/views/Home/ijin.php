@@ -1,3 +1,8 @@
+<script type="text/javascript">
+	$( document ).ready(function() {
+		$("#freeform").on('submit', function(e){e.preventDefault();});
+	});
+</script>
 <div class="modal fade" id="ijinFreeformModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -6,10 +11,11 @@
             	<h4 class="modal-title" id="myModalLabel">ijin free form <?=date('d-F-Y')?></h4>
           	</div>
         	<form class="form-horizontal" method="POST" id="freeform">
-        		<h5 class="text-center"> *Atur value ijin secara manual. Pastikan jam awal dan jam akhir valid.</h5><br>
           		<div class="modal-body">
+          			<div id="alert-free"></div>	
           			<div class="form-group">
 	              		<div class=" col-xs-12">
+        					<h5 class="text-center"> *Atur value ijin secara manual. Pastikan jam awal dan jam akhir valid.</h5><br>
 	                  		<select class="chosen-select" data-placeholder="Nama Karyawan" name="c_id_k" required style="width: 100%">
 						    <?php 
 			            		foreach($nama_karyawan as $row)
@@ -28,8 +34,8 @@
               		</div>
               		<div class='form-group'><div class='col-xs-12'>
                         <label class='control-label'>Jam Start</label>
-                        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" id="clockstart">
-						    <input type="text" class="form-control" name="c_jam_start">
+                        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" >
+						    <input type="text" class="form-control" name="c_jam_start" id="clockstart">
 						    <span class="input-group-addon">
 						        <span class="glyphicon glyphicon-time"></span>
 						    </span>
@@ -38,14 +44,23 @@
                     </div>
                     <div class='form-group'><div class='col-xs-12'>
                         <label class='control-label'>Jam End</label>
-                        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" id="clockend">
-						    <input type="text" class="form-control" name="c_jam_end">
+                        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" >
+						    <input type="text" class="form-control" name="c_jam_end" onchange="calc()" id="clockend">
 						    <span class="input-group-addon">
 						        <span class="glyphicon glyphicon-time"></span>
 						    </span>
 						</div>
 						</div>
                     </div>
+					<div class="form-group"><div class="col-xs-12">
+						<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+						<div class="input-group">
+							<div class="input-group-addon">Rp</div>
+							<input type="text" class="form-control" id="biaya"  placeholder="Amount">
+							<div class="input-group-addon">.00</div>
+						</div>
+						</div>
+					</div>
 	          	</div>
 	          	<div class="modal-footer">
 	            	<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -56,11 +71,49 @@
     </div>
 </div>
 <script type="text/javascript">
+	function diff_minutes(dt2, dt1){
+		var diffm =(dt2.getTime() - dt1.getTime()) / 1000;
+		var diffh =(dt2.getHours() - dt1.getHours());
+		diffm /= 60;
+		var result = [ Math.abs(diffh),Math.abs(Math.round(diffm))];
+		return (result);
+	}
+
+
+	function calc() {
+		var date = <?=date('Y-m-d') ?>;
+		var start = document.getElementById('clockstart').value;
+		var end =  document.getElementById('clockend').value;
+		if (end < start) {
+			document.getElementById('clockend').value = '';
+			document.getElementById('alert-free').innerHTML='<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Jam tidak valid.</strong></div>';
+		}
+		else{
+			dt1 = new Date(date+' '+start);
+			dt2 = new Date(date+' '+end);
+
+			var result = diff_minutes(dt1, dt2);
+			if (result[0] == 0 && result[1] < 30) {
+				console.log(result[0]);
+			}
+			else if(result[0] == 0 && result[1] >= 30){
+				document.getElementById('biaya').value = '<?=$denda_ijin?>';
+			}
+			else if((result[0] > 0 && result[0] <= 1) || result[0] > 1){
+				
+				document.getElementById('biaya').value = result[0] * '<?=$denda_ijin?>';
+			}
+		}
+	}
+</script>
+
+
+<script type="text/javascript">
 	$('#ijinFreeformModal').on('shown.bs.modal', function () {
 		$('.chosen-select').chosen("destroy");
 		$('.chosen-select').chosen();
-    	$('#clockstart').clockpicker({placement: 'top'});
-    	$('#clockend').clockpicker({placement: 'top'});
+    	$('#clockstart').clockpicker({placement: 'top',donetext: 'Done'});
+    	$('#clockend').clockpicker({placement: 'top',donetext: 'Done'});
 	});
 </script>
 
@@ -247,6 +300,7 @@
 	            // console.log(data);
 	            $('#btn_free').text('Submit'); //change button text
 	            $('#btn_free').attr('disabled',false); //set button enable 
+	            $('#ijinFreeformModal').modal('hide');
 	            show();
 	        },
 	        error: function (jqXHR, textStatus, errorThrown)

@@ -49,6 +49,10 @@ class Home_C extends CI_Controller {
 			redirect('Jabatan_C');
 		}
 		else {
+			$where_idm['id_m'] =  6;
+			$data['denda_ijin'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$data['denda_ijin'] = $data['denda_ijin'][0]->misc;
+
 			$data['nama_karyawan']=$this->Absen_M->readS('data_k')->result();
 			$dataCondition['end']= '00:00:00';
 			$data['ijin']=$this->Absen_M->rawQuery("

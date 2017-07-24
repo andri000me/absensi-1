@@ -120,8 +120,13 @@ class Overview_C extends CI_Controller {
                     ")->result();
 
                 /*masukkan ke array*/
-                foreach ($datax['ranking_1_magang'] as $key => $value) {
-                    $magang[] = array('magang'=> $value->me ,'nama_k' =>$value->my,'late'=> $value->late , 'ontime' => $value->ontime);
+                if ($datax['ranking_1_magang'] != array()) {
+                    foreach ($datax['ranking_1_magang'] as $key => $value) {
+                        $magang[] = array('magang'=> $value->me ,'nama_k' =>$value->my,'late'=> $value->late , 'ontime' => $value->ontime);
+                    }
+                }
+                else{
+                    $magang[] = array('magang'=> "-" ,'nama_k' =>"-",'late'=> "-" , 'ontime' => "-");
                 }
                 /*pecah kedalam ontime dan late*/
                 foreach ($magang as $key => $row) {
@@ -190,15 +195,27 @@ class Overview_C extends CI_Controller {
             if ($this->input->post() != null) {
                 $datar['tanggal'] = $this->input->post('l_hari');
                 $datax['cari'] = $this->Absen_M->rawQuery("
-
-                    SELECT data_ra.id_a, data_ra.detail, data_ra.tanggal, data_ra.jam, data_s.keterangan_s, data_k.nama_k, data_ra.acc,data_ra.denda
+                    SELECT  data_ra.id_a, 
+                            data_ra.detail, 
+                            data_ra.tanggal, 
+                            data_ra.jam, 
+                            data_s.keterangan_s, 
+                            data_ra.acc,
+                            data_ra.denda,
+                            data_k.nama_k 
                     FROM data_ra 
                     INNER JOIN data_k ON data_ra.id_k = data_k.id_k
                     INNER JOIN data_s ON data_ra.id_s = data_s.id_s
 
-                    WHERE tanggal ='".$datar['tanggal']."'")->result();
+                    WHERE tanggal ='".$datar['tanggal']."' ")->result();
 
                 $datax['cari_ijin'] = $this->Absen_M->rawQuery("SELECT data_k.nama_k, data_i.perihal, data_i.end, data_i.start, data_i.tanggal, data_i.id_i FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k WHERE tanggal ='".$datar['tanggal']."' ")->result();
+
+                $datax['denda_absen']=$this->Absen_M->rawQuery("SELECT (SELECT SUM(data_ra.denda) from data_ra WHERE data_ra.tanggal ='".$datar['tanggal']."') AS total_denda")->result();
+                // echo "<pre>";
+                // var_dump($datax);
+                // echo "</pre>";
+                $datax['denda_ijin']=$this->Absen_M->rawQuery("SELECT (SELECT SUM(data_i.denda) from data_i WHERE data_i.tanggal ='".$datar['tanggal']."') AS total_denda")->result();
 
                 $datax['tanggal'] = $datar['tanggal'];
                 unset($datar);

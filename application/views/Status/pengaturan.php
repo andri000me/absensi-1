@@ -42,7 +42,7 @@ $('#deletePengaturanModal').on('show.bs.modal', function(e) {
 	</ol>
 
 	<h3>Pengaturan</h3>
-	<h6>ini adalah kontanta, hanya untuk di edit</h6>
+	<h6>ini adalah konstanta, hanya untuk di edit</h6>
 <!-- 	<h6>id 1 = jam masuk; <br>
 		id 2 = tahun sekarang;<br>
 		id 4 = jam akhir kerja;<br>

@@ -11,8 +11,8 @@
 			</div>
 			<div class="col-md-6">
 				<div class="dist">
-					<a href="<?=base_url("Home_C/view_absen")?>" class="btn btn-primary btn-lg"> TAMBAH ABSENSI</a>
-					<a href="<?=base_url("Home_C/view_ijin")?>" class="btn btn-primary btn-lg">TAMBAH IZIN</a>
+				   <a href="<?=base_url("Home_C/view_absen")?>" class="btn btn-primary btn-lg"> TAMBAH ABSENSI</a>
+				   <a href="<?=base_url("Home_C/view_ijin")?>" class="btn btn-primary btn-lg">TAMBAH IZIN</a>
 				</div>
 			</div>
 		</div>
@@ -97,7 +97,6 @@ function show(){
 	});
 	$.get('<?php echo base_url('Home_C/show_ijin/')?>', function(html){
 	    	var data = JSON.parse(html);
-	    	console.log(data);
 	    	$('#tabel_ijin').DataTable().destroy();
 			$('#tabel_ijin').DataTable({
 				"data" :(data.list_ijin),
@@ -111,8 +110,13 @@ function show(){
 						"render": $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}
                     ,{ "data": "id_i",
                         "render": function ( data, type, full, meta ) {
-                            if (myData != '') {
+                            // console.log("data"+data);
+                            // console.log("type"+type);
+                            // console.log(full);
+                            if (full.end == "00:00:00") {
                                 return '<a  class="btn btn-xs btn-danger" data-idi="'+data+'" onclick="stop(this)">Stop</a>';
+                            }else{
+                                return '<a  class="btn btn-xs btn-success" data-idi="'+data+'" disabled>Finish</a>';
                             }
                         }
                     }
@@ -252,6 +256,7 @@ function stop(elem){
         var url = "<?=base_url('Home_C/stop_ijin/')?>";
         var alert = document.getElementById('alert');
         $.get(url + uidi, function(html){
+            uidi.innerHTML = "FINISH";
             var object = JSON.parse(html);
             alert.innerHTML = object;
         });

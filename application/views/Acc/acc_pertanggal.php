@@ -29,6 +29,7 @@
                         <th>jam</th>
                         <th>acc</th>
                         <th>denda</th>
+                        <th>late minute</th>
                         <th class='text-center'>action</th>
                     </tr>
                 </thead>

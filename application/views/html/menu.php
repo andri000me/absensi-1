@@ -67,23 +67,26 @@
                 <li <?php echo ($active =="User_C")? 'class = active':''?>>
                   <a class="dropdown-toggle" data-toggle="dropdown">
                   <img class="profil" src="<?php echo base_url().$this->session->userdata('logged_in')['link_foto']?>" alt="User's Photo" />  
-                    <span>User</span>
+                    
                     <b class="arrow fa fa-caret-down"></b>
                   </a>
                   <ul class="dropdown-menu dropdown-navbar">
                     <li><a href="<?php echo base_url("User_C/update_my_account/".$this->session->userdata('logged_in')['id_k'])?>">myAccounts</a></li>
-                  <?php if (isset($this->session->userdata['logged_in'])) { ?>
+                  <?php /*if (isset($this->session->userdata['logged_in'])) {*/ ?>
                     <li>
                       <a id='hak-akses' href="<?php echo base_url('Home_C/logout/')?>" data-my="<?php echo $this->session->userdata('logged_in')['username']?>">Logout <?php echo $this->session->userdata('logged_in')['username']?> </a>
                     </li>
-                  <?php } else { ?>
-                    <li><a href="" data-toggle="modal" data-target="#loginModal">Logins</a></li>
-                  <?php } ?>
+                  <?php /*} else {*/ ?>
+                    <!-- <li><a href="" data-toggle="modal" data-target="#loginModal">Logins</a></li> -->
+                  <?php /*}*/ ?>
                   </ul>
                 </li>
               <?php } else { ?>
                   <li>
-                    <a href="" data-toggle="modal" data-target="#loginModal">Logins</a>
+                    <a href="" data-toggle="modal" data-target="#loginModal">Login</a>
+                  </li>
+                  <li>
+                    <a href="<?php echo base_url('Home_C/hari_ini') ?>">Hari ini</a>
                   </li>
               <?php  } ?>
           </ul>

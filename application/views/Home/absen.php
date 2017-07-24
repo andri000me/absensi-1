@@ -24,7 +24,7 @@
 				  	<div class="panel-body">
 				  		<form id="form-absen" method="POST">
 							<div class="form-group col-xs-12">
-						        <select class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%;" name="c_id_k">
+						        <select class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%;" name="c_id_k" required="required">
 						        <option></option>
 							        <?php
 					            		foreach($nama_karyawan as $row)						            {
@@ -34,7 +34,10 @@
 						        </select>
 							</div>
 							<div class="form-group col-xs-12">
-						        <select data-placeholder="Keterangan" class="chosen-select" tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()" id="keterangan">
+								<input type="password" name="c_password" class="form-control" required="required" placeholder="password">
+							</div>
+							<div class="form-group col-xs-12">
+						        <select data-placeholder="Keterangan" class="chosen-select" tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()" id="keterangan" required="required">
 						            <option value=""></option>
 							            <?php
 							            	if(isset($this->session->userdata['logged_in'])) {

@@ -3,21 +3,17 @@
     	<div class="col-sm-12">
     		<div class="row">
 		    	<div class="col-sm-4 col-xs-12">
-				    <br/><p>Total Denda</p>
-				    <h4>Rp. <?=number_format($denda_absen[0]->total_denda,2,',','.')?>(Absen) <br> + Rp. <?=number_format($denda_ijin[0]->total_denda,2,',','.') ?>(Ijin)</h4>
+				    <br/><p>Total Denda Absen</p>
+				    <h4>Rp. <?=number_format($denda_absen[0]->total_denda,2,',','.')?></h4>
 				</div>
-				<div class="col-sm-2 col-xs-12">
+				<div class="col-sm-4 col-xs-12">
+				    <br/><p>Total Denda Ijin</p>
+				    <h4>Rp. <?=number_format($denda_ijin[0]->total_denda,2,',','.') ?></h4>
+				</div>
+				<!-- <div class="col-sm-4 col-xs-12">
 				    <br/><p>Rata2 Keterlambatan</p>
 				    <h4>25 Menit</h4>	
-				</div>
-				<div class="col-sm-2 col-sm-push-3 col-xs-12">
-				    <br/><p>Rangking 1</p>
-				    <h4><?=$ranking_1[0]->nama_k?></h4>	
-				</div>
-				<div class="col-sm-2 col-sm-push-3 col-xs-12">
-				    <br/><p>Rangking Terakhir</p>
-				    <h4><?=$ranking_x[0]->nama_k?></h4>	
-				</div>
+				</div> -->
 			</div>	
 		</div>
 		<hr class="horizontal-line col-sm-12 col-xs-12 pull right">	

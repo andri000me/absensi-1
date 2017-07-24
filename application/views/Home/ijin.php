@@ -1,9 +1,49 @@
+<div class="modal fade" id="ijinFreeformModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        	<div class="modal-header">
+            	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            	<h4 class="modal-title" id="myModalLabel">ijin free form</h4>
+          	</div>
+        	<form class="form-horizontal" method="POST">
+        		<h5 class="text-center"> *Atur value ijin secara manual. Pastikan jam awal dan jam akhir valid </h5><br>
+          		<div class="modal-body">
+          			<div class="form-group">
+	              		<div class=" col-xs-12">
+	                  		<select class="chosen-select" data-placeholder="Nama Karyawan" name="c_id_k" required>
+						    <?php 
+			            		foreach($nama_karyawan as $row)
+					            {
+					              	echo '<option value="'.$row->id_k.'">'.$row->nama_k.'</option>';
+					            }
+						    ?>
+					        </select>
+	              		</div>
+          			</div>
+              		<div class="form-group">
+                		<div class="col-sm-12">
+                  			<textarea class="form-control" name="c_perihal" value="<?php echo set_value('c_perihal'); ?>" style="min-height: 100px;" required></textarea>
+                		</div>
+              		</div>
+	          	</div>
+	          	<div class="modal-footer">
+	            	<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+	            	<button type="submit" class="btn btn-primary" onclick="free()">Submit</button>
+	          	</div>
+        	</form>
+        </div>
+    </div>
+</div>
+
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12">
 			<h3 class="text-center">Perijinan</h3>
 			<h6 class="text-center">*jika ijin seharian, inputkan start dengan nilai jam masuk dan input end dengan nilai jam pulang</h6>
 			<h6 class="text-center">*jangan lupa mengakhiri ijin dengan menekan tombol selesai</h6>
+		</div>
+		<div class="col-xs-12">
+			<button type="button" class="btn btn-primary col-xs-12" data-toggle="modal" data-target="#ijinFreeformModal">Ijin Free form</button>
 		</div>
 	</div><br>
 	<div class="row">
@@ -13,7 +53,7 @@
 	<div class="panel panel-default" style="margin-top: 20px;">
 	  	<div class="panel-body">
 		  	<div class="row">
-		  		<form  method="POST" id="form-ijin"><!-- action="<?php echo base_url();?>Home_C/create_ijinx" -->
+		  		<form  method="POST" id="form-ijin">
 					<div class="form-group col-xs-12" >
 				        <select class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%" name="c_id_k" required >
 					    <?php 

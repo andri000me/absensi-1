@@ -3,9 +3,9 @@
 	  <li class='active'>Status</li>
 	</ol>
 	<div class="row">
-		<div class="col-xs-12 text-right">
+		<!-- <div class="col-xs-12 text-right">
 			<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addStatusModal">Add status</button>
-		</div>
+		</div> -->
 		<div class="col-sm-12"><br>
   			<?=$this->session->flashdata("alert_update_info");?>
 	        <?=$this->session->flashdata("alert_create_status");?>

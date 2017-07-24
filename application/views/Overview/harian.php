@@ -1,4 +1,4 @@
-	<div class="col-xs-12 col-sm-8 col-sm-push-1" >
+	<div class="col-xs-12" >
 	
 	<h4>Laporan Absensi Harian</h4><br>
 
@@ -6,13 +6,12 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Tanggal</label>
 			    <div class="col-sm-5">
-					<input type="date" name="l_hari" class="form-control " required="required">
+					<input type="date" name="l_hari" class="form-control ">
 			    </div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-10 col-sm-offset-1">
-					<button type="submit" class="btn btn-primary">Submit</button>
-				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+				<button class="btn btn-primary" id="print_btn" >Cetak</button>
 			</div>
 		</form>
 	</div>

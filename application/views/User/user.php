@@ -151,14 +151,23 @@ $(document).ready(function() {
                     echo "<td><img class='img-circle' style='width:30px;height:30px;' src='".base_url().$row->foto_k."'></td>";
                     $bulan = date('n');
                     $tahun = date('Y');
-                    echo "<td>
-                        <div class='btn-group'>
-                        <a title='delete' data-href='".base_url()."User_C/delete_user/".$row->id_k."' data-toggle='modal' data-target='#deleteUserModal' class='btn btn-xs btn-danger'><span class='glyphicon glyphicon-trash'></span></a>
-                        <a title='edit' href='".base_url()."User_C/update_user/".$row->id_k."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-edit'></span></a>
-                        <a title='detail absen per user' href='".base_url()."User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun."' class='btn btn-xs btn-warning'><span class='glyphicon glyphicon-th'></span></a>
-                        </div>
-                        </td>";
-                    echo "</tr>";
+                    if ($row->hak_akses != 1) {
+                      echo "<td>
+                          <div class='btn-group'>
+                          <a title='delete' data-href='".base_url()."User_C/delete_user/".$row->id_k."' data-toggle='modal' data-target='#deleteUserModal' class='btn btn-xs btn-danger'><span class='glyphicon glyphicon-trash'></span></a>
+                          <a title='edit' href='".base_url()."User_C/update_user/".$row->id_k."' class='btn btn-xs btn-primary'><span class='glyphicon glyphicon-edit'></span></a>
+                          <a title='detail absen per user' href='".base_url()."User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun."' class='btn btn-xs btn-warning'><span class='glyphicon glyphicon-th'></span></a>
+                          </div>
+                          </td>
+                          </tr>";
+                    }else{
+                      echo "<td>
+                          <div class='btn-group'>
+                          <a title='detail absen per user' href='".base_url()."User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun."' class='btn btn-xs btn-warning'><span class='glyphicon glyphicon-th'></span></a>
+                          </div>
+                          </td>
+                          </tr>";
+                    }
               }
 	        	?>
 	        </tbody>

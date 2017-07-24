@@ -15,6 +15,8 @@
 				var kehadiran = <?=$kehadiran;?>;
 				var ontime = <?=$ontime;?>;
 				var late = <?=$late;?>;
+				var ijin1h = <?=$ijin1h;?>;
+				var cuti = <?=$cuti;?>;
 			    var myChart = Highcharts.chart('5bulan', {
 			    	title: { text: 'Grafik Hadir 5 bulan' },
 				    exporting: { enabled: true },
@@ -22,7 +24,7 @@
 				    xAxis: {type: 'category',title: { text: 'tanggal'}},
 				    tooltip: {
 				        formatter: function () {
-				            var content = 'Wordays :<b>' + workdays[this.key]+' Hari</b><br> Kehadiran :<b>'+kehadiran[this.key] +' Kali</b><br> Ontime :<b>'+ontime[this.key] +' Kali</b><br> Terlambat :<b>'+late[this.key] +' Kali</b>';
+				            var content = 'Wordays :<b>' + workdays[this.key]+' Hari</b><br> Kehadiran :<b>'+kehadiran[this.key] +' Kali</b><br> Ontime :<b>'+ontime[this.key] +' Kali</b><br> Terlambat :<b>'+late[this.key] +' Kali</b><br> Ijin 1 hari :<b>'+ijin1h[this.key] +' Kali</b><br> Cuti :<b>'+cuti[this.key] +' Kali</b>';
 				            return content;
 				            // return 'The value for <b>' + this.x +
 				                // '</b> is <b>' + this.y + '</b>';
@@ -34,6 +36,10 @@
 					    { 
 				    		name: "Persentase Ontime",
 				    		data: <?=$persenon?>
+					    },
+					    { 
+				    		name: "Persentase cuti",
+				    		data: <?=$cuti?>
 					    },
 					    { 
 				    		name: "Persentase Terlambat",

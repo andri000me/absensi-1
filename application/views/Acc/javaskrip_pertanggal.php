@@ -35,6 +35,7 @@ function update()
                     } },
                     { "data": "denda",
                         "render": $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' ) },
+                    { "data": "late_minute"},
                     { "data": "id_a",
                         "render": function ( data, type, full, meta ) {
                             return '<div class="btn-group">'+
@@ -48,7 +49,8 @@ function update()
                 ],
                 "columnDefs": [
                     { "width": "74px", "targets": 8 }
-                ]
+                ]/*,
+                aoColumnDefs: [{ "bSortable": false, "aTargets": [0,2,3,4,5,6,7,8,9] }]*/
             });
             $('#ijinpertanggal').DataTable(
                 {"data" :(response.ijin),

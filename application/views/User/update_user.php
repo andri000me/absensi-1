@@ -12,9 +12,10 @@ foreach ($user->result() as $row) {
     <h4 class="text-center">DATA SAYA</h4><br>
     <div class="col-sm-12">
         <div class="text-right">
-            <a href="<?=base_url("User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun)?>" class="btn btn-default">Lihat Absensi saya</a>
+            <a href="<?=base_url("User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun)?>" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Lihat Absensi saya</a>
         </div>
     </div>
+        <br>
         <br>
         <br>
         <?=$this->session->flashdata("alert_update_info");?>
@@ -108,10 +109,24 @@ foreach ($user->result() as $row) {
             </div>
         </form>
         <br>
+
+
         <div class="col-sm-12 "><hr>
             <h4 class="text-center">DATA LOGIN</h4><br>
-            <form class="form-horizontal" action="<?php echo base_url();?>User_C/update_login" method="POST" id="registerForm" autocomplete="on" enctype="multipart/form-data">
             <?php foreach ($login->result() as $rowo) {?>
+            <!-- RESET PASSWORD -->
+            <form action="<?= base_url();?>User_C/update_login" method="POST" class="form-inline">
+                <div class="form-group">
+                    <label class="sr-only" for="">label</label>
+                    <input type="hidden" class="form-control" name="u_id" value="<?=$row->id_k?>">
+                    <input type="hidden" class="form-control" name="u_id_L" value="<?php echo $rowo->id_L; ?>">
+                </div>          
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary btn-lg" name="reset" value="reset"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> Reset Password</button>
+                </div>
+            </form>
+            <!-- ubah username, password, hak akses -->
+            <form class="form-horizontal" action="<?php echo base_url();?>User_C/update_login" method="POST" id="registerForm" >
                 
                 <div class="form-group">
                     <div class="col-sm-12">
@@ -188,9 +203,10 @@ foreach ($user->result() as $row) {
                 </div>
                 <?php   } ?>
                 <div class="text-right">
-                    <button type="submit" class="btn btn-primary">Send Update</button>
+                    <button type="submit" class="btn btn-primary" name="ganti" value="ganti">Send Update</button>
                 </div>  
             </form>
+            
         </div>
     </div>
 </div>

@@ -60,6 +60,7 @@ $(document).ready(function() {
 	            	<th>keterangan</th>
 	            	<th>detail</th>
 	            	<th>acc</th>
+	            	<th>late Avg</th>
 	            	<th>denda</th>
 	            	<th class='no-print text-center'>action</th>
             	</tr>
@@ -70,6 +71,7 @@ $(document).ready(function() {
 	        		$late=0;
 	        		$sick=0;
 	        		$other=0;
+	        		$i =1;
 					foreach ($absen as $key){
 		        		if ($key->keterangan_s =='hadir' AND $key->detail =='tepat waktu') {
 		        			$ontime = $ontime + 1 ;
@@ -81,17 +83,19 @@ $(document).ready(function() {
 							$other = $other +1;
 		        		}
 		        		echo "<tr>";
-		        		echo "<td>".$key->id_A."</td>";
+		        		echo "<td>".$i."</td>";
 		        		echo "<td>".$key->tanggal."</td>";
 		        		echo "<td>".$key->jam."</td>";
 		        		echo "<td>".$key->keterangan_s."</td>";
 		        		echo "<td>".$key->detail."</td>";
 		        		echo "<td>".$key->acc."</td>";
+		        		echo "<td>".$key->late_minute."</td>";
 		        		echo "<td> Rp ".number_format($key->denda,2,',','.')."</td>";
 		        		echo "<td class='text-center'> <a title='delete' class='no-print margin-20' href='".base_url()."User_C/delete_absensi_ku/".$key->id_A."/".$key->id_k."' ><span class='glyphicon glyphicon-trash'></span></a>
 		        					<a title='edit' class='no-print' href='".base_url()."User_C/edit_absensi_ku/".$key->id_A."/".$key->id_k."'><span class='glyphicon glyphicon-edit'></span></a>
 		                  </td>";
 		        		echo "</tr>";
+		        		$i++;
 	        		}
 	        	?>
 	        </tbody>
@@ -168,9 +172,7 @@ $(document).ready(function() {
 		?>
 		<h3>Total kompensasi ijin jam kerja sejumlah Rp. <?php echo number_format($denda_ku,2,',','.')?> di bulan ini</h3>
 	</div>
-	<div class="text-right">
-		<a class="btn btn-primary no-print" href="<?php echo base_url('User_C/lihat5bulan/'.$siapa."/".$bulan."/".$tahun)?>" role="button"><span class="glyphicon glyphicon-list"></span> Lihat grafik 5 bulan terakhir</a>
-	</div>
+	
 
 	<br><?php
 	if ($data_chart != array()) {?>
@@ -178,8 +180,7 @@ $(document).ready(function() {
 		<script type="text/javascript">
 			$(function () { 
 			    var myChart = Highcharts.chart('good', {
-
-				    title: { text: 'Grafik Hadir' },
+				    title: { text: 'Grafik Hadir' },	
 				    exporting: { enabled: true },
 				    yAxis: { reversed: true,title: { text: 'jam' }},
 				    xAxis: {type: 'category',title: { text: 'tanggal'}},
@@ -191,6 +192,9 @@ $(document).ready(function() {
 		
 	<?php }
 	?>
+	<div>
+		<a class="btn btn-primary no-print col-xs-12" href="<?php echo base_url('User_C/lihat5bulan/'.$siapa."/".$bulan."/".$tahun)?>" role="button"><span class="glyphicon glyphicon-list"></span> Lihat grafik 5 bulan terakhir</a>
+	</div>
 
 </div>
 

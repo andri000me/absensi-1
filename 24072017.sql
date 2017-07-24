@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-07-24 08:05:48
+Date: 2017-07-24 16:35:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,7 +37,7 @@ INSERT INTO `data_c` VALUES ('10', '9', '0', '1', '2017-07-25');
 INSERT INTO `data_c` VALUES ('14', '10', '0', '1', '2017-07-25');
 INSERT INTO `data_c` VALUES ('17', '13', '1', '1', '2017-07-25');
 INSERT INTO `data_c` VALUES ('18', '14', '0', '1', '2017-07-25');
-INSERT INTO `data_c` VALUES ('20', '17', '1', '1', '2017-07-25');
+INSERT INTO `data_c` VALUES ('20', '17', '2', '2', '2017-07-25');
 INSERT INTO `data_c` VALUES ('21', '18', '0', '1', '2017-07-25');
 INSERT INTO `data_c` VALUES ('22', '20', '0', '1', '2017-07-25');
 INSERT INTO `data_c` VALUES ('34', '42', '0', '0', '0000-00-00');
@@ -64,7 +64,7 @@ CREATE TABLE `data_i` (
   PRIMARY KEY (`id_i`),
   KEY `fk_id_K` (`id_k`),
   CONSTRAINT `fk_id_K` FOREIGN KEY (`id_k`) REFERENCES `data_k` (`id_k`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of data_i
@@ -76,6 +76,7 @@ INSERT INTO `data_i` VALUES ('31', '10', 'ijin sakit', '09:00:00', '16:00:00', '
 INSERT INTO `data_i` VALUES ('32', '20', 'ijin sakit', '10:00:00', '16:00:00', '2017-07-12', '18000');
 INSERT INTO `data_i` VALUES ('33', '14', 'tambal ban 11.10 - 11.50', '11:10:00', '11:50:00', '2017-07-12', '3000');
 INSERT INTO `data_i` VALUES ('34', '13', 'ijin unknown', '13:30:00', '14:30:00', '2017-07-13', '3000');
+INSERT INTO `data_i` VALUES ('35', '9', 'asd', '14:05:49', '15:48:42', '2017-07-24', '6000');
 
 -- ----------------------------
 -- Table structure for data_j
@@ -236,7 +237,7 @@ CREATE TABLE `data_ra` (
   KEY `K_A_id_status` (`id_s`),
   CONSTRAINT `K_A_id_karyawan` FOREIGN KEY (`id_k`) REFERENCES `data_k` (`id_k`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `K_A_id_status` FOREIGN KEY (`id_s`) REFERENCES `data_s` (`id_s`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=320 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of data_ra
@@ -382,6 +383,11 @@ INSERT INTO `data_ra` VALUES ('310', '17', '1', 'tepat waktu', '2017-07-21', '07
 INSERT INTO `data_ra` VALUES ('311', '10', '1', 'tepat waktu', '2017-07-21', '06:45:00', '1', '0', '0');
 INSERT INTO `data_ra` VALUES ('312', '14', '1', 'telat', '2017-07-21', '07:45:00', '', '5000', '14');
 INSERT INTO `data_ra` VALUES ('314', '20', '1', 'telat', '2017-07-21', '08:40:00', '', '25000', '69');
+INSERT INTO `data_ra` VALUES ('315', '43', '1', 'tepat waktu', '2017-07-24', '07:30:00', '1', '0', '0');
+INSERT INTO `data_ra` VALUES ('316', '17', '3', 'unknown', '2017-07-24', '06:30:00', '1', '0', '0');
+INSERT INTO `data_ra` VALUES ('317', '9', '1', 'telat', '2017-07-24', '07:45:00', '1', '5000', '14');
+INSERT INTO `data_ra` VALUES ('318', '20', '1', 'telat', '2017-07-24', '09:00:00', '1', '30000', '89');
+INSERT INTO `data_ra` VALUES ('319', '14', '1', 'tepat waktu', '2017-07-24', '07:30:00', '1', '0', '0');
 
 -- ----------------------------
 -- Table structure for data_s

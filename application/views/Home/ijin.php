@@ -176,7 +176,6 @@
 					{ "bSortable": false, "aTargets": [6] }
 				]
 			});
-			console.log(data.list_ijin);
 			$('#tabel-ijin').DataTable({
 				"data" :(data.list_ijin),
 				"columns": [
@@ -232,7 +231,6 @@
 	}
 	function free(){
 		var url  = "<?=base_url('Home_C/create_ijin_free/')?>";
-		console.log(url);
 		$('#btn_free').text('creating...'); //change button text
 	    $('#btn_free').attr('disabled',true); //set button disable
 	    var formData = new FormData($('#freeform')[0]);

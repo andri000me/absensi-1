@@ -15,7 +15,7 @@
           			<div id="alert-free"></div>	
           			<div class="form-group">
 	              		<div class=" col-xs-12">
-        					<h5 class="text-center"> *Atur value ijin secara manual. Pastikan jam awal dan jam akhir valid.</h5><br>
+        					<h5 class="text-center"> *Atur value jam ijin secara manual. Pastikan jam awal dan jam akhir valid.</h5><br>
 	                  		<select class="chosen-select" data-placeholder="Nama Karyawan" name="c_id_k" required style="width: 100%">
 						    <?php 
 			            		foreach($nama_karyawan as $row)
@@ -87,6 +87,7 @@
 		if (end < start) {
 			document.getElementById('clockend').value = '';
 			document.getElementById('alert-free').innerHTML='<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Jam tidak valid.</strong></div>';
+			document.getElementById('biaya').value = '';
 		}
 		else{
 			dt1 = new Date(date+' '+start);

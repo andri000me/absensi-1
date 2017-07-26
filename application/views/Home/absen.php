@@ -40,20 +40,9 @@
 						        <select data-placeholder="Keterangan" class="chosen-select" tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()" id="keterangan" required="required">
 						            <option value=""></option>
 							            <?php
-							            	if(isset($this->session->userdata['logged_in'])) {
-									            foreach($status as $row){
-										            echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
-										        }
-										    }
-										    else{
-										    	foreach($status as $row){
-										    		if ($row->keterangan_s == 'libur') {
-										    			echo "";
-										    		}else {
-										            	echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
-										    		}
-										        }
-										    }
+									    	foreach($status as $row){
+									            echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
+									        }
 							            ?>
 						        </select>
 							</div>
@@ -66,6 +55,73 @@
 						</form>
 				  	</div>
 				</div>
+				<?php if (isset($this->session->userdata('logged_in')['hak_akses'])){
+					?>
+					<div class="modal fade" id="absenFreeformModal">
+					    <div class="modal-dialog" role="document">
+					        <div class="modal-content">
+					        	<div class="modal-header">
+					            	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					            	<h4 class="modal-title" id="myModalLabel">Absen free form</h4>
+					          	</div>
+					        	<form class="form-horizontal" method="POST" id="freeform">
+					          		<div class="modal-body">
+					          			<div id="alert-free"></div>	
+					          			<div class="form-group">
+						              		<div class=" col-xs-12">
+					        					<h5 class="text-center"> *Atur value absen secara manual.</h5><br>
+						                  		<select class="chosen-select" data-placeholder="Nama Karyawan" name="c_id_k" required style="width: 100%">
+											    <?php 
+								            		foreach($nama_karyawan as $row)
+										            {
+										              	echo '<option value="'.$row->id_k.'">'.$row->nama_k.'</option>';
+										            }
+											    ?>
+										        </select>
+						              		</div>
+					          			</div>
+					          			<div class="form-group">
+					          				<div class="col-xs-12">
+									        <select data-placeholder="Keterangan" class="chosen-select" tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()"  required="required" id="keteranganfree">
+									        <option value=""></option>
+									            <?php
+											    	foreach($status as $row){
+											            echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
+											        }
+									            ?>
+						            		</select>
+						            		</div>
+										</div>
+					              		<div class='form-group'><div class='col-xs-12'>
+					                        <label class='control-label'>Jam</label>
+					                        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" >
+											    <input type="text" class="form-control" name="c_jam" id="clock">
+											    <span class="input-group-addon">
+											        <span class="glyphicon glyphicon-time"></span>
+											    </span>
+											</div>
+											</div>
+					                    </div>
+					              		<div class="form-group"  >
+					              			<div class="col-xs-12">
+						              			<label class='control-label'>detail</label>
+						                  		<textarea class="form-control" name="c_perihal"  style="min-height: 50px;" required id="myDIVfree"></textarea>
+					              			</div>
+					              		</div>
+					              		
+						          	</div>
+						          	<div class="modal-footer">
+						            	<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+						            	<button type="submit" class="btn btn-primary" onclick="free()" id="btn_free">Submit</button>
+						          	</div>
+					        	</form>
+					        </div>
+					    </div>
+					</div>
+					<button type="button" class="btn btn-primary col-xs-12" data-toggle="modal" data-target="#absenFreeformModal">Absen Free form</button>
+					<?php
+				}
+				?>
 			</div>
 
 		</div>
@@ -81,19 +137,19 @@
 ?>
 
 <script type="text/javascript">
+
+	var currentdate = new Date();
+	var datetime = currentdate.getHours() + ":" 
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+    console.log(datetime);
+
     var x = document.getElementById('myDIV');
     x.style.display = 'none';
-function myFunction() {
-    if (document.getElementById("keterangan").value == '1') {
-        x.style.display = 'none';
-    }
-     else {
-        x.style.display = 'block';
-    }
-}
-</script>
+    var xf = document.getElementById('myDIVfree');
+    xf.style.display = 'none';
+	
 
-<script>
     flag = true;
     timer = '';
     setInterval(function(){phpJavascriptClock();},1000);
@@ -127,10 +183,35 @@ function myFunction() {
         flag = false;
         timer = timer + 1000;
     }
+    function myFunction() {
+	    if (document.getElementById("keterangan").value == '1') {
+	        x.style.display = 'none';
+	    }
+	     else {
+	        x.style.display = 'block';
+	    }
+	    if (document.getElementById("keteranganfree").value == '1') {
+	    	xf.style.display = 'block';
+	    	var jam_masuk = "<?=$jam_masuk?>";
+	    	var jam_pulang = "<?=$jam_pulang?>";
+	    	var z = document.getElementById('clock').value;
+	    	if (z > jam_masuk && z<jam_pulang) {
+	    		xf.value = 'telat';
+	    	} else if(z < jam_masuk) {
+	    		xf.value = 'tepat waktu';
+	    	}else if(z>jam_pulang){
+	    		document.getElementById('alert-free').innerHTML='<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Jam tidak valid.</strong></div>';
+	    		z.value='';
+	    	}
+	    	
+	    	x.style.display = 'none';
+	    }
+	    else {
+	        x.style.display = 'none';
+	        xf.style.display = 'block';
+	    }
+	}
 
-</script>
-
-<script type="text/javascript">
 	function kirim(){
 		$('#submit-absen').text('submiting...'); //change button text
 	    $('#submit-absen').attr('disabled',true); //set button disable 
@@ -160,4 +241,10 @@ function myFunction() {
 	    });
 	    // show();
 	}
+	$('#absenFreeformModal').on('shown.bs.modal', function () {
+		$('.chosen-select').chosen("destroy");
+		$('.chosen-select').chosen();
+    	$('.clockpicker').clockpicker({placement: 'bottom'});
+    	// $('#clockend').clockpicker({placement: 'top',donetext: 'Done'});
+	});
 </script>

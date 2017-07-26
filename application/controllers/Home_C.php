@@ -27,6 +27,11 @@ class Home_C extends CI_Controller {
 		else {
 			$data['nama_karyawan']=$this->Absen_M->readS('data_k')->result();
 			$data['status']=$this->Absen_M->readS('data_s')->result();
+			$where_idm['id_m'] =  1;$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$data['jam_masuk'] = $datax['jam_masuk'][0]->misc;
+			$where_idm['id_m'] =  4;$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$data['jam_pulang'] = $datax['jam_pulang'][0]->misc;
+			unset($datax,$where_idm);
 			$this->load->view('html/header');
 			$this->load->view('html/menu');
 			$this->load->view('Home/absen',$data);
@@ -105,23 +110,7 @@ class Home_C extends CI_Controller {
 		$this->load->view('Home/dashboard',$data);
 		$this->load->view('html/footer');
 	}
-	public function show_absen_n()
-	{
-		$date= date('Y-m-d');
-		$data['absen']=$this->Absen_M->rawQuery("
-				SELECT data_ra.id_a, 
-				data_s.keterangan_s, 
-				data_ra.detail, 
-				data_ra.tanggal, 
-				data_ra.jam, 
-				data_ra.acc, 
-				data_k.nama_k, 
-				data_ra.denda FROM data_ra
-				INNER JOIN data_k ON data_ra.id_k = data_k.id_k
-				INNER JOIN data_s ON data_ra.id_s = data_s.id_s
-				WHERE tanggal = '".$date."' ORDER BY data_ra.id_a DESC ")->result();
-		echo json_encode($data);
-	}
+	
 	public function show_absen()
 	{
 		$date= date('Y-m-d');
@@ -136,7 +125,7 @@ class Home_C extends CI_Controller {
 				data_ra.denda FROM data_ra
 				INNER JOIN data_k ON data_ra.id_k = data_k.id_k
 				INNER JOIN data_s ON data_ra.id_s = data_s.id_s
-				WHERE tanggal = '".$date."' AND acc = 0	ORDER BY data_ra.id_a DESC ")->result();
+				WHERE tanggal = '".$date."'	ORDER BY data_ra.id_a DESC ")->result();
 		echo json_encode($data);
 	}
 	public function show_ijin()

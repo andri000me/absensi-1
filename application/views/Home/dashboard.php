@@ -32,8 +32,9 @@
 		            <th>Keterangan</th>
 		            <th>Tanggal</th>
 		            <th>Jam</th>
-		            <th>Denda</th>
-		            <th>Pilih Aksi</th>
+                    <th>Denda</th>
+		            <th class="text-center">Status</th>
+		            <th class="text-center">Pilih Aksi</th>
 		        </tr>
 		    </thead>
 		    <tbody>
@@ -84,10 +85,22 @@ function show(){
 			{ "data": "tanggal" },
 			{ "data": "jam" },
 			{ "data": "denda" , render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )},
+            {"data":"acc",
+                        render: function ( data, type, full, meta ) {
+                            if (full.acc =='1') {
+                                return '<div class="text-center">Confirmed</div>';
+                            } else {
+                                return '<div class="text-center">waiting Confirmation<div>';
+                            }
+                        }},
 			{ "data": "id_a" ,
                         render: function ( data, type, full, meta ) {
-                            return '<a data-toggle="modal" data-target="#acceptAbsenModal" title="ok" data-idaccept="'+data+'" style="margin: 0 20px 0 20px;">Setujui</a>'+
-                            '<a data-toggle="modal" data-target="#rejectAbsenModal" title="tolak" data-idreject="'+data+'">Tolak</a>';
+                            if (full.acc =='0') {
+                                return '<div class="text-center"><a data-toggle="modal" data-target="#acceptAbsenModal" title="ok" data-idaccept="'+data+'" style="margin: 0 20px 0 20px;">Setujui</a></div>'+
+                                '<a data-toggle="modal" data-target="#rejectAbsenModal" title="tolak" data-idreject="'+data+'">Tolak</a>';
+                            } else {
+                                return '<div class="text-center"><a data-toggle="modal" data-target="#rejectAbsenModal" title="tolak" data-idreject="'+data+'">Tolak</a><div>';
+                            }
                         }
             }
         ],

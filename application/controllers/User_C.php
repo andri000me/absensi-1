@@ -28,12 +28,12 @@ class User_C extends CI_Controller {
 				// echo "D4:".$d4."<br>";
 				// $a = 13;$b=12;
 				// echo "13 %12 = ".($a % 12)."<br><br>";
-				if ($d4 > 12) {					
+				if ($d4 > 12) {			
 					$dataCondition['id_k'] = $row->id_k;
 					$dataUpdate['bisa_cuti'] = 1;
 					$query = $this->Absen_M->update("data_k",$dataCondition,$dataUpdate);
 					// $results = json_decode($query, true);
-					unset($dataUpdate['bisa_cuti'],$dataCondition['id_k']);
+					unset($dataUpdate['bisa_cuti']);
 					
 					// if ($results['status']) {
 					// 	echo "sukses k".$row->id_k."<br>";
@@ -42,10 +42,9 @@ class User_C extends CI_Controller {
 					// 	echo "gagal update k".$row->id_k;
 					// }
 					
-					$dataC['id_k'] = $row->id_k;
 					$data['jatah_cuti'] = $d4  % 12;
 					$data['last_sync'] = date('Y-m-d');
-					$queryl = $this->Absen_M->update("data_c",$dataC,$data);
+					$queryl = $this->Absen_M->update("data_c",$dataCondition,$data);
 					// $results = json_decode($queryl, true);
 					// if ($results['status']) {
 					// 	echo "sukses l".$row->id_k;
@@ -557,12 +556,14 @@ class User_C extends CI_Controller {
 			}
 			elseif ($data['id_s'] == 5) {
 				if ($datax['identitas_karyawan'][0]->jabatan_k != 12) {
-                    $where_idm['id_m'] =  5;$datax['denda_ijin_1_hari'] = $this->Absen_M->read('data_m',$where_idm)->result();
-                    $denda_ijin_1_hari = $datax['denda_ijin_1_hari'][0]->misc;
-                    $data['denda'] = $jam_kerja_custom * $denda_ijin_1_hari;
-                }else{
-                    $data['denda'] = 0;
-                }
+					$where_idm['id_m'] =  8;
+					$datax['denda_alpha'] = $this->Absen_M->read('data_m',$where_idm)->result();
+					$denda_alpha = $datax['denda_alpha'][0]->misc;
+					$data['denda'] = $jam_kerja_custom * $denda_alpha * 4;
+				}
+				else{//saat anak magang
+					$data['denda'] = 0;
+				}
 
 				$data['detail'] = $this->input->post('u_detil_keterangan');
                 $result = $this->Absen_M->update('data_ra',$dataCondition,$data);
@@ -613,7 +614,7 @@ class User_C extends CI_Controller {
                     $data_c = $this->Absen_M->read('data_c',$where_idk)->result();
                     $wes_cuti = $data_c[0]->cuti_berapakali;
                     $jatah_cuti = $data_c[0]->jatah_cuti;
-                    if ($wes_cuti == $jatah_cuti)
+                    if ($wes_cuti == $jatah_cuti) // maka hanya update informasi detail cuti
                     {
                         $data['denda'] =0;
                         $data['late_minute']=0;

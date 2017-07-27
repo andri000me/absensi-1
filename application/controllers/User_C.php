@@ -688,7 +688,7 @@ class User_C extends CI_Controller {
                     $data['late_minute'] = 0;
                 }
 
-                $data['detail'] = $this->input->post('u_detil_keterangan ');
+                $data['detail'] = $this->input->post('u_detil_keterangan');
                 $result = $this->Absen_M->update('data_ra',$dataCondition,$data);
                 $results = json_decode($result, true);
                 if ($results['status']) {

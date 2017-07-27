@@ -1,6 +1,36 @@
 <script type="text/javascript">
 	$( document ).ready(function() {
-		$("#freeform").on('submit', function(e){e.preventDefault();});
+		$("#freeform").on('submit', function(e){
+			e.preventDefault();
+			var url  = "<?=base_url('Home_C/create_ijin_free/')?>";
+			$('#btn_free').text('creating...'); //change button text
+		    $('#btn_free').attr('disabled',true); //set button disable
+		    var formData = new FormData($('#freeform')[0]);
+		    $.ajax({
+		        url : url,
+		        type: "POST",
+		        data: formData,
+		        contentType: false,
+		        processData: false,
+		        success: function(data)
+		        {
+		        	var object = JSON.parse(data);
+		            $("#alert").html(object);
+		            // console.log(data);
+		            $('#btn_free').text('Submit'); //change button text
+		            $('#btn_free').attr('disabled',false); //set button enable 
+		            $('#ijinFreeformModal').modal('hide');
+		            show();
+		        },
+		        error: function (jqXHR, textStatus, errorThrown)
+		        {
+		            console.log(jqXHR, textStatus, errorThrown);
+		            $('btn_free').text('eror'); //change button text
+		            $('btn_free').attr('disabled',false); //set button enable 
+		        }
+		    });
+		    show();
+		});
 	});
 </script>
 <div class="modal fade" id="ijinFreeformModal">
@@ -64,7 +94,7 @@
 	          	</div>
 	          	<div class="modal-footer">
 	            	<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-	            	<button type="submit" class="btn btn-primary" onclick="free()" id="btn_free">Submit</button>
+	            	<button type="submit" class="btn btn-primary"  id="btn_free">Submit</button>
 	          	</div>
         	</form>
         </div>
@@ -283,37 +313,9 @@
 	    });
 	    show();
 	}
-	function free(){
-		var url  = "<?=base_url('Home_C/create_ijin_free/')?>";
-		$('#btn_free').text('creating...'); //change button text
-	    $('#btn_free').attr('disabled',true); //set button disable
-	    var formData = new FormData($('#freeform')[0]);
-	    $.ajax({
-	        url : url,
-	        type: "POST",
-	        data: formData,
-	        contentType: false,
-	        processData: false,
-	        success: function(data)
-	        {
-	        	var object = JSON.parse(data);
-	            $("#alert").html(object);
-	            // console.log(data);
-	            $('#btn_free').text('Submit'); //change button text
-	            $('#btn_free').attr('disabled',false); //set button enable 
-	            $('#ijinFreeformModal').modal('hide');
-	            show();
-	        },
-	        error: function (jqXHR, textStatus, errorThrown)
-	        {
-	            console.log(jqXHR, textStatus, errorThrown);
-	            $('btn_free').text('eror'); //change button text
-	            $('btn_free').attr('disabled',false); //set button enable 
-	        }
-	    });
-	    show();
-
-	}
+	// function free(){
+		
+	// }
 	function stop(elem){
 		var uidi = $(elem).data('idi');
 		var url = "<?=base_url('Home_C/stop_ijin/')?>";

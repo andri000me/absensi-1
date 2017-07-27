@@ -1,3 +1,37 @@
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$('#freeform').submit(function(event) {
+		event.preventDefault();
+		var url  = "<?=base_url('Home_C/create_absen_free/')?>";
+		$('#btn_free').text('creating...'); //change button text
+	    $('#btn_free').attr('disabled',true); //set button disable
+	    var formData = new FormData($('#freeform')[0]);
+	    $.ajax({
+	        url : url,
+	        type: "POST",
+	        data: formData,
+	        contentType: false,
+	        processData: false,
+	        success: function(data)
+	        {
+	        	// var object = JSON.parse(data);
+	        	// $("#alert-free").html("<div class='alert alert-danger alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>"+object+"</strong></div>");
+	            // console.log(data);
+	            $("#alert-free").html(data);
+	            $('#btn_free').text('Submit'); //change button text
+	            $('#btn_free').attr('disabled',false); //set button enable 
+	        },
+	        error: function (jqXHR, textStatus, errorThrown)
+	        {
+	            console.log(jqXHR, textStatus, errorThrown);
+	            $('btn_free').text('eror'); //change button text
+	            $('btn_free').attr('disabled',false); //set button enable 
+	        }
+	    });
+	});
+});
+</script>
 <div class="container" >
 	<div class="row">
 		<div class="distance">
@@ -66,11 +100,11 @@
 					          	</div>
 					        	<form class="form-horizontal" method="POST" id="freeform">
 					          		<div class="modal-body">
-					          			<div id="alert-free"></div>	
 					          			<div class="form-group">
 						              		<div class=" col-xs-12">
 					        					<h5 class="text-center"> *Atur value absen secara manual.</h5><br>
-						                  		<select class="chosen-select" data-placeholder="Nama Karyawan" name="c_id_k" required style="width: 100%">
+					          					<div id="alert-free"></div>	
+						                  		<select class="chosen-select" data-placeholder="Nama Karyawan" name="c_id_k" required="required" style="width: 100%">
 											    <?php 
 								            		foreach($nama_karyawan as $row)
 										            {
@@ -82,7 +116,7 @@
 					          			</div>
 					          			<div class="form-group">
 					          				<div class="col-xs-12">
-									        <select data-placeholder="Keterangan" class="chosen-select" tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()"  required="required" id="keteranganfree">
+									        <select data-placeholder="Keterangan" class="chosen-select" tabindex="2" style="width: 100%;" name="c_status" onchange="generate_detail()"  required="required" id="keteranganfree">
 									        <option value=""></option>
 									            <?php
 											    	foreach($status as $row){
@@ -95,28 +129,37 @@
 					              		<div class='form-group'><div class='col-xs-12'>
 					                        <label class='control-label'>Jam</label>
 					                        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" >
-											    <input type="text" class="form-control" name="c_jam" id="clock">
+											    <input type="text" class="form-control" name="c_jam" id="clock" onchange="generate_detail()" required="required">
 											    <span class="input-group-addon">
 											        <span class="glyphicon glyphicon-time"></span>
 											    </span>
 											</div>
 											</div>
 					                    </div>
+					                    <div class='form-group'><div class='col-xs-12'>
+					                        <label class='control-label'>Tanggal</label>
+											<input type="date" class="form-control" name="c_tanggal" id="tanggal" onchange="generate_detail()" required="required">
+											</div>
+					                    </div>
 					              		<div class="form-group"  >
 					              			<div class="col-xs-12">
 						              			<label class='control-label'>detail</label>
-						                  		<textarea class="form-control" name="c_perihal"  style="min-height: 50px;" required id="myDIVfree"></textarea>
+						                  		<textarea class="form-control" name="c_detail"  style="min-height: 50px;" required="required" id="myDIVfree"></textarea>
 					              			</div>
 					              		</div>
+					<script type="text/javascript">
+						var xf = document.getElementById('myDIVfree');
+    					xf.style.display = 'none';
+					</script>
 					              		
 						          	</div>
 						          	<div class="modal-footer">
 						            	<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-						            	<button type="submit" class="btn btn-primary" onclick="free()" id="btn_free">Submit</button>
+						            	<button type="submit" class="btn btn-primary"  id="btn_free">Submit</button> <!-- onclick="free()" -->
 						          	</div>
 					        	</form>
 					        </div>
-					    </div>
+						</div>
 					</div>
 					<button type="button" class="btn btn-primary col-xs-12" data-toggle="modal" data-target="#absenFreeformModal">Absen Free form</button>
 					<?php
@@ -138,16 +181,15 @@
 
 <script type="text/javascript">
 
-	var currentdate = new Date();
-	var datetime = currentdate.getHours() + ":" 
-                + currentdate.getMinutes() + ":"
-                + currentdate.getSeconds();
-    console.log(datetime);
+	// var currentdate = new Date();
+	// var datetime = currentdate.getHours() + ":" 
+ //                + currentdate.getMinutes() + ":"
+ //                + currentdate.getSeconds();
+ //    console.log(datetime);
 
     var x = document.getElementById('myDIV');
     x.style.display = 'none';
-    var xf = document.getElementById('myDIVfree');
-    xf.style.display = 'none';
+    
 	
 
     flag = true;
@@ -183,36 +225,57 @@
         flag = false;
         timer = timer + 1000;
     }
-    function myFunction() {
+    function generate_detail() 
+    {
+	    var z = document.getElementById('clock');
+    	if (document.getElementById("keteranganfree").value == '1') {
+    		if (z.value != '') {
+		    	xf.style.display = 'block';
+		    	var jam_masuk = "<?=$jam_masuk?>";
+		    	var jam_pulang = "<?=$jam_pulang?>";
+		    	if (z.value > jam_masuk && z.value<jam_pulang) {
+		    		$('#myDIVfree').attr("readonly","readonly");
+		    		xf.value = 'telat';
+		    	} else if(z.value < jam_masuk) {
+		    		$('#myDIVfree').attr("readonly","readonly");
+		    		xf.value = 'tepat waktu';
+		    	}else if(z.value > jam_pulang){
+		    		z.value='';
+		    		document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Jam tidak valid.</strong></div>';
+	    			xf.value = '';
+		    	}
+		    	x.style.display = 'none';
+    		}
+	    }
+	    else if(document.getElementById("keteranganfree").value == ''){
+	        xf.style.display = 'none';
+	    }
+	    else {
+		   	$('#myDIVfree').attr("readonly",false);
+	    	xf.value = '';
+	        x.style.display = 'none';
+	        xf.style.display = 'block';
+		    xf.disabled = '';
+	    }
+	    if (z.value != '') {
+		    if (document.getElementById("tanggal").value == '0000-00-00' || document.getElementById("tanggal").value == '0001-01-01') {
+		    	document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Tanggal tidak valid.</strong></div>';
+		    	return false;
+		    }
+	    }
+	    // console.log(document.getElementById("tanggal").value);
+    }
+    function myFunction() 
+    {
 	    if (document.getElementById("keterangan").value == '1') {
 	        x.style.display = 'none';
 	    }
 	     else {
 	        x.style.display = 'block';
 	    }
-	    if (document.getElementById("keteranganfree").value == '1') {
-	    	xf.style.display = 'block';
-	    	var jam_masuk = "<?=$jam_masuk?>";
-	    	var jam_pulang = "<?=$jam_pulang?>";
-	    	var z = document.getElementById('clock').value;
-	    	if (z > jam_masuk && z<jam_pulang) {
-	    		xf.value = 'telat';
-	    	} else if(z < jam_masuk) {
-	    		xf.value = 'tepat waktu';
-	    	}else if(z>jam_pulang){
-	    		document.getElementById('alert-free').innerHTML='<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Jam tidak valid.</strong></div>';
-	    		z.value='';
-	    	}
-	    	
-	    	x.style.display = 'none';
-	    }
-	    else {
-	        x.style.display = 'none';
-	        xf.style.display = 'block';
-	    }
 	}
-
-	function kirim(){
+	function kirim()
+	{
 		$('#submit-absen').text('submiting...'); //change button text
 	    $('#submit-absen').attr('disabled',true); //set button disable 
 	    var url;
@@ -227,8 +290,8 @@
 	        success: function(data)
 	        {
 	            $("#alert").html(data);
-	            console.log(data);
-	            $('#submit-absen').text('Submits'); //change button text
+	            // console.log(data);
+	            $('#submit-absen').text('Submit'); //change button text
 	            $('#submit-absen').attr('disabled',false); //set button enable 
 	        },
 	        error: function (jqXHR, textStatus, errorThrown)
@@ -239,12 +302,47 @@
 
 	        }
 	    });
-	    // show();
 	}
 	$('#absenFreeformModal').on('shown.bs.modal', function () {
 		$('.chosen-select').chosen("destroy");
 		$('.chosen-select').chosen();
     	$('.clockpicker').clockpicker({placement: 'bottom'});
-    	// $('#clockend').clockpicker({placement: 'top',donetext: 'Done'});
+    	
 	});
+	/*function free() 
+	{*/
+		// $(document).ready(function()
+  //   	{
+  //   		$('#freeform').submit(function(event) {
+  //   			event.preventDefault();
+		// 		var url  = "<?=base_url('Home_C/create_absen_free/')?>";
+		// 		$('#btn_free').text('creating...'); //change button text
+		// 	    $('#btn_free').attr('disabled',true); //set button disable
+		// 	    var formData = new FormData($('#freeform')[0]);
+		// 	    $.ajax({
+		// 	        url : url,
+		// 	        type: "POST",
+		// 	        data: formData,
+		// 	        contentType: false,
+		// 	        processData: false,
+		// 	        success: function(data)
+		// 	        {
+		// 	        	// var object = JSON.parse(data);
+		// 	        	// $("#alert-free").html("<div class='alert alert-danger alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>"+object+"</strong></div>");
+		// 	            // console.log(data);
+		// 	            $("#alert-free").html(data);
+		// 	            $('#btn_free').text('Submit'); //change button text
+		// 	            $('#btn_free').attr('disabled',false); //set button enable 
+		// 	        },
+		// 	        error: function (jqXHR, textStatus, errorThrown)
+		// 	        {
+		// 	            console.log(jqXHR, textStatus, errorThrown);
+		// 	            $('btn_free').text('eror'); //change button text
+		// 	            $('btn_free').attr('disabled',false); //set button enable 
+		// 	        }
+		// 	    });
+  //   		});
+    		
+		// });
+	/*}*/
 </script>

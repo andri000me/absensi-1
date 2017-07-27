@@ -49,7 +49,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Detil Keterangan</label>
 		    <div class="col-sm-10 input-group">
-				<textarea class="form-control" name="u_detil_keterangan"><?php echo $key->detail?></textarea>
+				<textarea class="form-control" name="u_detil_keterangan"><?=$key->detail?></textarea>
 			</div>
 		</div>
 		<div class="form-group">

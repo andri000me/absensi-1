@@ -79,6 +79,11 @@ class Home_C extends CI_Controller {
 				FROM data_i INNER JOIN data_k ON data_i.id_k = data_k.id_k 
 				WHERE tanggal = '".$date."'")->result();
 			unset($dataCondition);
+			$where_idm['id_m'] =  1;$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$data['jam_masuk'] = $datax['jam_masuk'][0]->misc;
+			$where_idm['id_m'] =  4;$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$data['jam_pulang'] = $datax['jam_pulang'][0]->misc;
+			unset($datax,$where_idm);
 			$this->load->view('html/header');
 			$this->load->view('html/menu');
 			$this->load->view('Home/ijin',$data);
@@ -259,7 +264,7 @@ class Home_C extends CI_Controller {
 						$result = $this->Absen_M->create('data_ra',$data);
 						if($result)
 						{
-							echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen Hadir ".$datax['identitas_karyawan'][0]->nama_k." berhasil!</strong> Denda anda Rp.".number_format($data['denda'],2,',','.')."</div>";
+							echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen Hadir ".$datax['identitas_karyawan'][0]->nama_k." berhasil!</strong> Hadir jam ".$data['jam'].".  Denda anda Rp.".number_format($data['denda'],2,',','.')."</div>";
 						}
 						else{
 							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal DB!</strong></div>";
@@ -393,7 +398,8 @@ class Home_C extends CI_Controller {
 				if ($result != array()) {//auth sukses
 					$data['id_k'] = $dataCondition['id_k'];
 					$data['id_s'] = $this->input->post('c_status');
-					$data['jam'] = date('H:i:s', time());
+					// $data['jam'] = date('H:i:s', time());
+					$data['jam'] = "07:44:42";
 					$data['acc'] ='0';
 					$where_idm['id_m'] =  1;$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
 					$jam_masuk = $datax['jam_masuk'][0]->misc;
@@ -412,6 +418,7 @@ class Home_C extends CI_Controller {
 								$time2 = strtotime($jam_masuk);
 								$seperempat = round(1/4 ,2);
 								$difference = round(abs($time1 - $time2) / 3600,2)  /*% $seperempat*/;
+								echo "<br> diff = {$difference}<br>";
 								$difference = floor($difference / $seperempat);
 								$where_idm['id_m'] =  7;$datax['denda_terlambat'] = $this->Absen_M->read('data_m',$where_idm)->result();
 								$denda_terlambat = $datax['denda_terlambat'][0]->misc;
@@ -433,14 +440,16 @@ class Home_C extends CI_Controller {
 							$data['denda'] = 0;
 							$data['late_minute'] = 0;
 						}
-						$result = $this->Absen_M->create('data_ra',$data);
-						if($result)
-						{
-							echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen Hadir ".$datax['identitas_karyawan'][0]->nama_k." berhasil!</strong> Denda anda Rp.".number_format($data['denda'],2,',','.')."</div>";
-						}
-						else{
-							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal DB!</strong></div>";
-						}
+						echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen Hadir ".$datax['identitas_karyawan'][0]->nama_k." berhasil!</strong> Denda anda Rp.".number_format($data['denda'],2,',','.')."</div>";
+						die();
+						// $result = $this->Absen_M->create('data_ra',$data);
+						// if($result)
+						// {
+						// 	echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen Hadir ".$datax['identitas_karyawan'][0]->nama_k." berhasil!</strong> Denda anda Rp.".number_format($data['denda'],2,',','.')."</div>";
+						// }
+						// else{
+						// 	echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal DB!</strong></div>";
+						// }
 					}
 					elseif ($data['id_s'] == 5) {/*alpha*/
 						if ($datax['identitas_karyawan'][0]->jabatan_k != 12) {
@@ -562,37 +571,65 @@ class Home_C extends CI_Controller {
 	public function create_ijin_free()
 	{
 		if ($this->input->post() != null) {
-			$data['id_k'] = $this->input->post('c_id_k');
-			$data['perihal'] = $this->input->post('c_perihal');
 			$data['start'] = $this->input->post('c_jam_start');
 			$data['end'] = $this->input->post('c_jam_end');
-			$data['tanggal'] = date('Y-m-d');
+			$data['id_k'] = $this->input->post('c_id_k');
+			$data['tanggal'] = $this->input->post('tanggal');
 
-			$time1 = strtotime($data['start']);
-			$time2 = strtotime($data['end']);
-			$difference = round(abs($time2 - $time1) / 3600,2);
+			$where_idm['id_m'] =  1;
+			$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$jam_masuk = $datax['jam_masuk'][0]->misc;
 
-			if ($difference >= 0.5) {
-				$where_idm['id_m'] =  6;
-				$datax['denda_ijin'] = $this->Absen_M->read('data_m',$where_idm)->result();
-				$denda_ijin = $datax['denda_ijin'][0]->misc;
+			$where_idm['id_m'] =  4;
+			$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
+			$jam_pulang = $datax['jam_pulang'][0]->misc;
 
-				$total_denda = 0;
-				$loop = $difference / 0.5;
-				for ($i=1; $i <=$loop ; $i++) { 
-					if ($i % 2 == 0) {
-						$total_denda += $denda_ijin;
+			/*didalam jam kerja atau tidak sudah di validasi di javascript ijin.php*/
+			// if ($data['start'] > $jam_pulang OR $data['start'] < $jam_masuk ) {
+			// 	$alert_create_ijin =  "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>tidak di dalam jam kerja</strong></div>";	
+			// }
+
+			$datar['id_k']  = $data['id_k'];
+			$datar['tanggal'] = date('Y-m-d');
+			$datar['id_s'] = '1';
+			$datar['acc'] = '1';
+
+			$apakah_hadir_dan_acc = $this->Absen_M->read('data_ra',$datar)->result();
+			unset($datar);
+
+			if ($apakah_hadir_dan_acc != array()) {
+				$data['tanggal'] = date('Y-m-d');
+				$data['perihal'] = $this->input->post('c_perihal');
+
+				$time1 = strtotime($data['start']);
+				$time2 = strtotime($data['end']);
+				$difference = round(abs($time2 - $time1) / 3600,2);
+
+				if($difference >= 0.5) {
+					$where_idm['id_m'] =  6;
+					$datax['denda_ijin'] = $this->Absen_M->read('data_m',$where_idm)->result();
+					$denda_ijin = $datax['denda_ijin'][0]->misc;
+
+					$total_denda = 0;
+					$loop = $difference / 0.5;
+					for ($i=1; $i <=$loop ; $i++) { 
+						if ($i % 2 == 0) {
+							$total_denda += $denda_ijin;
+						}
 					}
+					$data['denda'] = $total_denda;
+					$result = $this->Absen_M->create('data_i',$data);
+					if($result){
+		 				$alert_create_ijin =  "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil dibuat</strong></div>";
+		 			}else{
+		 				$alert_create_ijin =  "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>gagal memasukkan ke database</strong></div>";	
+		 			}
+				} else {
+					$alert_create_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil di stop.</strong> Data ijin anda dihapus karena kurang dari 30 menit</div>";
 				}
-				$data['denda'] = $total_denda;
-				$result = $this->Absen_M->create('data_i',$data);
-				if($result){
-	 				$alert_create_ijin =  "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil dibuat</strong></div>";
-	 			}else{
-	 				$alert_create_ijin =  "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>gagal memasukkan ke database</strong></div>";	
-	 			}
-			} else {
-				$alert_create_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil di stop.</strong> Data ijin anda dihapus karena kurang dari 30 menit</div>";
+			}
+			else{
+				$alert_create_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>belum hadir dan acc.</strong></div>";
 			}
 		}
 		echo json_encode($alert_create_ijin);
@@ -720,8 +757,7 @@ class Home_C extends CI_Controller {
 		else{
 			$alert_update_absen_acc = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>absen gagal di acc! </strong></div>";
 		}
-        echo $alert_update_absen_acc;
-    	
+        echo $alert_update_absen_acc;    	
     }
     public function rejectAbsen()
     {

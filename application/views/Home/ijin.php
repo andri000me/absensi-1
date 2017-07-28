@@ -16,7 +16,7 @@
 		        {
 		        	var object = JSON.parse(data);
 		            $("#alert").html(object);
-		            // console.log(data);
+		            console.log(data);
 		            $('#btn_free').text('Submit'); //change button text
 		            $('#btn_free').attr('disabled',false); //set button enable 
 		            $('#ijinFreeformModal').modal('hide');
@@ -46,7 +46,7 @@
           			<div class="form-group">
 	              		<div class=" col-xs-12">
         					<h5 class="text-center"> *Atur value jam ijin secara manual. Pastikan jam awal dan jam akhir valid.</h5><br>
-	                  		<select class="chosen-select" data-placeholder="Nama Karyawan" name="c_id_k" required style="width: 100%">
+	                  		<select class="chosen-select" data-placeholder="Nama Karyawan" name="c_id_k" required="required" style="width: 100%">
 						    <?php 
 			            		foreach($nama_karyawan as $row)
 					            {
@@ -59,13 +59,13 @@
               		<div class="form-group">
               			<div class="col-xs-12">
 	              			<label class='control-label'>keterangan</label>
-	                  		<textarea class="form-control" name="c_perihal"  style="min-height: 100px;" required></textarea>
+	                  		<textarea class="form-control" name="c_perihal"  style="min-height: 100px;" required="required"></textarea>
               			</div>
               		</div>
               		<div class='form-group'><div class='col-xs-12'>
                         <label class='control-label'>Jam Start</label>
                         <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" >
-						    <input type="text" class="form-control" name="c_jam_start" id="clockstart">
+						    <input type="text" class="form-control" name="c_jam_start" id="clockstart" onchange="jamkerja()" required="required">
 						    <span class="input-group-addon">
 						        <span class="glyphicon glyphicon-time"></span>
 						    </span>
@@ -75,7 +75,7 @@
                     <div class='form-group'><div class='col-xs-12'>
                         <label class='control-label'>Jam End</label>
                         <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" >
-						    <input type="text" class="form-control" name="c_jam_end" onchange="calc()" id="clockend">
+						    <input type="text" class="form-control" name="c_jam_end" onchange="jamkerja();calc()" id="clockend" required="required">
 						    <span class="input-group-addon">
 						        <span class="glyphicon glyphicon-time"></span>
 						    </span>
@@ -109,6 +109,17 @@
 		return (result);
 	}
 
+	function jamkerja() {
+		var start = document.getElementById('clockstart');
+		var end = document.getElementById('clockend');
+		var jam_pulang = "<?=$jam_pulang?>";
+		var jam_masuk = "<?=$jam_masuk?>";
+		if (start.value > jam_pulang || start.value < jam_masuk || end.value > jam_pulang) {
+			document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Diluar jam kerja.</strong></div>';
+			start.value = '';
+			end.value = '';
+		}
+	}
 
 	function calc() {
 		var date = <?=date('Y-m-d') ?>;
@@ -116,7 +127,7 @@
 		var end =  document.getElementById('clockend').value;
 		if (end < start) {
 			document.getElementById('clockend').value = '';
-			document.getElementById('alert-free').innerHTML='<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Jam tidak valid.</strong></div>';
+			document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Jam tidak valid.</strong></div>';
 			document.getElementById('biaya').value = '';
 		}
 		else{

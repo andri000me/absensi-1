@@ -4,7 +4,7 @@ $(document).ready(function()
 	$('#freeform').submit(function(event) {
 		event.preventDefault();
 		var url  = "<?=base_url('Home_C/create_absen_free/')?>";
-		$('#btn_free').text('creating...'); //change button text
+		// $('#btn_free').text('creating...'); //change button text
 	    $('#btn_free').attr('disabled',true); //set button disable
 	    var formData = new FormData($('#freeform')[0]);
 	    $.ajax({
@@ -19,7 +19,7 @@ $(document).ready(function()
 	        	// $("#alert-free").html("<div class='alert alert-danger alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>"+object+"</strong></div>");
 	            // console.log(data);
 	            $("#alert-free").html(data);
-	            $('#btn_free').text('Submit'); //change button text
+	            // $('#btn_free').text('Submit'); //change button text
 	            $('#btn_free').attr('disabled',false); //set button enable 
 	        },
 	        error: function (jqXHR, textStatus, errorThrown)
@@ -27,6 +27,36 @@ $(document).ready(function()
 	            console.log(jqXHR, textStatus, errorThrown);
 	            $('btn_free').text('eror'); //change button text
 	            $('btn_free').attr('disabled',false); //set button enable 
+	        }
+	    });
+	});
+
+	$('#form-absen').submit(function(event) {
+		event.preventDefault();
+		// $('#submit-absen').text('submiting...'); //change button text
+	    $('#submit-absen').attr('disabled',true); //set button disable 
+	    var url;
+	   	url = "<?php echo base_url('Home_C/create_absen/')?>";
+	    var formData = new FormData($('#form-absen')[0]);
+	    $.ajax({
+	        url : url,
+	        type: "POST",
+	        data: formData,
+	        contentType: false,
+	        processData: false,
+	        success: function(data)
+	        {
+	            $("#alert").html(data);
+	            // console.log(data);
+	            // $('#submit-absen').text('Submit'); //change button text
+	            $('#submit-absen').attr('disabled',false); //set button enable 
+	        },
+	        error: function (jqXHR, textStatus, errorThrown)
+	        {
+	            console.log(jqXHR, textStatus, errorThrown);
+	            $('#submit-absen').text('eror'); //change button text
+	            $('#submit-absen').attr('disabled',false); //set button enable 
+
 	        }
 	    });
 	});
@@ -84,7 +114,7 @@ $(document).ready(function()
 								<textarea class="form-control" placeholder="ketikkan alasan disini." name="c_detail" style="min-height: 100px;"></textarea>
 							</div>
 							<div class="col-xs-12">
-								<a class="btn btn-primary col-xs-12" id="submit-absen" onclick="kirim()">Submit</a>
+								<button class="btn btn-primary col-xs-12" id="submit-absen" type="submit"> <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Submit</button>
 							</div>
 						</form>
 				  	</div>
@@ -116,14 +146,14 @@ $(document).ready(function()
 					          			</div>
 					          			<div class="form-group">
 					          				<div class="col-xs-12">
-									        <select data-placeholder="Keterangan" class="chosen-select" tabindex="2" style="width: 100%;" name="c_status" onchange="generate_detail()"  required="required" id="keteranganfree">
-									        <option value=""></option>
-									            <?php
-											    	foreach($status as $row){
-											            echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
-											        }
-									            ?>
-						            		</select>
+										        <select data-placeholder="Keterangan" class="chosen-select" tabindex="2" style="width: 100%;" name="c_status" onchange="generate_detail()"  required="required" id="keteranganfree">
+										        <option value=""></option>
+										            <?php
+												    	foreach($status as $row){
+												            echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
+												        }
+										            ?>
+							            		</select>
 						            		</div>
 										</div>
 					              		<div class='form-group'><div class='col-xs-12'>
@@ -155,13 +185,13 @@ $(document).ready(function()
 						          	</div>
 						          	<div class="modal-footer">
 						            	<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-						            	<button type="submit" class="btn btn-primary"  id="btn_free">Submit</button> <!-- onclick="free()" -->
+						            	<button type="submit" class="btn btn-primary"  id="btn_free"> <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Submit</button> <!-- onclick="free()" -->
 						          	</div>
 					        	</form>
 					        </div>
 						</div>
 					</div>
-					<button type="button" class="btn btn-primary col-xs-12" data-toggle="modal" data-target="#absenFreeformModal">Absen Free form</button>
+					<button type="button" class="btn btn-primary col-xs-12" data-toggle="modal" data-target="#absenFreeformModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Absen Free form</button>
 					<?php
 				}
 				?>
@@ -271,78 +301,16 @@ $(document).ready(function()
 	        x.style.display = 'none';
 	    }
 	     else {
-	        x.style.display = 'block';
+	        x.style.display = 'block'
+	        $('#myDIVfree').attr("required",true);
 	    }
 	}
-	function kirim()
-	{
-		$('#submit-absen').text('submiting...'); //change button text
-	    $('#submit-absen').attr('disabled',true); //set button disable 
-	    var url;
-	   	url = "<?php echo base_url('Home_C/create_absen/')?>";
-	    var formData = new FormData($('#form-absen')[0]);
-	    $.ajax({
-	        url : url,
-	        type: "POST",
-	        data: formData,
-	        contentType: false,
-	        processData: false,
-	        success: function(data)
-	        {
-	            $("#alert").html(data);
-	            // console.log(data);
-	            $('#submit-absen').text('Submit'); //change button text
-	            $('#submit-absen').attr('disabled',false); //set button enable 
-	        },
-	        error: function (jqXHR, textStatus, errorThrown)
-	        {
-	            console.log(jqXHR, textStatus, errorThrown);
-	            $('#submit-absen').text('eror'); //change button text
-	            $('#submit-absen').attr('disabled',false); //set button enable 
 
-	        }
-	    });
-	}
 	$('#absenFreeformModal').on('shown.bs.modal', function () {
 		$('.chosen-select').chosen("destroy");
 		$('.chosen-select').chosen();
     	$('.clockpicker').clockpicker({placement: 'bottom'});
     	
 	});
-	/*function free() 
-	{*/
-		// $(document).ready(function()
-  //   	{
-  //   		$('#freeform').submit(function(event) {
-  //   			event.preventDefault();
-		// 		var url  = "<?=base_url('Home_C/create_absen_free/')?>";
-		// 		$('#btn_free').text('creating...'); //change button text
-		// 	    $('#btn_free').attr('disabled',true); //set button disable
-		// 	    var formData = new FormData($('#freeform')[0]);
-		// 	    $.ajax({
-		// 	        url : url,
-		// 	        type: "POST",
-		// 	        data: formData,
-		// 	        contentType: false,
-		// 	        processData: false,
-		// 	        success: function(data)
-		// 	        {
-		// 	        	// var object = JSON.parse(data);
-		// 	        	// $("#alert-free").html("<div class='alert alert-danger alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>"+object+"</strong></div>");
-		// 	            // console.log(data);
-		// 	            $("#alert-free").html(data);
-		// 	            $('#btn_free').text('Submit'); //change button text
-		// 	            $('#btn_free').attr('disabled',false); //set button enable 
-		// 	        },
-		// 	        error: function (jqXHR, textStatus, errorThrown)
-		// 	        {
-		// 	            console.log(jqXHR, textStatus, errorThrown);
-		// 	            $('btn_free').text('eror'); //change button text
-		// 	            $('btn_free').attr('disabled',false); //set button enable 
-		// 	        }
-		// 	    });
-  //   		});
-    		
-		// });
-	/*}*/
+
 </script>

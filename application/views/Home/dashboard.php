@@ -96,8 +96,10 @@ function show(){
 			{ "data": "id_a" ,
                         render: function ( data, type, full, meta ) {
                             if (full.acc =='0') {
-                                return '<div class="text-center"><a data-toggle="modal" data-target="#acceptAbsenModal" title="ok" data-idaccept="'+data+'" style="margin: 0 20px 0 20px;">Setujui</a></div>'+
-                                '<a data-toggle="modal" data-target="#rejectAbsenModal" title="tolak" data-idreject="'+data+'">Tolak</a>';
+                                return '<div class="text-center">'+
+                                            '<a data-toggle="modal" data-target="#acceptAbsenModal" title="ok" data-idaccept="'+data+'" style="margin: 0 20px 0 20px;">Setujui</a>'+
+                                            '<a data-toggle="modal" data-target="#rejectAbsenModal" title="tolak" data-idreject="'+data+'">Tolak</a>'+
+                                        '</div>';
                             } else {
                                 return '<div class="text-center"><a data-toggle="modal" data-target="#rejectAbsenModal" title="tolak" data-idreject="'+data+'">Tolak</a><div>';
                             }
@@ -218,7 +220,7 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
         processData: false,
         success: function(data)
         {
-            $("#notif").html(data);
+            $("#alert").html(data);
             $('#btn-reject').text('reject'); //change button text
             $('#btn-reject').attr('disabled',false); //set button enable 
             $('#rejectAbsenModal').modal('hide');

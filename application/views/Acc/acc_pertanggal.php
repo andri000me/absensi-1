@@ -55,7 +55,7 @@
                         <th>start</th>
                         <th>end</th>
                         <th>tanggal</th>
-                        <th>denda</th>
+                        <th>kompensasi</th>
                         <th>action</th>
                     </tr>
                 </thead>

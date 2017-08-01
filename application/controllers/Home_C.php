@@ -18,9 +18,10 @@ class Home_C extends CI_Controller {
 		if(($apakah_hari_libur != array() OR $day == 'Sunday' OR $day == 'Saturday' ) AND isset($this->session->userdata['logged_in']) == false) {
 			$this->load->view('html/header');
 			$this->load->view('html/block');
-		}elseif(($apakah_hari_libur != array() OR $day == 'Sunday' OR $day == 'Saturday' ) AND isset($this->session->userdata['logged_in']) == true){
-			redirect('User_C');
 		}
+		// elseif(($apakah_hari_libur != array() OR $day == 'Sunday' OR $day == 'Saturday' ) AND isset($this->session->userdata['logged_in']) == true){
+		// 	redirect('User_C');
+		// }
 		else {
 			$data['nama_karyawan']=$this->Absen_M->readS('data_k')->result();
 			$data['status']=$this->Absen_M->readS('data_s')->result();
@@ -238,24 +239,28 @@ class Home_C extends CI_Controller {
 					$data['acc'] = 1;
 					if ($data['id_s'] == 1) {/*penentuan late_minute dan denda jika status adalah hadir*/
 						if ($data['detail']=='telat') {/* maka hitung denda*/
+							$where_idm['id_m'] =  7;$datax['denda_terlambat'] = $this->Absen_M->read('data_m',$where_idm)->result();
+							$denda_terlambat = $datax['denda_terlambat'][0]->misc;
+							unset($where_idm);
+
+							$datetime1 = new DateTime($jam_masuk);
+							$datetime2 = new DateTime($data['jam']);
+							$interval = $datetime1->diff($datetime2);
+
+							$jam = $interval->format('%H');
+							$menit = $interval->format('%I');
+							$detik  = $interval->format('%S');
+
+							$to_menit = ($jam * 60) + ($menit) + ($detik / 60);/*calculate minute*/
+							$to_menit_round =ceil($to_menit);/*kelewat 1 detik, langsung kehitung menit++ untuk ngisi late_minute*/
+							$bagi_15 = $to_menit / 15;/*bagi 15 menitan*/
+							$bagi_15_round = ceil($bagi_15);/*untuk pengali denda*/
 							if ($datax['identitas_karyawan'][0]->jabatan_k != 12) { /*jika bukan anak magang*/
-								$time1 = strtotime($data['jam']);
-								$time2 = strtotime($jam_masuk);
-								$seperempat = round(1/4 ,2);
-								$difference = round(abs($time1 - $time2) / 3600,2)  /*% $seperempat*/;
-								$difference = floor($difference / $seperempat);
-								$where_idm['id_m'] =  7;$datax['denda_terlambat'] = $this->Absen_M->read('data_m',$where_idm)->result();
-								$denda_terlambat = $datax['denda_terlambat'][0]->misc;
-								unset($where_idm);
-								$data['denda'] = ($difference * $denda_terlambat) + $denda_terlambat;
+								$data['denda'] = $bagi_15_round * $denda_terlambat;
 							}else { /*jika anak magang*/
 								$data['denda'] = 0;
 							}
-							$datetime1 = strtotime($jam_masuk);
-							$datetime2 = strtotime($data['jam']);
-							$interval  = abs($datetime2 - $datetime1);
-							$minutes   = round($interval / 60);
-							$data['late_minute'] = $minutes;
+							$data['late_minute'] = $to_menit_round;
 						}else{/*jika tepat waktu*/
 							$data['denda'] = 0;
 							$data['late_minute'] = 0;
@@ -264,10 +269,24 @@ class Home_C extends CI_Controller {
 						$result = $this->Absen_M->create('data_ra',$data);
 						if($result)
 						{
-							echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen Hadir ".$datax['identitas_karyawan'][0]->nama_k." berhasil!</strong> Hadir jam ".$data['jam'].".  Denda anda Rp.".number_format($data['denda'],2,',','.')."</div>";
+							echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen Hadir ".$datax['identitas_karyawan'][0]->nama_k." berhasil!</strong> Hadir jam ".$data['jam'].".  Denda anda Rp.".number_format($data['denda'],2,',','.')." terlambat ".$data['late_minute']." menit</div>";
 						}
 						else{
 							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal DB!</strong></div>";
+						}
+					}
+					elseif ($data['id_s'] == 2) {/*contoh : hadir pukul 11.00 karena ijin guru. tidak dikenakan denda, dan late minute=0 */
+						$data['detail'] = "other";
+						$data['id_s'] = 1;
+						$data['late_minute'] = 0;
+						$data['denda'] = 0;
+						$result = $this->Absen_M->create('data_ra',$data);
+						if($result){
+							echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Hadir other untuk ".$datax['identitas_karyawan'][0]->nama_k." berhasil! </strong> denda  Rp.0</div>";
+						}
+						else
+						{
+							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal! DB</strong></div>";
 						}
 					}
 					elseif ($data['id_s'] == 5) {/*alpha*/
@@ -298,6 +317,7 @@ class Home_C extends CI_Controller {
 						}else{
 							$data['denda'] = 0;
 						}
+						$data['late_minute'] = 0;
 						$data['detail'] = $this->input->post('c_detail');
 						$result = $this->Absen_M->create('data_ra',$data);
 						if($result)
@@ -309,32 +329,34 @@ class Home_C extends CI_Controller {
 						}
 					}
 					elseif($data['id_s'] == 4){/*sakit*/
-						if ($data['jam'] > $jam_masuk && $datax['identitas_karyawan'][0]->jabatan_k != 12) {
-							$time1 = strtotime($data['jam']);
-							$time2 = strtotime($jam_masuk);
-							$seperempat = round(1/4 ,2);
-							$difference = round(abs($time1 - $time2) / 3600,2)  /*% $seperempat*/;
-							$difference = floor($difference / $seperempat);
+						if ($data['jam'] > $jam_masuk ) {
+
 							$where_idm['id_m'] =  7;
 							$datax['denda_terlambat'] = $this->Absen_M->read('data_m',$where_idm)->result();
 							$denda_terlambat = $datax['denda_terlambat'][0]->misc;
 							unset($where_idm);
-							$data['denda'] = ($difference * $denda_terlambat) + $denda_terlambat;
-							$datetime1 = strtotime($jam_masuk);
-							$datetime2 = strtotime($data['jam']);
-							$interval  = abs($datetime2 - $datetime1);
-							$minutes   = round($interval / 60);
-							$data['late_minute'] = $minutes;
+							
+							$datetime1 = new DateTime($jam_masuk);
+							$datetime2 = new DateTime($data['jam']);
+							$interval = $datetime1->diff($datetime2);
 
+							$jam = $interval->format('%H');
+							$menit = $interval->format('%I');
+							$detik  = $interval->format('%S');
+
+							$to_menit = ($jam * 60) + ($menit) + ($detik / 60);/*calculate minute*/
+							$to_menit_round =ceil($to_menit);/*kelewat 1 detik, langsung kehitung menit++ untuk ngisi late_minute*/
+							$bagi_15 = $to_menit / 15;/*bagi 15 menitan*/
+							$bagi_15_round = ceil($bagi_15);/*untuk pengali denda*/
+							if ($datax['identitas_karyawan'][0]->jabatan_k != 12) {
+								$data['denda'] = $bagi_15_round * $denda_terlambat;
+							}
+							else{
+								$data['denda'] = 0;
+							}
+							$data['late_minute'] = $to_menit_round;
 						}
-						elseif($data['jam'] > $jam_masuk && $datax['identitas_karyawan'][0]->jabatan_k == 12 ){
-							$data['denda'] = 0;
-							$datetime1 = strtotime($jam_masuk);
-							$datetime2 = strtotime($data['jam']);
-							$interval  = abs($datetime2 - $datetime1);
-							$minutes   = round($interval / 60);
-							$data['late_minute'] = $minutes;
-						}elseif ($data['jam'] < $jam_masuk) {
+						elseif ($data['jam'] < $jam_masuk) {
 							$data['denda'] = 0;
 							$data['late_minute'] = 0;
 						}
@@ -355,7 +377,7 @@ class Home_C extends CI_Controller {
 							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Magang tidak boleh cuti!</strong></div>";
 						}
 						else{// bisa_cuti ==1 dan bukan anak magang
-							$data_c = $this->Absen_M->read('data_c',$where_idk)->result();
+							$data_c = $this->Absen_M->read('data_c',$dataCondition)->result();
 							$wes_cuti = $data_c[0]->cuti_berapakali;
 							$jatah_cuti = $data_c[0]->jatah_cuti;
 							if ($wes_cuti == $jatah_cuti){
@@ -364,7 +386,7 @@ class Home_C extends CI_Controller {
 							else{
 								$result = $this->Absen_M->create('data_ra',$data);
 								if($result){
-									$sisa_cuti = $jatah_cuti-1;
+									$sisa_cuti = $jatah_cuti-$wes_cuti-1;
 									echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti untuk ".$datax['identitas_karyawan'][0]->nama_k." berhasil! </strong> jatah cuti ".$datax['identitas_karyawan'][0]->nama_k." tinggal ".$sisa_cuti."</div>";
 								}
 								else
@@ -398,8 +420,8 @@ class Home_C extends CI_Controller {
 				if ($result != array()) {//auth sukses
 					$data['id_k'] = $dataCondition['id_k'];
 					$data['id_s'] = $this->input->post('c_status');
-					// $data['jam'] = date('H:i:s', time());
-					$data['jam'] = "07:44:42";
+					$data['jam'] = date('H:i:s', time());
+					// $data['jam'] = "07:44:42";
 					$data['acc'] ='0';
 					$where_idm['id_m'] =  1;$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
 					$jam_masuk = $datax['jam_masuk'][0]->misc;
@@ -414,25 +436,30 @@ class Home_C extends CI_Controller {
 						}
 						elseif ($data['jam'] > $jam_masuk and $data['jam'] < $jam_pulang){/*menentukan telat atau tidak sekaligus denda*/
 							if ($datax['identitas_karyawan'][0]->jabatan_k != 12) {/*saat bukan anak magang*/
-								$time1 = strtotime($data['jam']);
-								$time2 = strtotime($jam_masuk);
-								$seperempat = round(1/4 ,2);
-								$difference = round(abs($time1 - $time2) / 3600,2)  /*% $seperempat*/;
-								echo "<br> diff = {$difference}<br>";
-								$difference = floor($difference / $seperempat);
+								
 								$where_idm['id_m'] =  7;$datax['denda_terlambat'] = $this->Absen_M->read('data_m',$where_idm)->result();
 								$denda_terlambat = $datax['denda_terlambat'][0]->misc;
 								unset($where_idm);
-								$data['denda'] = ($difference * $denda_terlambat) + $denda_terlambat;
+								
+								$datetime1 = new DateTime($jam_masuk);
+								$datetime2 = new DateTime($data['jam']);
+								$interval = $datetime1->diff($datetime2);
+
+								$jam = $interval->format('%H');
+								$menit = $interval->format('%I');
+								$detik  = $interval->format('%S');
+
+								$to_menit = ($jam * 60) + ($menit) + ($detik / 60);/*calculate minute*/
+								$to_menit_round = ceil($to_menit);/*kelewat 1 detik, langsung kehitung menit++ untuk ngisi late_minute*/
+								$bagi_15 = $to_menit / 15;/*bagi 15 menitan*/
+								$bagi_15_round = ceil($bagi_15);/*untuk pengali denda*/
+
+								$data['denda'] = $bagi_15_round * $denda_terlambat;
 							} else { /*jika anak magang*/
 								$data['denda'] = 0;
 							}
 							$data['detail'] = "telat";/*menentukan berapa menit terlambat*/
-							$datetime1 = strtotime($jam_masuk);
-							$datetime2 = strtotime($data['jam']);
-							$interval  = abs($datetime2 - $datetime1);
-							$minutes   = round($interval / 60);
-							$data['late_minute'] = $minutes;
+							$data['late_minute'] = $to_menit_round;
 						}
 						else /*saat datang tepat waktu*/
 						{
@@ -440,16 +467,97 @@ class Home_C extends CI_Controller {
 							$data['denda'] = 0;
 							$data['late_minute'] = 0;
 						}
-						echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen Hadir ".$datax['identitas_karyawan'][0]->nama_k." berhasil!</strong> Denda anda Rp.".number_format($data['denda'],2,',','.')."</div>";
-						die();
-						// $result = $this->Absen_M->create('data_ra',$data);
-						// if($result)
-						// {
-						// 	echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen Hadir ".$datax['identitas_karyawan'][0]->nama_k." berhasil!</strong> Denda anda Rp.".number_format($data['denda'],2,',','.')."</div>";
-						// }
-						// else{
-						// 	echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal DB!</strong></div>";
-						// }
+						// echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen Hadir ".$datax['identitas_karyawan'][0]->nama_k." berhasil!</strong> Denda anda Rp.".number_format($data['denda'],2,',','.')." Late ".$data['late_minute']."</div>";
+						$result = $this->Absen_M->create('data_ra',$data);
+						if($result)
+						{
+							echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen Hadir ".$datax['identitas_karyawan'][0]->nama_k." berhasil!</strong> Denda anda Rp.".number_format($data['denda'],2,',','.').". Terlambat ".$data['late_minute']."menit</div>";
+						}
+						else{
+							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal DB!</strong></div>";
+						}
+					}
+					elseif ($data['id_s'] == 2) {/*hadir pukul 11.00 karena ijin guru. tidak dikenakan denda, dan late minute=0 */
+						$data['detail'] = "other";
+						$data['id_s'] = 1;
+						$result = $this->Absen_M->create('data_ra',$data);
+						if($result){
+							echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Hadir other untuk ".$datax['identitas_karyawan'][0]->nama_k." berhasil! </strong> denda  Rp.0</div>";
+						}
+						else
+						{
+							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal! DB</strong></div>";
+						}
+					}
+					elseif ($data['id_s'] == 3){/*cuti*/
+						if ($datax['identitas_karyawan'][0]->bisa_cuti == '0' and $datax['identitas_karyawan'][0]->jabatan_k != 12) { //alert untuk karyawan
+							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Anda belum bisa cuti!</strong></div>";
+						}
+						elseif ($datax['identitas_karyawan'][0]->jabatan_k == '12') { //alert untuk magang
+							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Magang tidak boleh cuti!</strong></div>";
+						}
+						else{// bisa_cuti ==1 dan bukan anak magang
+							$data['detail'] = $this->input->post('c_detail');
+							$where_idk['id_k'] = $data['id_k'];
+							$data_c = $this->Absen_M->read('data_c',$where_idk)->result();
+							$wes_cuti = $data_c[0]->cuti_berapakali;
+							$jatah_cuti = $data_c[0]->jatah_cuti;
+							if ($wes_cuti == $jatah_cuti){
+								echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal!</strong> Batas cuti ".$datax['identitas_karyawan'][0]->nama_k." sudah habis</div>";
+							}
+							else{
+								$result = $this->Absen_M->create('data_ra',$data);
+								if($result){
+									$sisa_cuti = $jatah_cuti-1;
+									echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti untuk ".$datax['identitas_karyawan'][0]->nama_k." berhasil! </strong> jatah cuti ".$datax['identitas_karyawan'][0]->nama_k." tinggal ".$sisa_cuti."</div>";
+								}
+								else
+								{
+									echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal! DB</strong></div>";
+								}
+							}	
+						}
+					}
+					elseif($data['id_s'] == 4){/*sakit*/
+						if ($data['jam'] > $jam_masuk) {
+							
+							$where_idm['id_m'] =  7;
+							$datax['denda_terlambat'] = $this->Absen_M->read('data_m',$where_idm)->result();
+							$denda_terlambat = $datax['denda_terlambat'][0]->misc;
+							unset($where_idm);
+							
+							$datetime1 = new DateTime($jam_masuk);
+							$datetime2 = new DateTime($data['jam']);
+							$interval = $datetime1->diff($datetime2);
+
+							$jam = $interval->format('%H');
+							$menit = $interval->format('%I');
+							$detik  = $interval->format('%S');
+
+							$to_menit = ($jam * 60) + ($menit) + ($detik / 60);/*calculate minute*/
+							$to_menit_round =ceil($to_menit);/*kelewat 1 detik, langsung kehitung menit++ untuk ngisi late_minute*/
+							$bagi_15 = $to_menit / 15;/*bagi 15 menitan*/
+							$bagi_15_round = ceil($bagi_15);/*untuk pengali denda*/
+							if ($datax['identitas_karyawan'][0]->jabatan_k != 12) {
+								$data['denda'] = $bagi_15_round * $denda_terlambat;
+							}
+							else{
+								$data['denda'] = 0;
+							}
+							$data['late_minute'] = $to_menit_round;
+						}
+						elseif ($data['jam'] < $jam_masuk) {
+							$data['denda'] = 0;
+							$data['late_minute'] = 0;
+						}
+						$data['detail'] = $this->input->post('c_detail');
+						$result = $this->Absen_M->create('data_ra',$data);
+						if($result){
+							echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen sakit ".$datax['identitas_karyawan'][0]->nama_k." berhasil!</strong> Denda anda Rp.".number_format($data['denda'],2,',','.').". Terlambat ".$data['late_minute']."</div>";
+						}
+						else{
+							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal DB!</strong></div>";
+						}
 					}
 					elseif ($data['id_s'] == 5) {/*alpha*/
 						if ($datax['identitas_karyawan'][0]->jabatan_k != 12) {
@@ -489,72 +597,8 @@ class Home_C extends CI_Controller {
 							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal DB!</strong></div>";
 						}
 					}
-					elseif($data['id_s'] == 4){/*sakit*/
-						if ($data['jam'] > $jam_masuk && $datax['identitas_karyawan'][0]->jabatan_k != 12) {
-							$time1 = strtotime($data['jam']);
-							$time2 = strtotime($jam_masuk);
-							$seperempat = round(1/4 ,2);
-							$difference = round(abs($time1 - $time2) / 3600,2)  /*% $seperempat*/;
-							$difference = floor($difference / $seperempat);
-							$where_idm['id_m'] =  7;
-							$datax['denda_terlambat'] = $this->Absen_M->read('data_m',$where_idm)->result();
-							$denda_terlambat = $datax['denda_terlambat'][0]->misc;
-							unset($where_idm);
-							$data['denda'] = ($difference * $denda_terlambat) + $denda_terlambat;
-							$datetime1 = strtotime($jam_masuk);
-							$datetime2 = strtotime($data['jam']);
-							$interval  = abs($datetime2 - $datetime1);
-							$minutes   = round($interval / 60);
-							$data['late_minute'] = $minutes;
-
-						}
-						elseif($data['jam'] > $jam_masuk && $datax['identitas_karyawan'][0]->jabatan_k == 12 ){
-							$data['denda'] = 0;
-							$datetime1 = strtotime($jam_masuk);
-							$datetime2 = strtotime($data['jam']);
-							$interval  = abs($datetime2 - $datetime1);
-							$minutes   = round($interval / 60);
-							$data['late_minute'] = $minutes;
-						}elseif ($data['jam'] < $jam_masuk) {
-							$data['denda'] = 0;
-							$data['late_minute'] = 0;
-						}
-						$data['detail'] = $this->input->post('c_detail');
-						$result = $this->Absen_M->create('data_ra',$data);
-						if($result){
-							echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen sakit ".$datax['identitas_karyawan'][0]->nama_k." berhasil!</strong> Denda anda Rp.".number_format($data['denda'],2,',','.')."</div>";
-						}
-						else{
-							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Absen gagal DB!</strong></div>";
-						}
-					}
-					elseif ($data['id_s'] == 3){/*cuti*/
-						if ($datax['identitas_karyawan'][0]->bisa_cuti == '0' and $datax['identitas_karyawan'][0]->jabatan_k != 12) { //alert untuk karyawan
-							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Anda belum bisa cuti!</strong></div>";
-						}
-						elseif ($datax['identitas_karyawan'][0]->jabatan_k == '12') { //alert untuk magang
-							echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Magang tidak boleh cuti!</strong></div>";
-						}
-						else{// bisa_cuti ==1 dan bukan anak magang
-							$data_c = $this->Absen_M->read('data_c',$where_idk)->result();
-							$wes_cuti = $data_c[0]->cuti_berapakali;
-							$jatah_cuti = $data_c[0]->jatah_cuti;
-							if ($wes_cuti == $jatah_cuti){
-								echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal!</strong> Batas cuti ".$datax['identitas_karyawan'][0]->nama_k." sudah habis</div>";
-							}
-							else{
-								$result = $this->Absen_M->create('data_ra',$data);
-								if($result){
-									$sisa_cuti = $jatah_cuti-1;
-									echo "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti untuk ".$datax['identitas_karyawan'][0]->nama_k." berhasil! </strong> jatah cuti ".$datax['identitas_karyawan'][0]->nama_k." tinggal ".$sisa_cuti."</div>";
-								}
-								else
-								{
-									echo "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Cuti gagal! DB</strong></div>";
-								}
-							}	
-						}
-					}
+					
+					
 					else{
 						echo "<div class='alert alert-danger alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Not Handled</strong></div>";
 					}
@@ -574,7 +618,7 @@ class Home_C extends CI_Controller {
 			$data['start'] = $this->input->post('c_jam_start');
 			$data['end'] = $this->input->post('c_jam_end');
 			$data['id_k'] = $this->input->post('c_id_k');
-			$data['tanggal'] = $this->input->post('tanggal');
+			$data['tanggal'] = $this->input->post('c_tanggal');
 
 			$where_idm['id_m'] =  1;
 			$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
@@ -584,13 +628,18 @@ class Home_C extends CI_Controller {
 			$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
 			$jam_pulang = $datax['jam_pulang'][0]->misc;
 
+			$where_idk['id_k'] = $data['id_k'];
+			$datax['identitas_karyawan'] = $this->Absen_M->read('data_k',$where_idk)->result();
+			$jabatan_k = $datax['identitas_karyawan'][0]->jabatan_k;
+
+			unset($datax,$where_idm,$where_idk);
 			/*didalam jam kerja atau tidak sudah di validasi di javascript ijin.php*/
 			// if ($data['start'] > $jam_pulang OR $data['start'] < $jam_masuk ) {
 			// 	$alert_create_ijin =  "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>tidak di dalam jam kerja</strong></div>";	
 			// }
 
 			$datar['id_k']  = $data['id_k'];
-			$datar['tanggal'] = date('Y-m-d');
+			$datar['tanggal'] = $data['tanggal'];
 			$datar['id_s'] = '1';
 			$datar['acc'] = '1';
 
@@ -598,26 +647,41 @@ class Home_C extends CI_Controller {
 			unset($datar);
 
 			if ($apakah_hadir_dan_acc != array()) {
-				$data['tanggal'] = date('Y-m-d');
 				$data['perihal'] = $this->input->post('c_perihal');
 
-				$time1 = strtotime($data['start']);
-				$time2 = strtotime($data['end']);
-				$difference = round(abs($time2 - $time1) / 3600,2);
+				$datetime1 = new DateTime($data['end']);
+				$datetime2 = new DateTime($data['start']);
+				$interval = $datetime1->diff($datetime2);
 
-				if($difference >= 0.5) {
-					$where_idm['id_m'] =  6;
-					$datax['denda_ijin'] = $this->Absen_M->read('data_m',$where_idm)->result();
-					$denda_ijin = $datax['denda_ijin'][0]->misc;
+				$jam = $interval->format('%H');
+				$menit = $interval->format('%I');
+				$detik  = $interval->format('%S');
 
-					$total_denda = 0;
-					$loop = $difference / 0.5;
-					for ($i=1; $i <=$loop ; $i++) { 
-						if ($i % 2 == 0) {
-							$total_denda += $denda_ijin;
-						}
+				$to_menit = ($jam * 60) + ($menit) + ($detik / 60);/*calculate minute*/
+				$to_menit_round =ceil($to_menit);/*kelewat 1 detik, langsung kehitung menit++ untuk ngisi late_minute*/
+				if($to_menit_round >= 30) {
+					if ($jabatan_k != 12) {
+						$where_idm['id_m'] =  6;
+						$datax['denda_ijin'] = $this->Absen_M->read('data_m',$where_idm)->result();
+						$denda_ijin = $datax['denda_ijin'][0]->misc;
+
+						// $total_denda = 0;
+						// $loop = $to_menit_round / 30;
+						// for ($i=1; $i <=$loop ; $i++) { 
+						// 	if ($i % 2 == 0) {
+						// 		$total_denda += $denda_ijin;
+						// 	}
+						// }
+						$bagi_60 = $to_menit / 60;/*bagi 60 menitan*/
+						$bagi_60_round = ceil($bagi_60);/*untuk pengali denda*/
+						$total_denda= $bagi_60_round * $denda_ijin;
+						$data['denda'] = $total_denda;
 					}
-					$data['denda'] = $total_denda;
+					else{
+						$data['denda'] = 0;
+					}
+					// $alert_create_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>".$data['denda']." durasi ".$to_menit_round."</div>";
+
 					$result = $this->Absen_M->create('data_i',$data);
 					if($result){
 		 				$alert_create_ijin =  "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil dibuat</strong></div>";
@@ -629,7 +693,7 @@ class Home_C extends CI_Controller {
 				}
 			}
 			else{
-				$alert_create_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>belum hadir dan acc.</strong></div>";
+				$alert_create_ijin = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>belum hadir dan acc.</strong></div>";
 			}
 		}
 		echo json_encode($alert_create_ijin);
@@ -692,59 +756,72 @@ class Home_C extends CI_Controller {
 	public function stop_ijin($data)
 	{
 
-			$where_idm['id_m'] =  4;
-			$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
-			$jam_pulang = $datax['jam_pulang'][0]->misc;
-			unset($datax,$where_idm);
+		$where_idm['id_m'] =  4;
+		$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
+		$jam_pulang = $datax['jam_pulang'][0]->misc;
+		unset($datax,$where_idm);
 
-			$where_idi['id_i'] =  $data;
-			$datax['start'] = $this->Absen_M->read('data_i',$where_idi)->result();
-			$start = $datax['start'][0]->start;
-			unset($datax,$where_idi);
+		$where_idi['id_i'] =  $data;
+		$datax['start'] = $this->Absen_M->read('data_i',$where_idi)->result();
+		$start = $datax['start'][0]->start;
+		$where_idk['id_k'] = $datax['start']->id_k;
+		$datax['identitas_karyawan'] = $this->Absen_M->read('data_k',$where_idk)->result();
+		$jabantan_k = $datax['identitas_karyawan'][0]->jabatan_k;
+		unset($datax,$where_idi,$where_idk);
 
-			$dataCondition['id_i'] = $data;
-			$datau['end'] = date('H:i:s', time());
+		$dataCondition['id_i'] = $data;
+		// $datau['end'] = "10:15:00";
+		$datau['end'] = date('H:i:s', time());
 
-			if ($datau['end'] > $jam_pulang) {
-				$datau['end'] = $jam_pulang;
-			}
-			
-			$time1 = strtotime($start);
-			$time2 = strtotime($datau['end']);
-			$difference = round(abs($time2 - $time1) / 3600,2);			
-			
-			if ($difference >= 0.5) {
+		if ($datau['end'] > $jam_pulang) {
+			$datau['end'] = $jam_pulang;
+		}
+		
+		$datetime1 = new DateTime($datau['end']);
+		$datetime2 = new DateTime($start);
+		$interval = $datetime1->diff($datetime2);
+
+		$jam = $interval->format('%H');
+		$menit = $interval->format('%I');
+		$detik  = $interval->format('%S');
+
+		$to_menit = ($jam * 60) + ($menit) + ($detik / 60);/*calculate minute*/
+		$to_menit_round =ceil($to_menit);/*kelewat 1 detik, langsung kehitung menit++ untuk ngisi late_minute*/
+
+		if($to_menit_round >= 30) {
+			if ($jabatan_k != 12) {
 				$where_idm['id_m'] =  6;
 				$datax['denda_ijin'] = $this->Absen_M->read('data_m',$where_idm)->result();
 				$denda_ijin = $datax['denda_ijin'][0]->misc;
+				
+				$bagi_60 = $to_menit / 60;/*bagi 60 menitan*/
+				$bagi_60_round = ceil($bagi_60);/*untuk pengali denda*/
+				$total_denda= $bagi_60_round * $denda_ijin;
 
-				$total_denda = 0;
-				$loop = $difference / 0.5;
-				for ($i=1; $i <=$loop ; $i++) { 
-					if ($i % 2 == 0) {
-						$total_denda += $denda_ijin;
-					}
-				}
 				$datau['denda'] = $total_denda;
-				$result = $this->Absen_M->update('data_i',$dataCondition,$datau);
-				$results = json_decode($result, true);
-
-				if ($results['status']) {
-					$alert_stop_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil di stop.</strong> Data ijin anda telah masuk ke laporan</div>";
-				}
-				else{
-					$alert_stop_ijin = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin gagal di stop(database) </strong> </div>";
-				}
-			} else {
-				$result = $this->Absen_M->delete('data_i',$dataCondition);
-				if ($result) {
-					$alert_stop_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil di stop.</strong> Data ijin anda dihapus karena kurang dari 30 menit</div>";
-				}
-				else{
-					$alert_stop_ijin = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin gagal di stop. </strong> ijin gagal di hapus(database) </div>";
-				}
 			}
-			echo json_encode($alert_stop_ijin);
+			else{
+				$datau['denda'] = 0;
+			}
+			$result = $this->Absen_M->update('data_i',$dataCondition,$datau);
+			$results = json_decode($result, true);
+
+			if ($results['status']) {
+				$alert_stop_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil di stop.</strong> Data ijin anda telah masuk ke laporan</div>";
+			}
+			else{
+				$alert_stop_ijin = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin gagal di stop(database) </strong> </div>";
+			}
+		} else {
+			$result = $this->Absen_M->delete('data_i',$dataCondition);
+			if ($result) {
+				$alert_stop_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil di stop.</strong> Data ijin anda dihapus karena kurang dari 30 menit</div>";
+			}
+			else{
+				$alert_stop_ijin = "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin gagal di stop. </strong> ijin gagal di hapus(database) </div>";
+			}
+		}
+		echo json_encode($alert_stop_ijin);
 	}
 	public function acceptAbsen()
     {

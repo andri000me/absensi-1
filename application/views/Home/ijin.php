@@ -16,7 +16,7 @@
 		        {
 		        	var object = JSON.parse(data);
 		            $("#alert").html(object);
-		            console.log(data);
+		            // console.log(data);
 		            $('#btn_free').text('Submit'); //change button text
 		            $('#btn_free').attr('disabled',false); //set button enable 
 		            $('#ijinFreeformModal').modal('hide');
@@ -65,7 +65,7 @@
               		<div class='form-group'><div class='col-xs-12'>
                         <label class='control-label'>Jam Start</label>
                         <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" >
-						    <input type="text" class="form-control" name="c_jam_start" id="clockstart" onchange="jamkerja()" required="required">
+						    <input type="time" class="form-control" name="c_jam_start" id="clockstart" onchange="calc()" required="required">
 						    <span class="input-group-addon">
 						        <span class="glyphicon glyphicon-time"></span>
 						    </span>
@@ -75,13 +75,17 @@
                     <div class='form-group'><div class='col-xs-12'>
                         <label class='control-label'>Jam End</label>
                         <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" >
-						    <input type="text" class="form-control" name="c_jam_end" onchange="jamkerja();calc()" id="clockend" required="required">
+						    <input type="time" class="form-control" name="c_jam_end" onchange="calc()" id="clockend" required="required">
 						    <span class="input-group-addon">
 						        <span class="glyphicon glyphicon-time"></span>
 						    </span>
 						</div>
 						</div>
                     </div>
+                    <div class="form-group"><div class='col-xs-12'>
+                        <label class="control-label">tanggal</label>
+                        <input type="date" class="form-control" name="c_tanggal" required="required" value="<?=date("Y-m-d")?>">
+                    </div></div>
 					<div class="form-group"><div class="col-xs-12">
 						<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
 						<div class="input-group">
@@ -101,49 +105,67 @@
     </div>
 </div>
 <script type="text/javascript">
-	function diff_minutes(dt2, dt1){
+	function diff_minutes(dt1, dt2){
 		var diffm =(dt2.getTime() - dt1.getTime()) / 1000;
-		var diffh =(dt2.getHours() - dt1.getHours());
+		// var diffh =(dt2.getHours() - dt1.getHours());
 		diffm /= 60;
-		var result = [ Math.abs(diffh),Math.abs(Math.round(diffm))];
-		return (result);
-	}
-
-	function jamkerja() {
-		var start = document.getElementById('clockstart');
-		var end = document.getElementById('clockend');
-		var jam_pulang = "<?=$jam_pulang?>";
-		var jam_masuk = "<?=$jam_masuk?>";
-		if (start.value > jam_pulang || start.value < jam_masuk || end.value > jam_pulang) {
-			document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Diluar jam kerja.</strong></div>';
-			start.value = '';
-			end.value = '';
-		}
+		
+		var  menit= (Math.round(diffm));
+		// var  menit= Math.ceil((Math.round(diffm)));
+		// var nominal = Math.ceil((Math.round(diffm)) / 60 );
+		// var result = [ Math.abs(diffh),nominal];
+		return menit;
 	}
 
 	function calc() {
 		var date = <?=date('Y-m-d') ?>;
-		var start = document.getElementById('clockstart').value;
-		var end =  document.getElementById('clockend').value;
-		if (end < start) {
-			document.getElementById('clockend').value = '';
-			document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Jam tidak valid.</strong></div>';
-			document.getElementById('biaya').value = '';
+		var start = document.getElementById('clockstart');
+		var manipulate_start = start.value +':00';
+		var end =  document.getElementById('clockend');
+		var manipulate_end = end.value +':00';
+		var jam_pulang = "<?=$jam_pulang?>";
+		var jam_masuk = "<?=$jam_masuk?>";
+		if (manipulate_start > jam_pulang || manipulate_start < jam_masuk) {
+			// console.log(manipulate_start, manipulate_end);
+			document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Diluar jam kerja.</strong></div>';
+			start.value = '';
+			end.value = '';
 		}
 		else{
-			dt1 = new Date(date+' '+start);
-			dt2 = new Date(date+' '+end);
+			if (manipulate_end < manipulate_start) {
+				end.value = '';
+				document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Jam tidak valid.</strong></div>';
+				document.getElementById('biaya').value = '';
+			}
+			else if (end.value != '') {
+				if (manipulate_end >jam_pulang) {
+					document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>End lebih dari jam pulang.</strong></div>';
+					document.getElementById('biaya').value = '';
+					end.value='';
+				}else{
+					dt1 = new Date(date+' '+manipulate_start);
+					dt2 = new Date(date+' '+manipulate_end);
 
-			var result = diff_minutes(dt1, dt2);
-			if (result[0] == 0 && result[1] < 30) {
-				console.log(result[0]);
-			}
-			else if(result[0] == 0 && result[1] >= 30){
-				document.getElementById('biaya').value = '<?=$denda_ijin?>';
-			}
-			else if((result[0] > 0 && result[0] <= 1) || result[0] > 1){
-				
-				document.getElementById('biaya').value = result[0] * '<?=$denda_ijin?>';
+					var result = diff_minutes(dt1, dt2);
+					if (result < 30) {
+						// console.log(result);
+						end.value = '';
+						start.value = '';
+						document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>kurang dari 30 menit.</strong> tidak dihitung</div>';
+						document.getElementById('biaya').value = '';
+					}
+					else if(result >= 30){
+						// console.log(result);
+						document.getElementById('biaya').value = Math.ceil(result / 60) * <?=$denda_ijin?>;
+					}
+					// else{
+					// 	console.log(result);
+					// 	end.value = '';
+					// 	start.value = '';
+					// 	document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>not handled.</strong></div>';	
+					// 	document.getElementById('biaya').value = '';
+					// }
+				}
 			}
 		}
 	}

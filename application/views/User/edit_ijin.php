@@ -60,7 +60,7 @@
 						</div>
 					</div>
 					<div class="col-xs-12 text-right">
-						<button type="submit" class="btn btn-default">Submit</button>
+						<button type="submit" class="btn btn-primary">Submit</button>
 					</div>
 				</form>
 		  	</div>

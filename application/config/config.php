@@ -25,6 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 $config['base_url'] = 'http://localhost/absensi/';
+// $config['base_url'] = 'http://192.168.137.1/absensi/';
 // $config['base_url'] = 'http://192.168.1.31/absensi/';
 
 /*

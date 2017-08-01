@@ -80,7 +80,6 @@ $(document).ready(function()
 		<?=$this->session->flashdata("alert_login");?>
 		</div>
 	</div>
-
 	<div class="row">
 		<div class="center-block">
 			<div class="col-xs-10 col-xs-push-1 col-sm-4 col-sm-push-4">
@@ -91,9 +90,9 @@ $(document).ready(function()
 						        <select class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%;" name="c_id_k" required="required">
 						        <option></option>
 							        <?php
-					            		foreach($nama_karyawan as $row)						            {
+					            		foreach($nama_karyawan as $row){
 							              	echo '<option value="'.$row->id_k.'">'.$row->nama_k.'</option>';
-							            }
+							            }	
 							        ?>
 						        </select>
 							</div>
@@ -104,9 +103,17 @@ $(document).ready(function()
 						        <select data-placeholder="Keterangan" class="chosen-select" tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()" id="keterangan" required="required">
 						            <option value=""></option>
 							            <?php
-									    	foreach($status as $row){
-									            echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
-									        }
+									    	if ($this->session->userdata('logged_in') == null) {
+									    		foreach($status as $row){
+									    			if ($row->id_s != 2) {
+									            		echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
+									    			}
+									        	}
+									    	}else{
+									    		foreach($status as $row){
+									            	echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
+									        	}
+									    	}
 							            ?>
 						        </select>
 							</div>
@@ -177,10 +184,11 @@ $(document).ready(function()
 						                  		<textarea class="form-control" name="c_detail"  style="min-height: 50px;" required="required" id="myDIVfree"></textarea>
 					              			</div>
 					              		</div>
-					<script type="text/javascript">
-						var xf = document.getElementById('myDIVfree');
-    					xf.style.display = 'none';
-					</script>
+										
+										<script type="text/javascript">
+											var xf = document.getElementById('myDIVfree');
+					    					xf.style.display = 'none';
+										</script>
 					              		
 						          	</div>
 						          	<div class="modal-footer">
@@ -196,7 +204,6 @@ $(document).ready(function()
 				}
 				?>
 			</div>
-
 		</div>
 	</div>
 </div>
@@ -258,6 +265,7 @@ $(document).ready(function()
     function generate_detail() 
     {
 	    var z = document.getElementById('clock');
+	    
     	if (document.getElementById("keteranganfree").value == '1') {
     		if (z.value != '') {
 		    	xf.style.display = 'block';
@@ -274,6 +282,14 @@ $(document).ready(function()
 		    		document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Jam tidak valid.</strong></div>';
 	    			xf.value = '';
 		    	}
+		    	x.style.display = 'none';
+    		}
+	    }
+	    else if (document.getElementById("keteranganfree").value == '2') {
+    		if (z.value != '') {
+		    	xf.style.display = 'block';
+	    		$('#myDIVfree').attr("readonly","readonly");
+	    		xf.value = 'other';
 		    	x.style.display = 'none';
     		}
 	    }

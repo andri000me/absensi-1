@@ -258,6 +258,7 @@ function editIjin(elem)
         var object = JSON.parse(html);
         console.log(object);
         $("#idiUpdate").val(object[0].id_i);
+        $("#idkUpdate").val(object[0].id_k);
         $("#namaiUpdate").val(object[0].nama_k);
         $("#tanggaliUpdate").val(object[0].tanggal);
         $("#perihaliUpdate").val(object[0].perihal);

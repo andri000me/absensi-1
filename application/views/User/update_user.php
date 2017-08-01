@@ -39,25 +39,25 @@ foreach ($user->result() as $row) {
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Nama</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control"  name='u_nama' value="<?php echo $row->nama_k;?>">
+                      <input type="text" class="form-control"  name='u_nama' required="required" value="<?php echo $row->nama_k;?>">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Alamat</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control"  name="u_alamat" value="<?php echo $row->alamat_k;?>" >
+                        <input type="text" class="form-control"  name="u_alamat" required="required" value="<?php echo $row->alamat_k;?>" >
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Email</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control"  name="u_email" value="<?php echo $row->email_k;?>">
+                        <input type="text" class="form-control"  name="u_email" required="required" value="<?php echo $row->email_k;?>">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">No HP</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control"  name="u_nohp" value="<?php echo $row->noHp_k;?>">
+                        <input type="text" class="form-control"  name="u_nohp" required="required" value="<?php echo $row->noHp_k;?>">
                     </div>
                 </div>
                 <div class="form-group">
@@ -68,7 +68,7 @@ foreach ($user->result() as $row) {
                 </div>
 
                 <!-- VARIABEL UNTUK CEK APAKAH BISA_CUTI DIUPDATE -->
-                <input type="hidden" class="form-control" name="u_bisa_cuti_db" value="<?php echo $row->bisa_cuti;?>">
+                <input type="hidden" class="form-control" name="u_bisa_cuti_db" value="<?php echo $row->bisa_cuti;?>" >
                 
                 <!-- VARIABEL UNTUK LINK FOTO-->
                 <input type="hidden" class="form-control" name="unlink_foto_k" value="<?php echo $row->foto_k;?>">
@@ -77,7 +77,7 @@ foreach ($user->result() as $row) {
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Bisa cuti</label>
                     <div class="col-sm-10">
-                        <select name="u_bisa_cuti_form" id="input" class="form-control" required="required" >
+                        <select name="u_bisa_cuti_form" id="input" class="form-control" >
                             <?php if ($row->bisa_cuti == 0 ) {?>
                                 <option value="0" selected >0</option>
                                 <option value="1" >1</option>
@@ -179,7 +179,7 @@ foreach ($user->result() as $row) {
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Username</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="u_username" value="<?php echo $rowo->username_k;?>">
+                        <input type="text" class="form-control" name="u_username" value="<?php echo $rowo->username_k;?>" required="required">
                     </div>
                 </div>
 

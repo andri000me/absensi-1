@@ -190,6 +190,7 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
                 </div>
                 <div class="modal-body ">
                     <input type="hidden" name="u_id_i" id="idiUpdate">
+                    <input type="hidden" name="u_id_k" id="idkUpdate">
                     <div class="form-group">
                         <label class="control-label">Nama</label>
                         <input type="text" class="form-control" id="namaiUpdate" name="u_nama" readonly>

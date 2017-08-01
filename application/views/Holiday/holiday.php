@@ -74,6 +74,7 @@ $(document).ready(function() {
 			<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addLiburModal">Add Libur</button>
 		</div>
 		<div class="col-xs-12">
+		<br>
 			<?=$this->session->flashdata("notifikasi_libur")?>	
 		</div>
 	</div>

@@ -11,36 +11,39 @@
 		<?=$this->session->flashdata("alert_update_absensi_ku");?>
 		<?=$this->session->flashdata("alert_update_ijin_ku");?>
 		<?=$this->session->flashdata("alert_delete_ijin_ku");?>
-		<div class="col-xs-12 col-sm-10" >
-			<h3>Absensi bulan <?=$dateObj->format('F')?>	</h3>
+		<div class="col-xs-12 col-sm-12" >
+			<h3>ABSENSI BULAN <?=$dateObj->format('F')?>	</h3>
 			<h3>User <?=$nama_k[0]->nama_k?> memiliki sisa cuti <?= ($cuti[0]->jatah_cuti)- ($cuti[0]->cuti_berapakali);?></h3>
-			<h5> telah cuti sebanyak <?= $cuti[0]->cuti_berapakali;?></h5>
+			<h5> Telah cuti sebanyak <?= $cuti[0]->cuti_berapakali?>. Terakhir sinkron <?=$cuti[0]->last_sync ?></h5>
 			<br>
 		</div>
-		<div class="col-xs-6 col-sm-1  no-print">
-			<div class="dropdown">
-				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-				    Pilih bulan
-				    <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/1/'.date('Y'))?>">Januari</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/2/'.date('Y'))?>">Februari</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/3/'.date('Y'))?>">Maret</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/4/'.date('Y'))?>">April</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/5/'.date('Y'))?>">Mei</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/6/'.date('Y'))?>">juni</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/7/'.date('Y'))?>">juli</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/8/'.date('Y'))?>">agustus</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/9/'.date('Y'))?>">september</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/10/'.date('Y'))?>">oktober</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/11/'.date('Y'))?>">november</a></li>
-					<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/12/'.date('Y'))?>">desember</a></li>
-				</ul>
-			</div>
-		</div>
-		<div class="col-xs-6 col-sm-1 text-right  no-print">
-			<button type="button" id="print_btn" class="btn btn-success"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> </button>
+		<div class="col-xs-12 no-print">
+			<ul class="list-inline">
+				<li>
+					<div class="dropdown">
+						<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						    Pilih bulan
+						    <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/1/'.date('Y'))?>">Januari</a></li>
+							<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/2/'.date('Y'))?>">Februari</a></li>
+							<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/3/'.date('Y'))?>">Maret</a></li>
+							<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/4/'.date('Y'))?>">April</a></li>
+							<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/5/'.date('Y'))?>">Mei</a></li>
+							<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/6/'.date('Y'))?>">juni</a></li>
+							<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/7/'.date('Y'))?>">juli</a></li>
+							<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/8/'.date('Y'))?>">agustus</a></li>
+							<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/9/'.date('Y'))?>">september</a></li>
+							<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/10/'.date('Y'))?>">oktober</a></li>
+							<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/11/'.date('Y'))?>">november</a></li>
+							<li><a href="<?php echo base_url('User_C/detail_per_user_per_bulan/'.$siapa.'/12/'.date('Y'))?>">desember</a></li>
+						</ul>
+					</div>
+				</li>
+				<li><button type="button" id="print_btn" class="btn btn-success"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> CETAK</button></li>
+			</ul>
+			
 		</div>
 	</div>
 	<br>
@@ -60,7 +63,7 @@ $(document).ready(function() {
 	            	<th>keterangan</th>
 	            	<th>detail</th>
 	            	<th>acc</th>
-	            	<th>late Avg</th>
+	            	<th>late minute</th>
 	            	<th>denda</th>
 	            	<th class='no-print text-center'>action</th>
             	</tr>
@@ -73,15 +76,19 @@ $(document).ready(function() {
 	        		$other=0;
 	        		$i =1;
 					foreach ($absen as $key){
-		        		if ($key->keterangan_s =='hadir' AND $key->detail =='tepat waktu') {
-		        			$ontime = $ontime + 1 ;
-		        		}elseif($key->keterangan_s =='hadir' AND $key->detail =='telat') {
-		        			$late = $late + 1;
-		        		}elseif($key->keterangan_s =='sakit') {
-		        			$sick = $sick + 1;
-		        		}elseif ($key->keterangan_s =='ijin 1 hari' or $key->keterangan_s =='alpha') {
-							$other = $other +1;
-		        		}
+// if ($key->keterangan_s =='hadir' ) {
+// 	if ($key->detail =='tepat waktu') {
+// 		$ontime = $ontime + 1 ;
+// 	}
+// 	else($key->detail =='telat'){
+// 		$late = $late + 1;
+// 	}
+// }
+// elseif($key->keterangan_s =='sakit') {
+// 	$sick = $sick + 1;
+// }elseif ($key->keterangan_s =='ijin 1 hari' or $key->keterangan_s =='alpha') {
+// 	$other = $other +1;
+// }
 		        		echo "<tr>";
 		        		echo "<td>".$i."</td>";
 		        		echo "<td>".$key->tanggal."</td>";
@@ -108,12 +115,17 @@ $(document).ready(function() {
 			$denda_ku = $denda_ku + $kay->denda;
 		}
 		?>
-		<h3>Total denda sejumlah Rp <?php echo number_format($denda_ku,2,',','.')?> di bulan ini</h3>
+		<div class="panel panel-danger">
+			<div class="panel-heading">Total denda Absen</div>
+			<div class="panel-body">
+		Total denda sejumlah Rp <?php echo number_format($denda_ku,2,',','.')?> di bulan ini
+			</div>
+		</div>
 	</div>
 	<br>
 	<hr>
 	<br>
-	<h3>Ijin bulan <?=$dateObj->format('F')?></h3>
+	<h3>IJIN BULAN <?=$dateObj->format('F')?></h3>
 <script type="text/javascript">
 $(document).ready(function() {
     $('#examplij').DataTable();
@@ -155,14 +167,7 @@ $(document).ready(function() {
   		</table>
 	</div>
 	<div>
-		<button type="button" class="btn btn-xs btn-success">hadir tepat waktu: <?= $ontime?> kali</button>
-		<button type="button" class="btn btn-xs btn-danger">hadir terlambat: <?= $late?> kali</button>
-		<button type="button" class="btn btn-xs btn-primary">sakit: <?=$sick?> kali</button>
-		<button type="button" class="btn btn-xs btn-info">lainnyat: <?=$other?> kali</button>
-		<!-- <button type="button" class="btn btn-xs btn-warning">hadir terlambat: 5</button>
-		<button type="button" class="btn btn-xs btn-default">hadir terlambat: 5</button> -->
 	</div><br>
-	
 	<div>
 		<?php
 		$denda_ku =0;
@@ -170,10 +175,13 @@ $(document).ready(function() {
 			$denda_ku = $denda_ku + $kay->denda;
 		}
 		?>
-		<h3>Total kompensasi ijin jam kerja sejumlah Rp. <?php echo number_format($denda_ku,2,',','.')?> di bulan ini</h3>
+		<div class="panel panel-danger">
+			<div class="panel-heading">Total denda Ijin</div>
+			<div class="panel-body">
+		Total kompensasi ijin jam kerja sejumlah Rp. <?php echo number_format($denda_ku,2,',','.')?> di bulan ini
+			</div>
+		</div>
 	</div>
-	
-
 	<br><?php
 	if ($data_chart != array()) {?>
 		<div class="good" id="good"></div>
@@ -192,11 +200,13 @@ $(document).ready(function() {
 		
 	<?php }
 	?>
+	<div class="panel panel-danger">
+		<div class="panel-heading">Rata-rata keterlambatan</div>
+		<div class="panel-body">
+			<?=$late_avg?> Menit
+		</div>
+	</div>
 	<div>
 		<a class="btn btn-primary no-print col-xs-12" href="<?php echo base_url('User_C/lihat5bulan/'.$siapa."/".$bulan."/".$tahun)?>" role="button"><span class="glyphicon glyphicon-list"></span> Lihat grafik 5 bulan terakhir</a>
 	</div>
-
 </div>
-
-
-	

@@ -158,15 +158,14 @@ class Overview_C extends CI_Controller {
                 /*START HITUNG SABTU MINGGU*/
                 $weekend = 0;
                 for ($i = 1; $i <= $number; $i++) {
-
                     $date = date("Y-m-{$i}");
                     $dt = strtotime($date);
                     $day = date("l",$dt);
-
                     if ($day == 'Sunday' OR $day == 'Saturday') {
                         $weekend  = $weekend + 1;
                     }
                 }
+                /*end hitung sabtu minggu*/
                 
                 $datax['jml_libur'] = (int)$jml_libur[0]->liburs;
                 $datax['weekend'] = $weekend;

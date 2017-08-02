@@ -8,7 +8,7 @@
 				</div>
 				<div class="col-sm-2 col-xs-12">
 				    <br/><p>Rata2 Keterlambatan Karyawan</p>
-				    <h4><?=$late_avg_karyawan?> Menit</h4>	
+				    <h4><?=number_format($late_avg_karyawan,2)?> Menit</h4>	
 				</div>
 				<div class="col-sm-2 col-xs-12">
 				    <br/><p>Rata2 Keterlambatan Magang</p>
@@ -34,7 +34,7 @@ $(document).ready(function() {
 
 	<div class="container">
 		<div class="col-xs-12 col-sm-12 " >
-			<h3>laporan absen per bulan : <?php echo $bulan_dicari.'-'.$tahun_dicari?></h3><br>
+			<h3>Laporan Absen <?php /*echo $bulan_dicari.'-'.$tahun_dicari*/ ?></h3><br>
 			<div class="table-responsive">
 		  		<table class="table  table-condensed" id="exampli" width="100%" cellspacing="0">
 		  			<thead>
@@ -79,7 +79,7 @@ $(document).ready(function() {
 	<br><hr>
 	<div class="container ">
 		<div class="col-xs-12 col-sm-12 " >
-			<h3>laporan ijin </h3><br>
+			<h3>Laporan Ijin </h3><br>
 			<div class="table-responsive">
 		  		<table class="table  table-condensed" id="examplo">
 		  			<thead>

@@ -22,7 +22,7 @@
 				<li>
 					<div class="dropdown">
 						<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-						    Pilih bulan
+						    PILIH BULAN
 						    <span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -203,10 +203,10 @@ $(document).ready(function() {
 	<div class="panel panel-danger">
 		<div class="panel-heading">Rata-rata keterlambatan</div>
 		<div class="panel-body">
-			<?=$late_avg?> Menit
+			<?= number_format($late_avg,2)?> Menit
 		</div>
 	</div>
 	<div>
-		<a class="btn btn-primary no-print col-xs-12" href="<?php echo base_url('User_C/lihat5bulan/'.$siapa."/".$bulan."/".$tahun)?>" role="button"><span class="glyphicon glyphicon-list"></span> Lihat grafik 5 bulan terakhir</a>
+		<a class="btn btn-primary no-print col-xs-12" href="<?php echo base_url('User_C/lihat5bulan/'.$siapa."/".$bulan."/".$tahun)?>" role="button"><span class="glyphicon glyphicon-list"></span> LIHAT GRAFIK 5 BULAN</a>
 	</div>
 </div>

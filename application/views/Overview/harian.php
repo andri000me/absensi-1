@@ -1,6 +1,6 @@
+<div class="container">
 	<div class="col-xs-12" >
-	
-	<h4>Laporan Absensi Harian</h4><br>
+		<h2>Laporan Absensi Harian</h2><br>
 
 		<form action="<?php echo base_url('Overview_C/lihat/hari')?>" method="POST" class="form-inline" role="form" >
 			<div class="form-group">
@@ -10,8 +10,8 @@
 			    </div>
 			</div>
 			<div class="form-group">
-				<button type="submit" class="btn btn-primary">Submit</button>
-				<button class="btn btn-primary" id="print_btn" >Cetak</button>
+				<button type="submit" class="btn btn-primary">SUBMIT</button>
+				<button class="btn btn-primary" id="print_btn" ><span class="glyphicon glyphicon-print" aria-hidden="true"></span> CETAK</button>
 			</div>
 		</form>
 	</div>

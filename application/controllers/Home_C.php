@@ -25,6 +25,19 @@ class Home_C extends CI_Controller {
 		else {
 			$data['nama_karyawan']=$this->Absen_M->readS('data_k')->result();
 			$data['status']=$this->Absen_M->readS('data_s')->result();
+			// echo "<pre>";
+			// var_dump($data['status']);
+			foreach ($data['status'] as $key) {
+				$array_status[$key->id_s]=array('nama' => $key->keterangan_s,
+					'info' => $key->info_s);
+			}
+			$data['array_status1'] =$array_status;
+			$data['arrst'] = json_encode($data['array_status1']);
+			// var_dump($data['array_status1']);
+			// var_dump($array_status);
+			// echo "</pre>";
+			// $array_status
+
 			$where_idm['id_m'] =  1;$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
 			$data['jam_masuk'] = $datax['jam_masuk'][0]->misc;
 			$where_idm['id_m'] =  4;$datax['jam_pulang'] = $this->Absen_M->read('data_m',$where_idm)->result();
@@ -184,7 +197,9 @@ class Home_C extends CI_Controller {
 					'link_foto' => $link_foto[0]->foto_k
 				);
 				if (($session_data['hak_akses'] == '1') or ($session_data['hak_akses'] == '2')) { //saat punya hak akses
-					$this->session->set_flashdata("alert_login", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' 	aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>login sukses!</strong> </div>");
+					$this->session->set_flashdata("alert_login", "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' 	aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>login sukses!</strong> Selamat datang ".$session_data['nama_k']." </div>");
+					// $this->session->set_flashdata("alert_welcome", "Selamat datang ".$session_data['nama_k']);
+
 					$this->session->set_userdata('logged_in', $session_data);
 					redirect('Home_C/view_dashboard');
 				} else { // saat punya username dan password tapi tidak punya hak akses

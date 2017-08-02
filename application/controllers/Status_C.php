@@ -1,8 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Status_C extends CI_Controller {
-
 	public function __construct(){
         parent::__construct();
         $this->load->model('Absen_M');
@@ -68,23 +66,22 @@ class Status_C extends CI_Controller {
 	}
 	public function update_info(){
 		if ($this->input->post() != null) {
-			$this->form_validation->set_rules('u_keterangan_status','Nama status','trim|required|is_unique[data_s.keterangan_s]');
+			
 			$dataCondition['id_s'] = $this->input->post('u_id_s');
 			$data['keterangan_s'] = $this->input->post('u_keterangan_status');
-			if($this->form_validation->run()==TRUE){
-				$result = $this->Absen_M->update('data_s',$dataCondition,$data);
-				if($result){
-					$alert_update_info = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Update Status Berhasil !</strong></div>";
-					$this->session->set_flashdata('alert_update_info', $alert_update_info);
-				}
-				else{
-					$alert_update_info = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Update Status Gagal! </strong></div>";
-					$this->session->set_flashdata('alert_update_info', $alert_update_info);
-				}
+			$data['info_s'] = $this->input->post('u_info_status');
+			$result = $this->Absen_M->update('data_s',$dataCondition,$data);
+			if($result){
+				$alert_update_info = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Update Status Berhasil !</strong></div>";
+				$this->session->set_flashdata('alert_update_info', $alert_update_info);
 			}
 			else{
-				$alert_update_info = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",'</div>');
-	            $this->session->set_flashdata('alert_update_info', $alert_update_info);
+				if ($results['error_message']['code'] == 1062) {
+						$alert_update_info = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Update Status Gagal! U</strong></div>";
+                    }else{
+						$alert_update_info = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>Update Status Gagal! </strong></div>";
+                    }
+				$this->session->set_flashdata('alert_update_info', $alert_update_info);
 			}
 		}			
 		redirect('Status_C/view');

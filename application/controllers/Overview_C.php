@@ -20,8 +20,9 @@ class Overview_C extends CI_Controller {
     public function lihat($bulan_or_hari){
         if ($bulan_or_hari =='bulan') {
             if ($this->input->post() != null) {
-                $data['tahun'] = $this->input->post('l_tahun');
-                $data['bulan'] = $this->input->post('l_bulan');
+                $param = substr($this->input->post('l_param'),-10,7);
+                $data['tahun'] = substr($param,-10,4);
+                $data['bulan'] = substr($param,-1,2);
                 $datax['cari'] = $this->Absen_M->rawQuery("
 
                     SELECT  data_ra.id_a,
@@ -172,20 +173,25 @@ class Overview_C extends CI_Controller {
                 $datax['days'] = $number;
                 /*END HITUNG SABTU MINGGU*/
                 $datax['workdays'] = ($datax['days'] - $datax['weekend'] - $datax['jml_libur']) ;
-                if ($datax['menit_karyawan_telat'] == 0) {
-                    $datax['menit_karyawan_telat'] = 1;
-                }elseif($datax['menit_magang_telat'] == 0){
-                    $datax['menit_magang_telat'] == 1;
+                
+                if ($datax['menit_karyawan_telat'] != 0) {
+                    $datax['late_avg_karyawan'] = $datax['menit_karyawan_telat'] / $datax['workdays'];
+                }else{
+                    $datax['late_avg_karyawan'] = 0;
                 }
 
-                $datax['late_avg_karyawan'] = $datax['menit_karyawan_telat'] / $datax['workdays'];
-                $datax['late_avg_magang'] = $datax['menit_magang_telat'] / $datax['workdays'];
+                if($datax['menit_magang_telat'] != 0){
+                    $datax['late_avg_magang'] = $datax['menit_magang_telat'] / $datax['workdays'];
+                }else{
+                    $datax['late_avg_magang'] = 0;
+                }
+
                 $datax['karyawan'] = $karyawan;
                 $datax['magang'] = $magang;
 
                 $this->load->view('html/header');
                 $this->load->view('html/menu');
-                $this->load->view('Overview/bulanan');
+                $this->load->view('Overview/bulanan',$datax);
                 $this->load->view('Overview/bulan',$datax);
                 $this->load->view('html/footer');   
             }

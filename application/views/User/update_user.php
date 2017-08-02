@@ -12,7 +12,7 @@ foreach ($user->result() as $row) {
     <h4 class="text-center">DATA SAYA</h4><br>
     <div class="col-sm-12">
         <div class="text-right">
-            <a href="<?=base_url("User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun)?>" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Lihat Absensi saya</a>
+            <a href="<?=base_url("User_C/detail_per_user_per_bulan/".$row->id_k."/".$bulan."/".$tahun)?>" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> LIHAT ABSENSI SAYA</a>
         </div>
     </div>
         <br>
@@ -104,7 +104,7 @@ foreach ($user->result() as $row) {
                     </div>
                 </div>
                 <div class="text-right">
-                    <button type="submit" class="btn btn-primary">Send Update</button>
+                    <button type="submit" class="btn btn-primary">SEND UPDATE</button>
                 </div>  
             </div>
         </form>
@@ -122,7 +122,7 @@ foreach ($user->result() as $row) {
                     <input type="hidden" class="form-control" name="u_id_L" value="<?php echo $rowo->id_L; ?>">
                 </div>          
                 <div class="text-right">
-                    <button type="submit" class="btn btn-primary btn-lg" name="reset" value="reset"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> Reset Password</button>
+                    <button type="submit" class="btn btn-primary btn-lg" name="reset" value="reset"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> RESET PASSWORD</button>
                 </div>
             </form>
             <!-- ubah username, password, hak akses -->
@@ -203,7 +203,7 @@ foreach ($user->result() as $row) {
                 </div>
                 <?php   } ?>
                 <div class="text-right">
-                    <button type="submit" class="btn btn-primary" name="ganti" value="ganti">Send Update</button>
+                    <button type="submit" class="btn btn-primary" name="ganti" value="ganti">SEND UPDATE</button>
                 </div>  
             </form>
             

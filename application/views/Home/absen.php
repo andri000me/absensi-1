@@ -1,6 +1,9 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
+	
+	// console.log(arrst[1][1]);
+	$('#sign').tooltip();
 	$('#freeform').submit(function(event) {
 		event.preventDefault();
 		var url  = "<?=base_url('Home_C/create_absen_free/')?>";
@@ -62,6 +65,11 @@ $(document).ready(function()
 	});
 });
 </script>
+<?php
+// echo "<pre>";
+// var_dump($array_status1);
+// echo "</pre>";
+?>
 <div class="container" >
 	<div class="row">
 		<div class="distance">
@@ -116,9 +124,10 @@ $(document).ready(function()
 									    	}
 							            ?>
 						        </select>
+
 							</div>
-							<div class="form-group col-xs-12" id="myDIV">
-								<textarea class="form-control" placeholder="ketikkan alasan disini." name="c_detail" style="min-height: 100px;"></textarea>
+							<div class="form-group col-xs-12" >
+								<textarea class="form-control" placeholder="ketikkan alasan disini." name="c_detail" style="min-height: 100px;" id="myDIV"></textarea>
 							</div>
 							<div class="col-xs-12">
 								<button class="btn btn-primary col-xs-12" id="submit-absen" type="submit"> <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Submit</button>
@@ -153,21 +162,27 @@ $(document).ready(function()
 					          			</div>
 					          			<div class="form-group">
 					          				<div class="col-xs-12">
-										        <select data-placeholder="Keterangan" class="chosen-select" tabindex="2" style="width: 100%;" name="c_status" onchange="generate_detail()"  required="required" id="keteranganfree">
-										        <option value=""></option>
-										            <?php
-												    	foreach($status as $row){
-												            echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
-												        }
-										            ?>
-							            		</select>
+					          					<div class="input-group">
+											        <select placeholder="Keterangan" class="form-control" name="c_status" onchange="generate_detail()"  required="required" id="keteranganfree">
+											        	<option></option>
+											            <?php
+													    	foreach($status as $row){
+													            echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
+													        }
+											            ?>
+								            		</select>
+								            		<!-- <div class="input-group-addon" id="sign" data-toggle="tooltip" data-placement="left" title=""> -->
+													<div class="input-group-addon" id="sign" data-toggle="tooltip" data-placement="left" >
+														<span class="glyphicon glyphicon-question-sign" ></span> <!-- $('#id').attr('title','') -->
+													</div>
+					          					</div>
 						            		</div>
 										</div>
 					              		<div class='form-group'><div class='col-xs-12'>
 					                        <label class='control-label'>Jam</label>
 					                        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" >
 											    <input type="text" class="form-control" name="c_jam" id="clock" onchange="generate_detail()" required="required">
-											    <span class="input-group-addon">
+											    <span class="input-group-addon" >
 											        <span class="glyphicon glyphicon-time"></span>
 											    </span>
 											</div>
@@ -217,21 +232,13 @@ $(document).ready(function()
 ?>
 
 <script type="text/javascript">
-
-	// var currentdate = new Date();
-	// var datetime = currentdate.getHours() + ":" 
- //                + currentdate.getMinutes() + ":"
- //                + currentdate.getSeconds();
- //    console.log(datetime);
-
+	var arrst  = JSON.parse('<?=$arrst?>');
     var x = document.getElementById('myDIV');
     x.style.display = 'none';
-    
-	
-
     flag = true;
     timer = '';
     setInterval(function(){phpJavascriptClock();},1000);
+	
 
     function phpJavascriptClock()
     {
@@ -262,11 +269,13 @@ $(document).ready(function()
         flag = false;
         timer = timer + 1000;
     }
+
+	$('#sign').attr('data-original-title',"Isikan keterangan terlebih dahulu. Lalu lihat infonya disini").tooltip('fixTitle');
     function generate_detail() 
     {
 	    var z = document.getElementById('clock');
 	    
-    	if (document.getElementById("keteranganfree").value == '1') {
+    	if (document.getElementById("keteranganfree").value == 1) {
     		if (z.value != '') {
 		    	xf.style.display = 'block';
 		    	var jam_masuk = "<?=$jam_masuk?>";
@@ -284,24 +293,45 @@ $(document).ready(function()
 		    	}
 		    	x.style.display = 'none';
     		}
+			$('#sign').attr('data-original-title', arrst[1][1]).tooltip('fixTitle');
+			console.log($('#sign').attr('title'));
+
 	    }
-	    else if (document.getElementById("keteranganfree").value == '2') {
+	    else if (document.getElementById("keteranganfree").value == 2) {
     		if (z.value != '') {
 		    	xf.style.display = 'block';
 	    		$('#myDIVfree').attr("readonly","readonly");
 	    		xf.value = 'other';
 		    	x.style.display = 'none';
     		}
+    		$('#sign').attr('data-original-title',arrst[2][1]).tooltip('fixTitle');
 	    }
+		else if(document.getElementById("keteranganfree").value == 3){
+			$('#myDIVfree').attr("readonly",false);
+			xf.value = '';
+			x.style.display = 'none';
+			xf.style.display = 'block';
+			xf.disabled = '';
+			$('#sign').attr('data-original-title',arrst[3][1]).tooltip('fixTitle');
+		}
+		else if(document.getElementById("keteranganfree").value == 4){
+			$('#myDIVfree').attr("readonly",false);
+			xf.value = '';
+			x.style.display = 'none';
+			xf.style.display = 'block';
+			xf.disabled = '';
+			$('#sign').attr('data-original-title',arrst[4][1]).tooltip('fixTitle');
+		}
+		else if(document.getElementById("keteranganfree").value == 5){
+			$('#myDIVfree').attr("readonly",false);
+			xf.value = '';
+			x.style.display = 'none';
+			xf.style.display = 'block';
+			xf.disabled = '';
+			$('#sign').attr('data-original-title',arrst[5][1]).tooltip('fixTitle');
+		}
 	    else if(document.getElementById("keteranganfree").value == ''){
 	        xf.style.display = 'none';
-	    }
-	    else {
-		   	$('#myDIVfree').attr("readonly",false);
-	    	xf.value = '';
-	        x.style.display = 'none';
-	        xf.style.display = 'block';
-		    xf.disabled = '';
 	    }
 	    if (z.value != '') {
 		    if (document.getElementById("tanggal").value == '0000-00-00' || document.getElementById("tanggal").value == '0001-01-01') {
@@ -309,24 +339,26 @@ $(document).ready(function()
 		    	return false;
 		    }
 	    }
-	    // console.log(document.getElementById("tanggal").value);
     }
     function myFunction() 
     {
 	    if (document.getElementById("keterangan").value == '1') {
 	        x.style.display = 'none';
 	    }
+	    else if(document.getElementById("keterangan").value == 2){
+	    	x.style.display = "block";
+	    	$('#myDIV').attr("readonly","readonly");
+		    x.value = 'other';
+	    }
 	     else {
 	        x.style.display = 'block'
-	        $('#myDIVfree').attr("required",true);
+	        $('#myDIV').attr("readonly",false);
+	        // $('#myDIVfree').attr("required",true);
 	    }
 	}
-
 	$('#absenFreeformModal').on('shown.bs.modal', function () {
 		$('.chosen-select').chosen("destroy");
 		$('.chosen-select').chosen();
     	$('.clockpicker').clockpicker({placement: 'bottom'});
-    	
 	});
-
 </script>

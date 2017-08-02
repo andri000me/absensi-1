@@ -80,7 +80,7 @@ class User_C extends CI_Controller {
 
     		$d1s = substr($row->last_sync,-10,7);
 			$d2s = substr(date("Y-m-d"),-10,7);
-		,
+		
     		$d1 = new DateTime($d1s);
 			$d2 = new DateTime($d2s);
 			$d4 = $d1->diff($d2)->m + ($d1->diff($d2)->y*12);

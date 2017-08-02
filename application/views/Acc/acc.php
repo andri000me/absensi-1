@@ -13,8 +13,7 @@
     <br>
     <div class="row no-print">
         <div class="col-sm-3 col-xs-12">
-            <h2>Stasistik Bulanan</h2>
-            
+            <h2>Statistik Bulanan</h2>
         </div>
         <div class="col-sm-9" style="margin-top: 40px">
             <form method="POST" class="form-horizontal" id="form" >
@@ -50,7 +49,7 @@
                 
             </form>
             <div class="col-sm-2 col-sm-push-2 col-xs-6" >
-                <button  class="btn btn-primary col-xs-12" id="print_acc" >CETAK</button>
+                <button  class="btn btn-primary col-xs-12" id="print_acc" > <span class="glyphicon glyphicon-print" aria-hidden="true"></span> CETAK</button>
             </div>
         </div>
     </div>

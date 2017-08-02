@@ -13,6 +13,7 @@
 				            <th>Tanggal</th>
 				            <th>Jam</th>
 				            <th>Denda</th>
+				            <th>Status</th>
 				        </tr>
 				    </thead>
 				    <tbody>
@@ -61,7 +62,15 @@
 			{ "data": "detail" },
 			{ "data": "tanggal" },
 			{ "data": "jam" },
-			{ "data": "denda" , render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )}
+			{ "data": "denda" , render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )},
+            {"data":"acc",
+                        render: function ( data, type, full, meta ) {
+                            if (full.acc =='1') {
+                                return '<div class="text-center">Confirmed</div>';
+                            } else {
+                                return '<div class="text-center">Waiting confirmation<div>';
+                            }
+                        }}
         ]		
   		});
 	});

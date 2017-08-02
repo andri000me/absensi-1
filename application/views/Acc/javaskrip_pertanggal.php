@@ -3,8 +3,8 @@
 window.onload = update;
 function update()
 {
-    console.log('show_pertanggal');
-    $('#lihat').text('loading...'); //change button text
+    // console.log('show_pertanggal');
+    $('#lihat').text('LOADING...'); //change button text
     $('#lihat').attr('disabled',true); //set button disable 
     var url;
     url = "<?php echo base_url('Acc_C/show_pertanggal/')?>";
@@ -75,7 +75,7 @@ function update()
             });
 
             // console.log(response.ijin);
-            $('#lihat').text('Submits');
+            $('#lihat').text('SUBMIT');
             $('#lihat').attr('disabled',false);
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -89,7 +89,8 @@ function update()
 }
 
 $('#btn-update').click(function() {
-    $('#btn-update').text('updating...');
+    // console.log("btn-update clicked;")
+    $('#btn-update').text('UPDATING...');
     $('#btn-update').attr('disabled',true);
     var url;
 
@@ -104,7 +105,7 @@ $('#btn-update').click(function() {
         success: function(data)
         {
             $("#notif").html(data);
-            $('#btn-update').text('updated');
+            $('#btn-update').text('UPDATE');
             $('#btn-update').attr('disabled',false);
             $('#updateAbsenModal').modal('hide');
             update();
@@ -121,7 +122,7 @@ $('#btn-update').click(function() {
 
 $("#btn-delete-absen" ).click(function() {
   //alert( "woy" );
-    $('#btn-delete-absen').text('deleting...');
+    $('#btn-delete-absen').text('DELETING...');
     $('#btn-delete-absen').attr('disabled',true);
     var url;
 
@@ -141,7 +142,7 @@ $("#btn-delete-absen" ).click(function() {
             // });
             $("#notif").html(data);
             // console.log(response);
-            $('#btn-delete-absen').text('delets'); //change button text
+            $('#btn-delete-absen').text('DELETE'); //change button text
             $('#btn-delete-absen').attr('disabled',false); //set button enable 
             $('#deleteAbsenModal').modal('hide');
             // $('#main').load('seminar-overview.php #main > *');
@@ -159,7 +160,7 @@ $("#btn-delete-absen" ).click(function() {
 
 $("#btn-reject" ).click(function() {
   //alert( "woy" );
-    $('#btn-reject').text('rejecting...'); //change button text
+    $('#btn-reject').text('REJECTTING...'); //change button text
     $('#btn-reject').attr('disabled',true); //set button disable 
     var url;
 
@@ -180,7 +181,7 @@ $("#btn-reject" ).click(function() {
             // });
             $("#notif").html(data);
             // console.log(response);
-            $('#btn-reject').text('reject'); //change button text
+            $('#btn-reject').text('REJECT'); //change button text
             $('#btn-reject').attr('disabled',false); //set button enable 
             $('#rejectAbsenModal').modal('hide');
             // $('#main').load('seminar-overview.php #main > *');
@@ -198,7 +199,7 @@ $("#btn-reject" ).click(function() {
 
 $("#btn-acc" ).click(function() {
   //alert( "woy" );
-    $('#btn-acc').text('accepting...'); //change button text
+    $('#btn-acc').text('ACCEPTING...'); //change button text
     $('#btn-acc').attr('disabled',true); //set button disable 
     var url;
 
@@ -218,7 +219,7 @@ $("#btn-acc" ).click(function() {
             // });
             $("#notif").html(data);
             // console.log(response);
-            $('#btn-acc').text('Accept'); //change button text
+            $('#btn-acc').text('ACCEPT'); //change button text
             $('#btn-acc').attr('disabled',false); //set button enable 
             $('#acceptAbsenModal').modal('hide');
             // $('#main').load('seminar-overview.php #main > *');
@@ -256,7 +257,7 @@ function editIjin(elem)
     var uidi = $(elem).data('idi');
     $.get('<?php echo base_url(); ?>Acc_C/edit_ijin_ku_dari_acc/' + uidi, function(html){
         var object = JSON.parse(html);
-        console.log(object);
+        // console.log(object);
         $("#idiUpdate").val(object[0].id_i);
         $("#idkUpdate").val(object[0].id_k);
         $("#namaiUpdate").val(object[0].nama_k);
@@ -269,7 +270,7 @@ function editIjin(elem)
 
 $("#btn-delete-ijin" ).click(function() {
     // alert( "woy" );
-    $('#btn-delete-ijin').text('deleting...'); //change button text
+    $('#btn-delete-ijin').text('DELETING...'); //change button text
     $('#btn-delete-ijin').attr('disabled',true); //set button disable 
     var url;
 
@@ -285,8 +286,8 @@ $("#btn-delete-ijin" ).click(function() {
         {
             var response = JSON.parse(data);
             $("#notif").html(response);
-            console.log(data);
-            $('#btn-delete-ijin').text('delets'); //change button text
+            // console.log(data);
+            $('#btn-delete-ijin').text('DELETE'); //change button text
             $('#btn-delete-ijin').attr('disabled',false); //set button enable 
             $('#deleteIjinModal').modal('hide');
             // $('#main').load('seminar-overview.php #main > *');
@@ -303,7 +304,7 @@ $("#btn-delete-ijin" ).click(function() {
 });
 
 $('#btn-update-ijin').click(function() {
-    $('#btn-update-ijin').text('updating...');
+    $('#btn-update-ijin').text('UPDATING...');
     $('#btn-update-ijin').attr('disabled',true);
     var url;
 
@@ -319,7 +320,7 @@ $('#btn-update-ijin').click(function() {
         {
             var response = JSON.parse(data);
             $("#notif").html(response);
-            $('#btn-update-ijin').text('updated');
+            $('#btn-update-ijin').text('UPDATE');
             $('#btn-update-ijin').attr('disabled',false);
             $('#updateIjinModal').modal('hide');
             update();

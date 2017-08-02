@@ -3,7 +3,7 @@
     <li  class="active">User</li>
   </ol>
 	<div class="col-xs-12 text-right">
-		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addUserModal">Add User</button>
+		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addUserModal">ADD USER</button>
 	</div>
   <br>
 	<div class="col-sm-12">

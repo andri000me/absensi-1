@@ -12,8 +12,8 @@
                         Are you sure?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <button class="btn btn-primary" id="btn-delete-absen" >delete</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                        <button class="btn btn-primary" id="btn-delete-absen" >DELETE</button>
                     </div>
             </div>
         </form>
@@ -42,8 +42,8 @@ $('#deleteAbsenModal').on('show.bs.modal', function(e) {
                         Are you sure?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <a class="btn btn-primary" id="btn-delete-ijin" >delete</a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                        <a class="btn btn-primary" id="btn-delete-ijin" >DELETE</a>
                     </div>
             </div>
         </form>
@@ -72,8 +72,8 @@ $('#deleteIjinModal').on('show.bs.modal', function(e) {
                         Update acc menjadi belum disetujui. Jika status adalah hadir, maka tidak dapat melakukan ijin.
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <a class="btn btn-primary" id="btn-reject" >Submit</a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                        <a class="btn btn-primary" id="btn-reject" >SUBMIT</a>
                     </div>
             </div>
         </form>
@@ -102,8 +102,8 @@ $('#rejectAbsenModal').on('show.bs.modal', function(e) {
                         Akan mengupdate acc menjadi telah disetujui
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <a class="btn btn-primary" id="btn-acc" >Acc</a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                        <a class="btn btn-primary" id="btn-acc" >ACCEPT</a>
                     </div>
             </div>
         </form>
@@ -171,8 +171,8 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-primary" id="btn-update">Update</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                    <a class="btn btn-primary" id="btn-update">UPDATE</a>
                 </div>
             </div>
         </form>
@@ -223,8 +223,8 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-primary" id="btn-update-ijin">Update</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                    <a class="btn btn-primary" id="btn-update-ijin">UPDATE</a>
                 </div>
             </div>
         </form>

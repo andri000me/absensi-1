@@ -12,7 +12,7 @@
 				</div>
 				<div class="col-sm-2 col-xs-12">
 				    <br/><p>Rata2 Keterlambatan Magang</p>
-				    <h4><?=$late_avg_magang?> Menit</h4>	
+				    <h4><?=number_format($late_avg_magang,2)?> Menit</h4>	
 				</div>
 				<!-- <div class="col-sm-2 col-sm-push-3 col-xs-12">
 				    <br/><p>Rangking 1</p>

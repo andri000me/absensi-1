@@ -63,9 +63,12 @@ $(document).ready(function()
 	    });
 	});
 });
-
-// $('#chosen').trigger('chosen:activate'); /*untuk memfokuskan nama_karywan karena menggunakan plugin chosen.*/
 </script>
+<?php
+// echo "<pre>";
+// var_dump($array_status1);
+// echo "</pre>";
+?>
 <div class="container" >
 	<div class="row">
 		<div class="distance">
@@ -91,7 +94,7 @@ $(document).ready(function()
 				  	<div class="panel-body">
 				  		<form id="form-absen" method="POST">
 							<div class="form-group col-xs-12">
-						        <select  id="chosen" class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%;" name="c_id_k" required="required">
+						        <select class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%;" name="c_id_k" required="required">
 						        <option></option>
 							        <?php
 					            		foreach($nama_karyawan as $row){
@@ -105,7 +108,7 @@ $(document).ready(function()
 							</div>
 							<div class="form-group col-xs-12">
 								<div class="input-group">
-							        <select id="keterangan" class="form-control" tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()" required="required" data-placeholder="Keterangan">
+							        <select data-placeholder="Keterangan" class="form-control"  tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()" id="keterangan" required="required">
 							            <option value=""></option>
 								            <?php
 										    	if ($this->session->userdata('logged_in') == null) {
@@ -121,7 +124,7 @@ $(document).ready(function()
 										    	}
 								            ?>
 							        </select>
-									<div class="input-group-addon" id="sign" data-toggle="tooltip" data-placement="left" >
+									<div class="input-group-addon" >
 										<span class="glyphicon glyphicon-question-sign" ></span> <!-- $('#id').attr('title','') -->
 									</div>
 								</div>
@@ -131,7 +134,7 @@ $(document).ready(function()
 								<textarea class="form-control" placeholder="ketikkan alasan disini." name="c_detail" style="min-height: 100px;" id="myDIV"></textarea>
 							</div>
 							<div class="col-xs-12">
-								<button class="btn btn-primary col-xs-12" id="submit-absen" type="submit"> <span class="glyphicon glyphicon-send" aria-hidden="true"></span> SUBMIT</button>
+								<button class="btn btn-primary col-xs-12" id="submit-absen" type="submit"> <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Submit</button>
 							</div>
 						</form>
 				  	</div>
@@ -163,7 +166,6 @@ $(document).ready(function()
 					          			</div>
 					          			<div class="form-group">
 					          				<div class="col-xs-12">
-					          					<label>Keterangan</label>
 					          					<div class="input-group">
 											        <select id="keteranganfree" class="form-control" name="c_status" onchange="generate_detail()"  required="required"  placeholder="Keterangan">
 											        	<option></option>
@@ -173,23 +175,23 @@ $(document).ready(function()
 													        }
 											            ?>
 								            		</select>
-													<div class="input-group-addon" id="signfree" data-toggle="tooltip" data-placement="left" >
+								            		<!-- <div class="input-group-addon" id="sign" data-toggle="tooltip" data-placement="left" title=""> -->
+													<div class="input-group-addon" id="sign" data-toggle="tooltip" data-placement="left" >
 														<span class="glyphicon glyphicon-question-sign" ></span> <!-- $('#id').attr('title','') -->
 													</div>
 					          					</div>
 						            		</div>
 										</div>
-										<div class='form-group'>
-											<div class='col-xs-12'>
-												<label class='control-label'>Jam</label>
-												<div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" >
-													<input type="text" class="form-control" name="c_jam" id="clock" onchange="generate_detail()" required="required">
-													<span class="input-group-addon" >
-													<span class="glyphicon glyphicon-time"></span>
-													</span>
-												</div>
+					              		<div class='form-group'><div class='col-xs-12'>
+					                        <label class='control-label'>Jam</label>
+					                        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" >
+											    <input type="text" class="form-control" name="c_jam" id="clock" onchange="generate_detail()" required="required">
+											    <span class="input-group-addon" >
+											        <span class="glyphicon glyphicon-time"></span>
+											    </span>
 											</div>
-										</div>
+											</div>
+					                    </div>
 					                    <div class='form-group'><div class='col-xs-12'>
 					                        <label class='control-label'>Tanggal</label>
 											<input type="date" class="form-control" name="c_tanggal" id="tanggal" onchange="generate_detail()" required="required">
@@ -203,14 +205,14 @@ $(document).ready(function()
 					              		</div>
 						          	</div>
 						          	<div class="modal-footer">
-						            	<button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
-						            	<button type="submit" class="btn btn-primary"  id="btn_free"> <span class="glyphicon glyphicon-send" aria-hidden="true"></span> SUBMIT</button> <!-- onclick="free()" -->
+						            	<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+						            	<button type="submit" class="btn btn-primary"  id="btn_free"> <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Submit</button> <!-- onclick="free()" -->
 						          	</div>
 					        	</form>
 					        </div>
 						</div>
 					</div>
-					<button type="button" class="btn btn-primary col-xs-12" data-toggle="modal" data-target="#absenFreeformModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ABSEN FREE FORM</button>
+					<button type="button" class="btn btn-primary col-xs-12" data-toggle="modal" data-target="#absenFreeformModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Absen Free form</button>
 					<?php
 				}
 				?>
@@ -227,19 +229,15 @@ $(document).ready(function()
     $current_timestamp = $date->getTimestamp()+1;
 ?>
 <script type="text/javascript">
-	$('#absenFreeformModal').on('shown.bs.modal', function () {
-		var xf = document.getElementById('myDIVfree');
-		xf.style.display = 'none';
-		$('.chosen-select').chosen("destroy");
-		$('.chosen-select').chosen();
-    	$('.clockpicker').clockpicker({placement: 'bottom'});
-	});
+	var xf = document.getElementById('myDIVfree');
+	xf.style.display = 'none';
 	var arrst  = JSON.parse('<?=$arrst?>');
     var x = document.getElementById('myDIV');
     x.style.display = 'none';
     flag = true;
     timer = '';
     setInterval(function(){phpJavascriptClock();},1000);
+	
 
     function phpJavascriptClock()
     {
@@ -266,74 +264,97 @@ $(document).ready(function()
         flag = false;
         timer = timer + 1000;
     }
-	$('#signfree').attr('data-original-title',"Isikan keterangan terlebih dahulu. Lalu lihat infonya disini").tooltip('fixTitle');
-    function generate_detail()
-	{
-		var targetId = '#signfree';
-		var keteranganSelect = document.getElementById("keteranganfree");
-		var alert = document.getElementById("alert-free");
-		var clock = document.getElementById('clock'); /*jam absen*/
-		if (keteranganSelect.value == 1) {
-			if (clock.value != '') {
-				xf.style.display = 'block';
-				var jam_masuk = "<?=$jam_masuk?>";
-				var jam_pulang = "<?=$jam_pulang?>";
-				if (clock.value > jam_masuk && clock.value<jam_pulang) {
-					$('#myDIVfree').attr("readonly","readonly");
-					xf.value = 'telat';
-				} else if(clock.value < jam_masuk) {
-					$('#myDIVfree').attr("readonly","readonly");
-					xf.value = 'tepat waktu';
-				}else if(clock.value > jam_pulang){
-					clock.value='';
-					alert.innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Jam tidak valid.</strong></div>';
-					xf.value = '';
-				}
-				x.style.display = 'none';
-			}
-		}
-		else{
-			if (keteranganSelect.value == 2) {
-				$('#myDIVfree').attr("readonly",true);
-				xf.value = 'other';
-			}
-			else{
-				xf.value = '';
-				xf.disabled = '';
-				$('#myDIVfree').attr("readonly",false);
-			}
+
+	$('#sign').attr('data-original-title',"Isikan keterangan terlebih dahulu. Lalu lihat infonya disini").tooltip('fixTitle');
+    function generate_detail() 
+    {
+	    var z = document.getElementById('clock');
+	    
+    	if (document.getElementById("keteranganfree").value == 1) {
+    		console.log("1");
+    		if (z.value != '') {
+		    	xf.style.display = 'block';
+		    	var jam_masuk = "<?=$jam_masuk?>";
+		    	var jam_pulang = "<?=$jam_pulang?>";
+		    	if (z.value > jam_masuk && z.value<jam_pulang) {
+		    		$('#myDIVfree').attr("readonly","readonly");
+		    		xf.value = 'telat';
+		    	} else if(z.value < jam_masuk) {
+		    		$('#myDIVfree').attr("readonly","readonly");
+		    		xf.value = 'tepat waktu';
+		    	}else if(z.value > jam_pulang){
+		    		z.value='';
+		    		document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Jam tidak valid.</strong></div>';
+	    			xf.value = '';
+		    	}
+		    	x.style.display = 'none';
+    		}
+			// console.log($('#sign').attr('title'));
+
+			$('#sign').attr('data-original-title', arrst[1]['info']).tooltip('fixTitle');
+	    }
+	    else if (document.getElementById("keteranganfree").value == 2) {
+    		if (z.value != '') {
+		    	xf.style.display = 'block';
+	    		$('#myDIVfree').attr("readonly","readonly");
+	    		xf.value = 'other';
+		    	x.style.display = 'none';
+    		}
+    		$('#sign').attr('data-original-title',arrst[2]['info']).tooltip('fixTitle');
+	    }
+		else if(document.getElementById("keteranganfree").value == 3){
+			$('#myDIVfree').attr("readonly",false);
+			xf.value = '';
 			x.style.display = 'none';
 			xf.style.display = 'block';
+			xf.disabled = '';
+			$('#sign').attr('data-original-title',arrst[3][1]).tooltip('fixTitle');
 		}
-		$('#signfree').attr('data-original-title',arrst[keteranganSelect.value]['info']).tooltip('fixTitle');
-
-	    if (clock.value != '') {
+		else if(document.getElementById("keteranganfree").value == 4){
+			$('#myDIVfree').attr("readonly",false);
+			xf.value = '';
+			x.style.display = 'none';
+			xf.style.display = 'block';
+			xf.disabled = '';
+			$('#sign').attr('data-original-title',arrst[4]['info']).tooltip('fixTitle');
+		}
+		else if(document.getElementById("keteranganfree").value == 5){
+			$('#myDIVfree').attr("readonly",false);
+			xf.value = '';
+			x.style.display = 'none';
+			xf.style.display = 'block';
+			xf.disabled = '';
+			$('#sign').attr('data-original-title',arrst[5]['info']).tooltip('fixTitle');
+		}
+	    else if(document.getElementById("keteranganfree").value == ''){
+	        xf.style.display = 'none';
+	    }
+	    if (z.value != '') {
 		    if (document.getElementById("tanggal").value == '0000-00-00' || document.getElementById("tanggal").value == '0001-01-01') {
 		    	document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Tanggal tidak valid.</strong></div>';
 		    	return false;
 		    }
 	    }
     }
-    
-    // var keterangan = document.getElementById('keterangan');
-    function myFunction()
+    function myFunction() 
     {
-    	var keterangan = document.getElementById('keterangan');
-	    if (keterangan.value == 1) {
+	    if (document.getElementById("keterangan").value == '1') {
 	        x.style.display = 'none';
 	    }
-	    else{
-		    if(keterangan.value == 2){
-		    	$('#myDIV').attr("readonly",true);
-			    x.value = 'other';
-		    }
-		    else {
-			    x.value = '';
-		        $('#myDIV').attr("readonly",false);
-		    }
-		    x.style.display = "block";
+	    else if(document.getElementById("keterangan").value == 2){
+	    	x.style.display = "block";
+	    	$('#myDIV').attr("readonly","readonly");
+		    x.value = 'other';
 	    }
-	   	$('#sign').attr('data-original-title', arrst[keterangan.value]['info']).tooltip('fixTitle');
+	     else {
+	        x.style.display = 'block'
+	        $('#myDIV').attr("readonly",false);
+	        // $('#myDIVfree').attr("required",true);
+	    }
 	}
-
+	$('#absenFreeformModal').on('shown.bs.modal', function () {
+		$('.chosen-select').chosen("destroy");
+		$('.chosen-select').chosen();
+    	$('.clockpicker').clockpicker({placement: 'bottom'});
+	});
 </script>

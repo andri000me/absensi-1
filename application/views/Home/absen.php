@@ -108,22 +108,27 @@ $(document).ready(function()
 								<input type="password" name="c_password" class="form-control" required="required" placeholder="password">
 							</div>
 							<div class="form-group col-xs-12">
-						        <select data-placeholder="Keterangan" class="chosen-select" tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()" id="keterangan" required="required">
-						            <option value=""></option>
-							            <?php
-									    	if ($this->session->userdata('logged_in') == null) {
-									    		foreach($status as $row){
-									    			if ($row->id_s != 2) {
-									            		echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
-									    			}
-									        	}
-									    	}else{
-									    		foreach($status as $row){
-									            	echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
-									        	}
-									    	}
-							            ?>
-						        </select>
+								<div class="input-group">
+							        <select data-placeholder="Keterangan" class="form-control"  tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()" id="keterangan" required="required">
+							            <option value=""></option>
+								            <?php
+										    	if ($this->session->userdata('logged_in') == null) {
+										    		foreach($status as $row){
+										    			if ($row->id_s != 2) {
+										            		echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
+										    			}
+										        	}
+										    	}else{
+										    		foreach($status as $row){
+										            	echo '<option value="'.$row->id_s.'">'.$row->keterangan_s.'</option>';
+										        	}
+										    	}
+								            ?>
+							        </select>
+									<div class="input-group-addon" >
+										<span class="glyphicon glyphicon-question-sign" ></span> <!-- $('#id').attr('title','') -->
+									</div>
+								</div>
 
 							</div>
 							<div class="form-group col-xs-12" >
@@ -163,7 +168,7 @@ $(document).ready(function()
 					          			<div class="form-group">
 					          				<div class="col-xs-12">
 					          					<div class="input-group">
-											        <select placeholder="Keterangan" class="form-control" name="c_status" onchange="generate_detail()"  required="required" id="keteranganfree">
+											        <select id="keteranganfree" class="form-control" name="c_status" onchange="generate_detail()"  required="required"  placeholder="Keterangan">
 											        	<option></option>
 											            <?php
 													    	foreach($status as $row){
@@ -276,6 +281,7 @@ $(document).ready(function()
 	    var z = document.getElementById('clock');
 	    
     	if (document.getElementById("keteranganfree").value == 1) {
+    		console.log("1");
     		if (z.value != '') {
 		    	xf.style.display = 'block';
 		    	var jam_masuk = "<?=$jam_masuk?>";
@@ -293,9 +299,9 @@ $(document).ready(function()
 		    	}
 		    	x.style.display = 'none';
     		}
-			$('#sign').attr('data-original-title', arrst[1][1]).tooltip('fixTitle');
-			console.log($('#sign').attr('title'));
+			// console.log($('#sign').attr('title'));
 
+			$('#sign').attr('data-original-title', arrst[1]['info']).tooltip('fixTitle');
 	    }
 	    else if (document.getElementById("keteranganfree").value == 2) {
     		if (z.value != '') {
@@ -304,7 +310,7 @@ $(document).ready(function()
 	    		xf.value = 'other';
 		    	x.style.display = 'none';
     		}
-    		$('#sign').attr('data-original-title',arrst[2][1]).tooltip('fixTitle');
+    		$('#sign').attr('data-original-title',arrst[2]['info']).tooltip('fixTitle');
 	    }
 		else if(document.getElementById("keteranganfree").value == 3){
 			$('#myDIVfree').attr("readonly",false);
@@ -320,7 +326,7 @@ $(document).ready(function()
 			x.style.display = 'none';
 			xf.style.display = 'block';
 			xf.disabled = '';
-			$('#sign').attr('data-original-title',arrst[4][1]).tooltip('fixTitle');
+			$('#sign').attr('data-original-title',arrst[4]['info']).tooltip('fixTitle');
 		}
 		else if(document.getElementById("keteranganfree").value == 5){
 			$('#myDIVfree').attr("readonly",false);
@@ -328,7 +334,7 @@ $(document).ready(function()
 			x.style.display = 'none';
 			xf.style.display = 'block';
 			xf.disabled = '';
-			$('#sign').attr('data-original-title',arrst[5][1]).tooltip('fixTitle');
+			$('#sign').attr('data-original-title',arrst[5]['info']).tooltip('fixTitle');
 		}
 	    else if(document.getElementById("keteranganfree").value == ''){
 	        xf.style.display = 'none';

@@ -227,8 +227,9 @@ $(document).ready(function()
     $current_timestamp = $date->getTimestamp()+1;
 ?>
 <script type="text/javascript">
+	var xf ='';
 	$('#absenFreeformModal').on('shown.bs.modal', function () {
-		var xf = document.getElementById('myDIVfree');
+		xf = document.getElementById('myDIVfree');
 		xf.style.display = 'none';
 		$('.chosen-select').chosen("destroy");
 		$('.chosen-select').chosen();
@@ -290,6 +291,7 @@ $(document).ready(function()
 					xf.value = '';
 				}
 				x.style.display = 'none';
+				// xf.style.display = 'none';
 			}
 		}
 		else{

@@ -79,11 +79,11 @@ foreach ($user->result() as $row) {
                     <div class="col-sm-10">
                         <select name="u_bisa_cuti_form" id="input" class="form-control" >
                             <?php if ($row->bisa_cuti == 0 ) {?>
-                                <option value="0" selected >0</option>
-                                <option value="1" >1</option>
+                                <option value="0" selected >Belum bisa cuti</option>
+                                <option value="1" >Sudah bisa cuti</option>
                             <?php } else{ ?>
-                                <option value="0" >0</option>
-                                <option value="1" selected >1</option>
+                                <option value="0" >Belum bisa cuti</option>
+                                <option value="1" selected >Sudah bisa cuti</option>
                             <?php }?>
                         </select>
                     </div>

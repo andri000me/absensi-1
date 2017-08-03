@@ -90,7 +90,7 @@
 						<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
 						<div class="input-group">
 							<div class="input-group-addon">Rp</div>
-							<input type="text" class="form-control" id="biaya"  placeholder="Amount">
+							<input type="text" class="form-control" id="biaya"  placeholder="Amount" disabled="disabled">
 							<div class="input-group-addon">.00</div>
 						</div>
 						</div>

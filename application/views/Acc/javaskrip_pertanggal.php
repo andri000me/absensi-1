@@ -230,7 +230,6 @@ $("#btn-acc" ).click(function() {
             console.log(jqXHR, textStatus, errorThrown);
             $('#btn-acc').text('eror'); //change button text
             $('#btn-acc').attr('disabled',false); //set button enable 
-
         }
     });
 });
@@ -249,6 +248,8 @@ function edit(elem)
         $("#detUp").val(object[0].detail);
         $("#accUp").val(object[0].acc);
         $("#ketUp").val(object[0].id_s);
+        var olddetail = object[0].acc;
+        var oldids = object[0].id_s;
     });
 }
 

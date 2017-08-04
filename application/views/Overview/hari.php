@@ -40,6 +40,7 @@
 			            	<th>Jam</th>
 			            	<th>Tanggal</th>
 			            	<th>acc</th>
+			            	<th>denda</th>
 		            	</tr>
 		        	</thead>
 			        <tbody>
@@ -52,8 +53,8 @@
 			        		echo "<td>".$row->detail."</td>";
 			        		echo "<td>".$row->jam."</td>";
 			        		echo "<td>".$row->tanggal."</td>";
-			        		echo "<td>".$row->acc."</td>"; 
-			        		
+			        		echo ($row->acc == 1) ? "<td>Confirmed</td>":"<td>Waiting confirmation</td>";
+			        		echo "<td> Rp. ".number_format($row->denda,2,',','.')."</td>";
 			        		echo "</tr>";
 			        	} ?>
 			        </tbody>
@@ -81,6 +82,7 @@
 			            	<th>start</th>
 			            	<th>end</th>
 			            	<th>Tanggal</th>
+			            	<th>denda</th>
 		            	</tr>
 		        	</thead>
 			        <tbody>
@@ -93,6 +95,7 @@
 			        		echo "<td>".$row->start."</td>";
 			        		echo "<td>".$row->end."</td>";
 			        		echo "<td>".$row->tanggal."</td>";
+			        		echo "<td> Rp. ".number_format($row->denda,2,',','.')."</td>";
 			        		echo "</tr>";
 			        	}
 			        	?>

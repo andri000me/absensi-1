@@ -10,7 +10,6 @@
 				        	<th>Nama</th>
 				            <th>Absensi</th>
 				            <th>Keterangan</th>
-				            <th>Tanggal</th>
 				            <th>Jam</th>
 				            <th>Denda</th>
 				            <th>Status</th>
@@ -31,7 +30,6 @@
 					<thead>
 				    	<tr>
 				        	<th>Nama</th>
-				            <th>Tanggal</th>
 				            <th>Keterangan</th>
 				            <th>Start</th>
 				            <th>End</th>
@@ -60,7 +58,6 @@
 			{ "data": "nama_k" },
 			{ "data": "keterangan_s" },
 			{ "data": "detail" },
-			{ "data": "tanggal" },
 			{ "data": "jam" },
 			{ "data": "denda" , render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp.' )},
             {"data":"acc",
@@ -83,7 +80,6 @@
 			"data" :(data.list_ijin),
 			"columns": [
 				{ "data": "nama_k" },
-				{ "data": "tanggal" },
 				{ "data": "perihal" },
 				{ "data": "start" },
 				{ "data": "end" },

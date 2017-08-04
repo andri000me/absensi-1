@@ -1,33 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- Latest compiled and minified CSS -->
 <link href="<?php echo base_url()?>assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<!-- <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700i]talic" rel="stylesheet" type="text/css"> -->
-
 <link rel="stylesheet" href="<?php echo base_url()?>assets/css/theme.css">
 <link rel="stylesheet" href="<?php echo base_url()?>assets/css/prism.css">
 <link rel="stylesheet" href="<?php echo base_url()?>assets/css/chosen.css">
 <link rel="stylesheet" href="<?php echo base_url()?>assets/css/bootstrap.css">
 <link rel="stylesheet" href="<?php echo base_url()?>assets/css/clockpicker.css">
 <link rel="stylesheet" href="<?php echo base_url()?>assets/css/dataTables.bootstrap.min.css">
-<!-- 
-<link rel="stylesheet" href="<?php echo base_url()?>assets/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="<?php echo base_url()?>assets/css/jquery.dataTables.min.css">
- -->
+<link rel="stylesheet" href="<?php echo base_url()?>assets/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/jQuery.print.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/dataTables.bootstrap.min.js"></script>
-
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/buttons.print.min.js"></script>
-
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/highcharts.src.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/exporting.js"></script>
+<script type="text/javascript" src="<?php echo base_url()?>assets/moment/min/moment.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/clockpicker/highlight.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>assets/clockpicker/bootstrap-clockpicker.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url()?>assets/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
  
 
 
@@ -35,8 +30,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         	<div class="modal-header">
@@ -63,10 +57,9 @@
         	</form>
         </div>
     </div>
-</div>
+  </div>
 
 <script type='text/javascript'>
-//<![CDATA[
 jQuery(function($) { 'use strict';
     
     $('button#print_btn').on('click', function(e) {
@@ -107,12 +100,16 @@ jQuery(function($) { 'use strict';
       $('#exampld').DataTable();
       $('#examplij').DataTable();
     });
-    // Fork https://github.com/sathvikp/jQuery.print for the full list of options
 });
-//]]>
 </script>
 
 <style type="text/css">
+/*  input::-webkit-calendar-picker-indicator{
+      display: none;
+  }
+  input[type="date"]::-webkit-input-placeholder{ 
+    visibility: hidden !important;
+  }*/
   .a{
     width: 90px;
     overflow: hidden;

@@ -166,7 +166,6 @@ $("#btn-delete-absen" ).click(function() {
             console.log(jqXHR, textStatus, errorThrown);
             $('#btn-delete-absen').text('eror'); //change button text
             $('#btn-delete-absen').attr('disabled',false); //set button enable 
-
         }
     });
 });

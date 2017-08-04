@@ -1,3 +1,4 @@
+
 <script type="text/javascript">
 $(document).ready(function()
 {
@@ -91,6 +92,7 @@ $(document).ready(function()
 				  	<div class="panel-body">
 				  		<form id="form-absen" method="POST">
 							<div class="form-group col-xs-12">
+
 						        <select  id="chosen" class="chosen-select" data-placeholder="Nama Karyawan" tabindex="2" style="width: 100%;" name="c_id_k" required="required">
 						        <option></option>
 							        <?php
@@ -105,8 +107,8 @@ $(document).ready(function()
 							</div>
 							<div class="form-group col-xs-12">
 								<div class="input-group">
-							        <select id="keterangan" class="form-control" tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()" required="required" data-placeholder="Keterangan">
-							            <option value=""></option>
+							        <select id="keterangan" class="form-control" tabindex="2" style="width: 100%;" name="c_status" onchange="myFunction()" required="required">
+							            <option value="" selected="selected" disabled="disabled">keterangan</option>
 								            <?php
 										    	if ($this->session->userdata('logged_in') == null) {
 										    		foreach($status as $row){
@@ -183,17 +185,34 @@ $(document).ready(function()
 											<div class='col-xs-12'>
 												<label class='control-label'>Jam</label>
 												<div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true" >
-													<input type="text" class="form-control" name="c_jam" id="clock" onchange="generate_detail()" required="required">
+													<input type="time" class="form-control" name="c_jam" id="clock" onchange="generate_detail()" required="required">
 													<span class="input-group-addon" >
 													<span class="glyphicon glyphicon-time"></span>
 													</span>
 												</div>
 											</div>
 										</div>
-					                    <div class='form-group'><div class='col-xs-12'>
+					                    <div class='form-group'>
+											<div class="col-xs-12">
 					                        <label class='control-label'>Tanggal</label>
-											<input type="date" class="form-control" name="c_tanggal" id="tanggal" onchange="generate_detail()" required="required">
+											<div class='input-group date' id='datetimepicker1'>
+												<input type='date' class="form-control" name="c_tanggal">
+												<span class="input-group-addon">
+													<span class="glyphicon glyphicon-calendar"></span>
+												</span>
 											</div>
+											</div>
+											<script type="text/javascript">
+												$(function () {
+													$('#datetimepicker1').datetimepicker({
+														format : 'YYYY-MM-DD'
+													});
+												});
+											</script>
+					                    	<!-- <div class='col-xs-12'>
+												<label class='control-label'>Tanggal</label>
+												<input type="date" class="form-control" name="c_tanggal" id="tanggal" onchange="generate_detail()" required="required">
+											</div> -->
 					                    </div>
 					              		<div class="form-group"  >
 					              			<div class="col-xs-12">
@@ -267,6 +286,7 @@ $(document).ready(function()
         flag = false;
         timer = timer + 1000;
     }
+	$('#sign').attr('data-original-title',"Isikan keterangan terlebih dahulu. Lalu lihat infonya disini").tooltip('fixTitle');
 	$('#signfree').attr('data-original-title',"Isikan keterangan terlebih dahulu. Lalu lihat infonya disini").tooltip('fixTitle');
     function generate_detail()
 	{
@@ -321,7 +341,7 @@ $(document).ready(function()
     function myFunction()
     {
     	var keterangan = document.getElementById('keterangan');
-	    if (keterangan.value == 1) {
+	    if (keterangan.value == 1 || keterangan.value == 5) {
 	        x.style.display = 'none';
 	    }
 	    else{

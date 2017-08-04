@@ -59,8 +59,7 @@ $(document).ready(function() {
 			        		echo "<td>".$row->detail."</td>";
 			        		echo "<td>".$row->jam."</td>";
 			        		echo "<td>".$row->tanggal."</td>";
-			        		echo "<td>".$row->acc."</td>";
-
+			        		echo ($row->acc == 1) ? "<td>Confirmed</td>":"<td>Waiting confirmation</td>";
 			        		echo "<td> Rp. ".number_format($row->denda,2,',','.')."</td>";
 			        		echo "</tr>";
 			        	}

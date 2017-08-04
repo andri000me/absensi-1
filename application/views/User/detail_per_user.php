@@ -178,9 +178,12 @@ $(document).ready(function() {
 		<div class="panel panel-danger">
 			<div class="panel-heading">Total denda Ijin</div>
 			<div class="panel-body">
-		Total kompensasi ijin jam kerja sejumlah Rp. <?php echo number_format($denda_ku,2,',','.')?> di bulan ini
+		Total denda ijin jam kerja sejumlah Rp. <?php echo number_format($denda_ku,2,',','.')?> di bulan ini
 			</div>
 		</div>
+	</div>
+	<div class="text-center">
+		<a class="btn btn-primary no-print" href="<?php echo base_url('User_C/lihat5bulan/'.$siapa."/".$bulan."/".$tahun)?>" role="button"><span class="glyphicon glyphicon-list"></span> LIHAT GRAFIK 5 BULAN</a>
 	</div>
 	<br><?php
 	if ($data_chart != array()) {?>
@@ -206,7 +209,5 @@ $(document).ready(function() {
 			<?= number_format($late_avg,2)?> Menit
 		</div>
 	</div>
-	<div>
-		<a class="btn btn-primary no-print col-xs-12" href="<?php echo base_url('User_C/lihat5bulan/'.$siapa."/".$bulan."/".$tahun)?>" role="button"><span class="glyphicon glyphicon-list"></span> LIHAT GRAFIK 5 BULAN</a>
-	</div>
+	
 </div>

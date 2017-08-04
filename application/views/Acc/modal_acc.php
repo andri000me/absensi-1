@@ -143,7 +143,7 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
                     </div>
                     <div class="form-group">
                         <label class="control-label">Keterangan</label>
-                        <select class="form-control" name="u_keterangan" id="ketUp">
+                        <select class="form-control" name="u_keterangan" id="ketUp" >
                             <?php
                                 if ($data_s->num_rows() > 0) {
                                     foreach ($data_s->result_array() as $row_s) {
@@ -236,4 +236,5 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
     $('#clockabsen').clockpicker();
     //$('.clockpicker').clockpicker({placement: 'bottom'});
     $('#clockend').clockpicker();
+    
 </script>

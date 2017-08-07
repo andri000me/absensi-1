@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-08-07 18:43:12
+Date: 2017-08-07 18:45:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -213,7 +213,6 @@ CREATE TABLE `data_m` (
 -- Records of data_m
 -- ----------------------------
 INSERT INTO `data_m` VALUES ('1', '07:30:00', 'jam masuk');
-INSERT INTO `data_m` VALUES ('2', '2017', 'tahun sekarang');
 INSERT INTO `data_m` VALUES ('4', '16:00:00', 'jam akhir kerja');
 INSERT INTO `data_m` VALUES ('5', '3000', 'denda per jam untuk ijin 1 hari');
 INSERT INTO `data_m` VALUES ('6', '3000', 'denda per jam untuk ijin per jam saat jam kerja');

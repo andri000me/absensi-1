@@ -29,8 +29,8 @@
 		    	<tr>
 		        	<th>id_a</th>
 		        	<th>Nama</th>
-		            <th>Absensi</th>
-		            <th>Keterangan</th>
+		            <th>Status</th>
+                    <th>Keterangan</th>
 		            <th>Tanggal</th>
 		            <th>Jam</th>
                     <th>Denda</th>
@@ -52,11 +52,11 @@
 		    	<tr>
 		        	<th>Nama</th>
 		            <th>Tanggal</th>
-		            <th>Keterangan</th>
+		            <th>Alasan</th>
 		            <th>Start</th>
 		            <th>End</th>
-                    <th>Kompensasi</th>
-		            <th>Stop</th>
+                    <th>Denda</th>
+		            <th>Aksi</th>
 		        </tr>
 		    </thead>
 		    <tbody>

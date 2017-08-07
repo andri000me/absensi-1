@@ -3,7 +3,7 @@
 window.onload = update;
 function update()
 {
-    console.log('show_perbulan');
+    // console.log('show_perbulan');
     $('#lihat').text('LOADING...'); //change button text
     $('#lihat').attr('disabled',true); //set button disable 
     var url;
@@ -253,14 +253,18 @@ function edit(elem)
     //var uidk = $(elem).data('idkaryawan');
     $.get('<?php echo base_url(); ?>Acc_C/edit_absensi_ku_dariacc/' + uida, function(html){
         var object = JSON.parse(html);
-        console.log(object);
+        // console.log(object);
         $("#idU").val(object[0].id_a);
         $("#idkU").val(object[0].id_k);
         $("#jamUp").val(object[0].jam);
         $("#tglUp").val(object[0].tanggal);
-        $("#detUp").val(object[0].detail);
-        $("#accUp").val(object[0].acc);
         $("#ketUp").val(object[0].id_s);
+        if(document.getElementById("ketUp").value == 5){
+            document.getElementById("detUp").style.display = "none";
+        }else{
+            $("#detUp").val(object[0].detail);
+        }
+        $("#accUp").val(object[0].acc);
     });
 }
 

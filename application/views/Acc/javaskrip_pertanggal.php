@@ -245,9 +245,13 @@ function edit(elem)
         $("#idkU").val(object[0].id_k);
         $("#jamUp").val(object[0].jam);
         $("#tglUp").val(object[0].tanggal);
-        $("#detUp").val(object[0].detail);
-        $("#accUp").val(object[0].acc);
         $("#ketUp").val(object[0].id_s);
+        if(document.getElementById("ketUp").value == 5){
+            document.getElementById("detUp").style.display = "none";
+        }else{
+            $("#detUp").val(object[0].detail);
+        }
+        $("#accUp").val(object[0].acc);
         var olddetail = object[0].acc;
         var oldids = object[0].id_s;
     });

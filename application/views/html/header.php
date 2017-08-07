@@ -41,12 +41,12 @@
           		<div class="modal-body ">
               		<div class="form-group">
                 		<div class="col-sm-12">
-                  			<input type="text" class="form-control" placeholder="Username" name="l_username" value="<?php echo set_value('l_username'); ?>">
+                  			<input type="text" class="form-control" placeholder="Username" name="l_username" required="required">
                 		</div>
               		</div>
               		<div class="form-group">
                 		<div class="col-sm-12">
-                  			<input type="password" class="form-control" placeholder="Password" name="l_password" value="<?php echo set_value('l_password'); ?>">
+                  			<input type="password" class="form-control" placeholder="Password" name="l_password" required="required">
                 		</div>
               		</div>
 	          	</div>

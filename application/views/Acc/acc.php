@@ -66,8 +66,8 @@
                     <tr>
                         <th>id</th>
                         <th>nama</th>
+                        <th>status</th>
                         <th>keterangan</th>
-                        <th>detail</th>
                         <th>tanggal</th>
                         <th>jam</th>
                         <th>acc</th>
@@ -93,7 +93,7 @@
                     <tr>
                         <th>id</th>
                         <th>nama</th>
-                        <th>detail</th>
+                        <th>alasan</th>
                         <th>start</th>
                         <th>end</th>
                         <th>tanggal</th>

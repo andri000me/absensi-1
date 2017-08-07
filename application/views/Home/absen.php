@@ -196,7 +196,7 @@ $(document).ready(function()
 											<div class="col-xs-12">
 					                        <label class='control-label'>Tanggal</label>
 											<div class='input-group date' id='datetimepicker1'>
-												<input type='date' class="form-control" name="c_tanggal">
+												<input type='date' class="form-control" name="c_tanggal" id="tanggal">
 												<span class="input-group-addon">
 													<span class="glyphicon glyphicon-calendar"></span>
 												</span>
@@ -267,11 +267,11 @@ $(document).ready(function()
             timer = <?php echo $current_timestamp+1;?>*1000;
         }
         var d = new Date(timer);
-        months = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec');
-        month_array = new Array('January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'Augest', 'September', 'October', 'November', 'December');
+        // months = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec');
+        month_array = new Array('Januari', 'Februari', 'Maret', 'April', 'May', 'June', 'July', 'Agustus', 'September', 'Oktober', 'November', 'December');
         currentYear = d.getFullYear();
         month = d.getMonth();
-        var currentMonth = months[month];
+        // var currentMonth = months[month];
         var currentMonth1 = month_array[month];
         var currentDate = d.getDate();
         var hours = d.getHours();
@@ -313,6 +313,10 @@ $(document).ready(function()
 				x.style.display = 'none';
 				// xf.style.display = 'none';
 			}
+		}
+		else if(keteranganSelect.value == 5){
+			xf.style.display = 'none';
+			$('#myDIVfree').removeAttr("required");
 		}
 		else{
 			if (keteranganSelect.value == 2) {

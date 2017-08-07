@@ -240,8 +240,21 @@ class Acc_C extends CI_Controller {
                 if ($datax['identitas_karyawan'][0]->jabatan_k != 12) {
                     $where_idm['id_m'] =  8;
                     $datax['denda_alpha'] = $this->Absen_M->read('data_m',$where_idm)->result();
-                    $denda_alpha = $datax['denda_alpha'][0]->misc;
-                    $data['denda'] = $jam_kerja_custom * $denda_alpha * 4;
+                    $denda_alpha = (int)$datax['denda_alpha'][0]->misc;
+
+                    $datetime1 = new DateTime($jam_masuk);
+                    $datetime2 = new DateTime($jam_pulang);
+                    $interval = $datetime1->diff($datetime2);
+
+                    $jam = $interval->format('%H');
+                    $menit = $interval->format('%I');
+                    $detik  = $interval->format('%S');
+
+                    $to_menit = ($jam * 60) + ($menit) + ($detik / 60);/*calculate minute*/
+                    $bagi_15 = $to_menit / 15;/*bagi 15 menitan*/
+                    $bagi_15_round = ceil($bagi_15);/*untuk pengali denda*/
+                    
+                    $data['denda'] = $bagi_15_round * $denda_alpha ;
                 }
                 else{//saat anak magang
                     $data['denda'] = 0;

@@ -42,7 +42,7 @@ $(document).ready(function() {
 		        			<th>id Absen</th>
 			            	<th>nama Karyawan</th>
 			            	<th>Status</th>
-			            	<th>Detail</th>
+			            	<th>Keterangan</th>
 			            	<th>Jam</th>
 			            	<th>Tanggal</th>
 			            	<th>acc</th>
@@ -85,7 +85,7 @@ $(document).ready(function() {
 		        		<tr>
 		        			<th>id ijin</th>
 			            	<th>nama Karyawan</th>
-			            	<th>perihal</th>
+			            	<th>alasan</th>
 			            	<th>start</th>
 			            	<th>end</th>
 			            	<th>tanggal</th>

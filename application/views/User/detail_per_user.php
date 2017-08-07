@@ -60,8 +60,8 @@ $(document).ready(function() {
 	            	<th>id</th>
 	            	<th>tanggal</th>
 	            	<th>jam</th>
+	            	<th>status</th>
 	            	<th>keterangan</th>
-	            	<th>detail</th>
 	            	<th>acc</th>
 	            	<th>late minute</th>
 	            	<th>denda</th>

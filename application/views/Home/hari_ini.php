@@ -8,7 +8,7 @@
 				    	<tr>
 				        	<th>id_a</th>
 				        	<th>Nama</th>
-				            <th>Absensi</th>
+				            <th>Status</th>
 				            <th>Keterangan</th>
 				            <th>Jam</th>
 				            <th>Denda</th>

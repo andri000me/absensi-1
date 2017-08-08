@@ -19,7 +19,7 @@
 		            // console.log(data);
 		            $('#btn_free').text('Submit'); //change button text
 		            $('#btn_free').attr('disabled',false); //set button enable 
-		            $('#ijinFreeformModal').modal('hide');
+		            // $('#ijinFreeformModal').modal('hide');
 		            show();
 		        },
 		        error: function (jqXHR, textStatus, errorThrown)

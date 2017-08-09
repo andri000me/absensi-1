@@ -4,7 +4,14 @@
     		<div class="row">
 		    	<div class="col-sm-4 col-xs-12">
 				    <br/><p>Total Denda</p>
-				    <h4>Rp. <?=number_format($denda_absen[0]->total_denda,2,',','.')?>(Absen) <br> + Rp. <?=number_format($denda_ijin[0]->total_denda,2,',','.') ?>(Ijin)</h4>
+					<div class="col-xs-6">
+						<p>Absen</p>
+						<h4>Rp. <?=number_format($denda_absen[0]->total_denda,2,',','.')?></h4>	
+					</div>
+					<div class="col-xs-6">
+						<p>Ijin</p>
+				    	<h4> Rp. <?=number_format($denda_ijin[0]->total_denda,2,',','.') ?></h4>
+					</div>
 				</div>
 				<div class="col-sm-2 col-xs-12">
 				    <br/><p>Rata2 Keterlambatan Karyawan</p>

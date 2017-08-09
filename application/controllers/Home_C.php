@@ -706,6 +706,9 @@ class Home_C extends CI_Controller {
 			$data['id_k'] = $this->input->post('c_id_k');
 			$data['tanggal'] = $this->input->post('c_tanggal');
 
+			$kurangi = $this->input->post('c_kurangi');
+			$kurangii = $this->input->post('c_kurangii');
+
 			$where_idm['id_m'] =  1;
 			$datax['jam_masuk'] = $this->Absen_M->read('data_m',$where_idm)->result();
 			$jam_masuk = $datax['jam_masuk'][0]->misc;
@@ -760,20 +763,28 @@ class Home_C extends CI_Controller {
 						// }
 						$bagi_60 = $to_menit / 60;/*bagi 60 menitan*/
 						$bagi_60_round = ceil($bagi_60);/*untuk pengali denda*/
+
+						if ($kurangi != '') {
+							$bagi_60_round = $bagi_60_round - 1;
+						}
+						if ($kurangii != '') {
+							$bagi_60_round = $bagi_60_round - 0.5;
+						}
+
 						$total_denda= $bagi_60_round * $denda_ijin;
 						$data['denda'] = $total_denda;
 					}
 					else{
 						$data['denda'] = 0;
 					}
-					// $alert_create_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>".$data['denda']." durasi ".$to_menit_round."</div>";
+					$alert_create_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>".$bagi_60_round."</div>";
 
-					$result = $this->Absen_M->create('data_i',$data);
-					if($result){
-		 				$alert_create_ijin =  "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil dibuat</strong></div>";
-		 			}else{
-		 				$alert_create_ijin =  "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>gagal memasukkan ke database</strong></div>";	
-		 			}
+					// $result = $this->Absen_M->create('data_i',$data);
+					// if($result){
+		 		// 		$alert_create_ijin =  "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil dibuat</strong></div>";
+		 		// 	}else{
+		 		// 		$alert_create_ijin =  "<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>gagal memasukkan ke database</strong></div>";	
+		 		// 	}
 				} else {
 					$alert_create_ijin = "<div class='alert alert-success alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <strong>ijin berhasil di stop.</strong> Data ijin anda dihapus karena kurang dari 30 menit</div>";
 				}

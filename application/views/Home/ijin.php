@@ -86,7 +86,29 @@
                         <label class="control-label">tanggal</label>
                         <input type="date" class="form-control" name="c_tanggal" required="required" value="<?=date("Y-m-d")?>">
                     </div></div>
-					<div class="form-group"><div class="col-xs-12">
+					<div class="form-group">
+						<div class="col-xs-6">
+							<div class="input-group">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="c_kurangi" onchange="calc()" id="jam_istirahat">
+										Kurangi jam istirahat
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<div class="input-group">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="c_kurangii" id="jam_setengah">
+										Kurangi 1/2 jam
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- <div class="form-group"><div class="col-xs-12">
 						<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
 						<div class="input-group">
 							<div class="input-group-addon">Rp</div>
@@ -94,7 +116,8 @@
 							<div class="input-group-addon">.00</div>
 						</div>
 						</div>
-					</div>
+					</div> -->
+
 	          	</div>
 	          	<div class="modal-footer">
 	            	<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -154,10 +177,21 @@
 						document.getElementById('alert-free').innerHTML='<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>kurang dari 30 menit.</strong> tidak dihitung</div>';
 						document.getElementById('biaya').value = '';
 					}
-					else if(result >= 30){
-						// console.log(result);
-						document.getElementById('biaya').value = Math.ceil(result / 60) * <?=$denda_ijin?>;
-					}
+					// else if(result >= 30){
+					// 	// console.log(result);
+					// 	// var biaya;
+					// 	// if (document.getElementById('jam_istirahat').value == 1) {
+					// 	// 	biaya = Math.ceil(result / 60) - 1;
+					// 	// }
+					// 	// else if(document.getElementById('jam_setengah').value == 1){
+					// 	// 	biaya = Math.ceil(result / 60) - 0.5;
+					// 	// }
+					// 	// else{
+					// 	// 	biaya = Math.ceil(result / 60);
+					// 	// }
+					// 	var biaya = Math.ceil(result / 60) * <?=$denda_ijin?>;
+					// 	document.getElementById('biaya').value = biaya;
+					// }
 					// else{
 					// 	console.log(result);
 					// 	end.value = '';

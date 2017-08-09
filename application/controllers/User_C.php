@@ -960,15 +960,22 @@ class User_C extends CI_Controller {
 	    		$libur[$a] = 0;	
 	    		for ($i = 1; $i <= $number[$a]; $i++) {
 
-					$date = date("Y-m-{$i}");
+					$date = date("Y-{$a}-{$i}");
+
 					$dt = strtotime($date);
 					$day = date("l",$dt);
 
 					if ($day == 'Sunday' OR $day == 'Saturday') {
-						$libur[$a]  = $libur[$a] + 1;
+						$libur[$a] = $libur[$a] + 1;
 					}
+					
 				}
 				/*END HITUNG SABTU MINGGU*/
+
+				// echo "<pre>";
+				// var_dump($a);
+				// var_dump($libur[$a]);
+				// echo "</pre>";
 
 				/*START HITUNG KEHADIRAN KU di data_ra*/
 				if ($jump == 0) {

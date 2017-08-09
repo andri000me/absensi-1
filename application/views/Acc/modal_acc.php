@@ -143,7 +143,7 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
                     </div>
                     <div class="form-group">
                         <label class="control-label">Keterangan</label>
-                        <select class="form-control" name="u_keterangan" id="ketUp" >
+                        <select class="form-control" name="u_keterangan" id="ketUp" onchange="editDetail()">
                             <?php
                                 if ($data_s->num_rows() > 0) {
                                     foreach ($data_s->result_array() as $row_s) {
@@ -178,6 +178,13 @@ $('#acceptAbsenModal').on('show.bs.modal', function(e) {
         </form>
     </div>
 </div>
+
+<script type="text/javascript">
+    var asli = document.getElementById("detUp").value;
+    function editDetail(){
+        console.log("");
+    }
+</script>
 
 
 <div class="modal fade" id="updateIjinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

@@ -20,6 +20,8 @@
 				var other = <?=$other;?>;
 				var alpha = <?=$alpha?>;
 				var sakit = <?=$sakit?>;
+				var company_holiday = <?=$company_holiday?>;
+				var weekend = <?=$weekend?>;
 			    var myChart = Highcharts.chart('5bulan', {
 			    	title: { text: 'Grafik Hadir 5 bulan' },
 				    exporting: { enabled: true },
@@ -27,7 +29,7 @@
 				    xAxis: {type: 'category',title: { text: 'tanggal'}},
 				    tooltip: {
 				        formatter: function () {
-				            var content = 'Wordays :<b>' + workdays[this.key]+' Hari</b><br> Kehadiran :<b>'+kehadiran[this.key] +' Kali</b><br> Ontime :<b>'+ontime[this.key] +' Kali</b><br> Terlambat :<b>'+late[this.key] +' Kali</b><br> Other :<b>'+other[this.key] +' Kali</b><br> Ijin 1 hari :<b>'+ijin1h[this.key] +' Kali</b><br> Cuti :<b>'+cuti[this.key] +' Kali</b><br> Alpha :<b>'+alpha[this.key] +' Kali</b><br> Sakit :<b>'+sakit[this.key] +' Kali</b>';
+				            var content = 'Wordays :<b>' + workdays[this.key]+' Hari</b><br> Kehadiran :<b>'+kehadiran[this.key] +' Kali</b><br> Ontime :<b>'+ontime[this.key] +' Kali</b><br> Terlambat :<b>'+late[this.key] +' Kali</b><br> Other :<b>'+other[this.key] +' Kali</b><br> Ijin 1 hari :<b>'+ijin1h[this.key] +' Kali</b><br> Cuti :<b>'+cuti[this.key] +' Kali</b><br> Alpha :<b>'+alpha[this.key] +' Kali</b><br> Sakit :<b>'+sakit[this.key] +' Kali</b><br> Company holiday :<b>'+company_holiday[this.key] +' hari</b><br> Weekend:<b>'+weekend[this.key] +' hari</b>';
 				            return content;
 				            // return 'The value for <b>' + this.x +
 				                // '</b> is <b>' + this.y + '</b>';

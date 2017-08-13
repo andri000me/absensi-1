@@ -973,7 +973,6 @@ class User_C extends CI_Controller {
 				/*END HITUNG SABTU MINGGU*/
 
 				// echo "<pre>";
-				// var_dump($a);
 				// var_dump($libur[$a]);
 				// echo "</pre>";
 
@@ -1060,6 +1059,7 @@ class User_C extends CI_Controller {
 					$total[$key] = $jml_libur[0]->$nama + $value;
 				}
 			}
+
 			
 			/*START HITUNG PROSENTASE*/
 			$a = $bulan-5;
@@ -1076,6 +1076,7 @@ class User_C extends CI_Controller {
 	    		// 	$tahun = $tahun -1;
 	    		// }
 	    		$hari_kerja[$a] = $number[$a] - $total[$a];/*jumlah perhitungan hari(30/31) pada bulan itu dikurangi dengan hari liburnya(tgl merah di tabel data_libur + hari sabtu minggu)*/
+	    		$keyli = 'ke'.$a;
 	    		$key = 'hadir_'.$a;
 	    		$keyon = 'ontime_'.$a;
 	    		$keyla = 'late_'.$a;
@@ -1085,6 +1086,7 @@ class User_C extends CI_Controller {
 	    		$keya = 'alpha_'.$a;
 	    		$keysa = 'sakit_'.$a;
 	    		// $persen[] = array(date('M Y', strtotime($tahun.'-'.$a)) , ($jml_hadir[0]->$key / $hari_kerja[$a]) * 100);
+
 	    		if ($jml_hadir[0]->$key != 0) {
 	    			$persenon[] = array(date('M Y', strtotime($tahun.'-'.$a)) , ($jml_ontime[0]->$keyon / $hari_kerja[$a]) * 100);
 	    			$persenla[] = array(date('M Y', strtotime($tahun.'-'.$a)) , ($jml_late[0]->$keyla / $hari_kerja[$a]) * 100);
@@ -1124,6 +1126,8 @@ class User_C extends CI_Controller {
 
 	    		$kehadiran[date('M Y', strtotime($tahun.'-'.$a))] = array((int)$jml_hadir[0]->$key);
 	    		$workday[date('M Y', strtotime($tahun.'-'.$a))] = array((int)$hari_kerja[$a]);
+	    		$company_holiday[date('M Y', strtotime($tahun.'-'.$a))] = array((int)$jml_libur[0]->$keyli);
+	    		$weekend[date('M Y', strtotime($tahun.'-'.$a))] = array((int)$libur[$a]);
 	    		$ontime[date('M Y', strtotime($tahun.'-'.$a))] = array((int)$jml_ontime[0]->$keyon);
 	    		$late[date('M Y', strtotime($tahun.'-'.$a))] = array((int)$jml_late[0]->$keyla);
 	    		$ijin1h[date('M Y', strtotime($tahun.'-'.$a))] = array((int)$jml_ijin1h[0]->$keyi1);
@@ -1167,6 +1171,8 @@ class User_C extends CI_Controller {
 			// print_r($persen);
 			$data['kehadiran'] = json_encode($kehadiran);
 			$data['workday'] = json_encode($workday);
+			$data['company_holiday'] = json_encode($company_holiday);
+			$data['weekend'] = json_encode($weekend);
 			$data['ontime'] = json_encode($ontime);
 			$data['late'] = json_encode($late);
 			$data['ijin1h'] = json_encode($ijin1h);
